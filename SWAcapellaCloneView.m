@@ -37,21 +37,32 @@
 	return self;
 }
 
-- (void)setHidden:(BOOL)hidden
-{
-	[super setHidden:hidden];
-	
-	[self setNeedsDisplay];
-}
+#pragma mark - SWAcapellaCloneView
 
 - (void)setViewToClone:(UIView *)viewToClone
 {
-	_viewToClone = viewToClone;
-	
-	[self setNeedsDisplay];
+    _viewToClone = viewToClone;
+    
+    [self setNeedsDisplay];
 }
 
-#pragma mark Rendering
+#pragma mark - UIView
+
+- (void)setHidden:(BOOL)hidden
+{
+    [super setHidden:hidden];
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setNeedsDisplay
+{
+    if (self.viewToClone) {
+        self.frame = self.viewToClone.frame;
+    }
+    
+    [super setNeedsDisplay];
+}
 
 - (void)drawRect:(CGRect)rect
 {

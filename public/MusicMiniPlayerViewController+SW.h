@@ -8,7 +8,7 @@
 
 
 
-@interface MusicMiniPlayerViewController(SW) <SWAcapellaDelegate, UIViewControllerPreviewingDelegate>
+@interface MusicMiniPlayerViewController(SW) <SWAcapellaDelegate>
 {
 }
 

@@ -14,6 +14,8 @@
 #import "SWAcapellaCloneView.h"
 #import "SWAcapellaDelegate.h"
 
+@class SWAcapellaCloneContainer;
+
 
 
 
@@ -35,7 +37,6 @@ typedef NS_ENUM(NSInteger, SWAcapellaTitlesState) {
 {
 }
 
-
 + (SWAcapella *)acapellaForObject:(id)object;
 + (void)setAcapella:(SWAcapella *)acapella forObject:(id)object withPolicy:(objc_AssociationPolicy)policy;
 + (void)removeAcapella:(SWAcapella *)acapella;
@@ -44,6 +45,8 @@ typedef NS_ENUM(NSInteger, SWAcapellaTitlesState) {
 // This is the object which keeps a strong reference to this acapella associated object
 @property (weak, nonatomic) UIViewController<SWAcapellaDelegate> *owner;
 @property (weak, nonatomic) UIView *referenceView;
+
+@property (strong, nonatomic, readonly) SWAcapellaCloneContainer *cloneContainer;
 
 @property (strong, nonatomic, readonly) UITapGestureRecognizer *tap;
 @property (strong, nonatomic, readonly) UIPanGestureRecognizer *pan;

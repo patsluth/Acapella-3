@@ -70,7 +70,6 @@
 @property (strong, nonatomic, readwrite) SWAcapellaCloneContainer *cloneContainer;
 @property (strong, nonatomic, readwrite) NSArray<SWAcapellaCloneView *> *clonedViews;
 
-//@property (strong, nonatomic, readwrite) SWAcapellaCloneView *titlesClone;
 @property (strong, nonatomic, readwrite) NSLayoutConstraint *titlesCloneCenterXConstraint;
 
 @property (strong, nonatomic) UIDynamicAnimator *animator;
@@ -278,17 +277,18 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-	@autoreleasepool {
-		
-		if (gestureRecognizer == self.tap || gestureRecognizer == self.pan) {
-			
-			BOOL isControl = [touch.view isKindOfClass:[UIControl class]];
-			return isControl ? !((UIControl *)touch.view).enabled : !isControl;
-		}
-		
-		return YES;
-		
-	}
+    @autoreleasepool {
+        
+        if (gestureRecognizer == self.tap || gestureRecognizer == self.pan) {
+            if ([touch.view isKindOfClass:[UIControl class]]) {
+                UIControl *control = (UIControl *)touch.view;
+                return !control.isEnabled;
+            }
+        }
+        
+        return YES;
+        
+    }
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -470,8 +470,10 @@
 		SEL sel = nil;
 		
 		if (direction < 0) { // left
+            sel = NSSelectorFromString(@"action_nexttrack:");
 //			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_swipeleft]);
-		} else if (direction > 0) { // right
+        } else if (direction > 0) { // right
+            sel = NSSelectorFromString(@"action_previoustrack:");
 //			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_swiperight]);
 		}
 		

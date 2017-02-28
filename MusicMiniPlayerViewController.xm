@@ -21,6 +21,7 @@
 #import "MPUTransportControlsView+SW.h"
 
 #import "SWAcapella.h"
+#import "SWAcapellaCloneContainer.h"
 #import "SWAcapellaPrefs.h"
 //#import "SWAcapellaMediaItemPreviewViewController.h"
 
@@ -44,7 +45,24 @@
 @property (strong, nonatomic) UIView *nowPlayingItemTitleLabel;
 @property (strong, nonatomic) UIView *transportControlsStack;
 
+@property (strong, nonatomic) UIButton *miniPlayerButton;
+@property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+
 @end
+
+
+
+
+@interface MPButton : UIButton
+
++ (id)easyTouchButtonWithType:(NSInteger)arg1;
+
+@end
+
+
+
+
+
 
 %hook _TtC5Music24MiniPlayerViewController
 
@@ -106,6 +124,14 @@
     }
     
     
+    
+//    [self.miniPlayerButton removeFromSuperview];
+    self.miniPlayerButton.enabled = NO;
+    
+    
+    
+    
+    
     if (!self.acapella) {
         
         if (self.acapellaPrefs.enabled) {
@@ -121,12 +147,7 @@
     
     if (self.acapella) {
         
-        TRY
-        
-        [self.nowPlayingPresentationPanRecognizer requireGestureRecognizerToFail:self.acapella.pan];
-        
-        CATCH_LOG
-        ENDTRY
+//        [self.panGestureRecognizer requireGestureRecognizerToFail:self.acapella.pan];
         
     }
     
@@ -228,6 +249,20 @@
 {
 	%orig();
     
+//    if (self.acapella) {
+//        
+//        [self.view bringSubviewToFront:self.acapella.cloneContainer];
+//        
+//    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     TRY
     
     
@@ -236,8 +271,8 @@
     
     
 //    self.artworkView.hidden = YES;
-    self.nowPlayingItemTitleLabel.backgroundColor = [UIColor redColor];
-    self.transportControlsStack.backgroundColor = [UIColor yellowColor];
+//    self.nowPlayingItemTitleLabel.backgroundColor = [UIColor redColor];
+//    self.transportControlsStack.backgroundColor = [UIColor yellowColor];
     
     
 	
@@ -414,7 +449,10 @@
 {
     TRY
     
-    [self transportControlsView:self.transportControlsView tapOnControlType:1];
+    //[self transportControlsView:self.transportControlsView tapOnControlType:1];
+    
+    UIButton *button = [%c(MPButton) easyTouchButtonWithType:1];
+    [button sendActionsForControlEvents:UIControlEventTouchUpInside];
     
     CATCH_LOG
     ENDTRY
@@ -425,7 +463,10 @@
 {
     TRY
     
-    [self transportControlsView:self.transportControlsView tapOnControlType:4];
+    //[self transportControlsView:self.transportControlsView tapOnControlType:4];
+    
+    UIButton *button = [%c(MPButton) easyTouchButtonWithType:4];
+    [button sendActionsForControlEvents:UIControlEventTouchUpInside];
     
     CATCH_LOG
     ENDTRY
@@ -642,7 +683,6 @@
 
 %ctor
 {
-    %init(_ungrouped);
 }
 
 
