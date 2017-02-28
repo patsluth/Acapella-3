@@ -1,0 +1,156 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		2E16F0501E4BD47A00F40B96 /* Acapella3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Acapella3.plist; sourceTree = "<group>"; };
+		2E491DAF1E65075800EBD841 /* SWAcapella.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapella.m; sourceTree = "<group>"; };
+		2E491DB01E65075800EBD841 /* SWAcapellaCloneContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapellaCloneContainer.m; sourceTree = "<group>"; };
+		2E491DB11E65075800EBD841 /* SWAcapellaCloneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapellaCloneView.m; sourceTree = "<group>"; };
+		2E57FCCF1E4D12450074C616 /* MusicNowPlayingTitlesView.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicNowPlayingTitlesView.xm; sourceTree = "<group>"; };
+		2E57FCD11E4D12AA0074C616 /* MusicNowPlayingViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicNowPlayingViewController.xm; sourceTree = "<group>"; };
+		2E57FCD31E4D26BA0074C616 /* MusicMiniPlayerViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicMiniPlayerViewController.xm; sourceTree = "<group>"; };
+		2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = SWAcapellaDebug.xm; sourceTree = "<group>"; };
+		2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsView.xm; sourceTree = "<group>"; };
+		2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsViewController.xm; sourceTree = "<group>"; };
+		2EBB75811BE97C5A00A3A82D /* layout */ = {isa = PBXFileReference; lastKnownFileType = folder; path = layout; sourceTree = "<group>"; };
+		2EBB75821BE97C5A00A3A82D /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		2EBB758B1BE97C5A00A3A82D /* Makefile */ = {isa = PBXFileReference; explicitFileType = text; path = Makefile; sourceTree = "<group>"; };
+		2EF29A751C3C65BD001032FE /* SWAcapellaPrefs.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = SWAcapellaPrefs.xm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2E5E51811CC3F052004DB6FF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2EB874E21E4D5DE900DAD90C /* NEW */ = {
+			isa = PBXGroup;
+			children = (
+				2E491DAF1E65075800EBD841 /* SWAcapella.m */,
+				2E491DB01E65075800EBD841 /* SWAcapellaCloneContainer.m */,
+				2E491DB11E65075800EBD841 /* SWAcapellaCloneView.m */,
+				2E57FCD31E4D26BA0074C616 /* MusicMiniPlayerViewController.xm */,
+				2E57FCD11E4D12AA0074C616 /* MusicNowPlayingViewController.xm */,
+				2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */,
+				2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */,
+			);
+			name = NEW;
+			sourceTree = "<group>";
+		};
+		2EBB756F1BE97BB900A3A82D = {
+			isa = PBXGroup;
+			children = (
+				2EBB75811BE97C5A00A3A82D /* layout */,
+				2EBB75821BE97C5A00A3A82D /* public */,
+				2E16F0501E4BD47A00F40B96 /* Acapella3.plist */,
+				2EBB758B1BE97C5A00A3A82D /* Makefile */,
+				2E57FCCF1E4D12450074C616 /* MusicNowPlayingTitlesView.xm */,
+				2EB874E21E4D5DE900DAD90C /* NEW */,
+				2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */,
+				2EF29A751C3C65BD001032FE /* SWAcapellaPrefs.xm */,
+				2E5E51811CC3F052004DB6FF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		2EBB75701BE97BB900A3A82D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+			};
+			buildConfigurationList = 2EBB75731BE97BB900A3A82D /* Build configuration list for PBXProject "Acapella3" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2EBB756F1BE97BB900A3A82D;
+			productRefGroup = 2E5E51811CC3F052004DB6FF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		2EBB75741BE97BB900A3A82D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		2EBB75751BE97BB900A3A82D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2EBB75731BE97BB900A3A82D /* Build configuration list for PBXProject "Acapella3" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2EBB75741BE97BB900A3A82D /* Debug */,
+				2EBB75751BE97BB900A3A82D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2EBB75701BE97BB900A3A82D /* Project object */;
+}
