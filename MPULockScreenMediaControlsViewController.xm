@@ -1,13 +1,13 @@
 //
-//  MPUControlCenterMediaControlsViewController.xm
+//  MPULockScreenMediaControlsViewController.xm
 //  Acapella3
 //
 //  Created by Pat Sluth on 2017-02-09.
 //
 //
 
-#import "MPUControlCenterMediaControlsViewController.h"
-#import "MPUControlCenterMediaControlsView.h"
+#import "MPULockScreenMediaControlsViewController.h"
+#import "MPULockScreenMediaControlsView.h"
 //#import "MPUTransportControlsView+SW.h"
 //#import "MPUMediaControlsTitlesView+SW.h"
 //#import "FuseUI/MPUSystemMediaControlsView.h"
@@ -43,12 +43,13 @@
 
 #pragma mark - MPUSystemMediaControlsViewController
 
-%hook MPUControlCenterMediaControlsViewController
+//%hook MPUControlCenterMediaControlsViewController
+%hook MPULockScreenMediaControlsViewController
 
 %new
-- (MPUControlCenterMediaControlsView *)mediaControlsView
+- (MPULockScreenMediaControlsView *)mediaControlsView
 {
-    return (MPUControlCenterMediaControlsView *)self.view;
+    return (MPULockScreenMediaControlsView *)self.view;
 }
 
 #pragma mark - Init
@@ -79,7 +80,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    %orig(animated);
+    %orig(animated);\
     
     
     
@@ -95,14 +96,9 @@
 		
         //if (self.acapellaPrefs.enabled) {
         
-        self.mediaControlsView.artworkView.clipsToBounds = YES;
-        
 			[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
                                                         referenceView:self.mediaControlsView
-                                                         viewsToClone:@[//self.mediaControlsView.artworkView,
-                                                                        self.mediaControlsView.titleLabel,
-                                                                        self.mediaControlsView.artistLabel,
-                                                                        self.mediaControlsView.albumLabel]]
+                                                         viewsToClone:@[self.mediaControlsView.titlesView]]
 						  forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
             
         //}
@@ -158,7 +154,7 @@
 %new
 - (NSString *)acapellaKeyPrefix
 {
-    return @"cc";
+    return @"ls";
 //    return @"ls";
 }
 

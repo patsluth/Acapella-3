@@ -1,11 +1,34 @@
 
 
-@interface MPULockScreenMediaControlsViewController : UIViewController
 
-//_longPressInteractionEventTimer --- @"MPWeakTimer"
-//_artworkView --- @"MPUNowPlayingArtworkView"
-//_notificationObservers --- @"NSArray"
-//_lockscreenDisabledForScreenTurnOff --- B
-//_delegate --- @"<MPULockScreenMediaControlsDelegate>"
+
+
+#import "MPUMediaRemoteViewController.h"
+
+#import "SWAcapellaDelegate.h"
+
+@class MPULockScreenMediaControlsView;
+
+
+
+
+
+@interface MPULockScreenMediaControlsViewController : MPUMediaRemoteViewController
 
 @end
+
+
+
+
+
+@interface MPULockScreenMediaControlsViewController(SW) <SWAcapellaDelegate>
+{
+}
+
+@property (weak, nonatomic, readonly) MPULockScreenMediaControlsView *mediaControlsView;
+
+@end
+
+
+
+

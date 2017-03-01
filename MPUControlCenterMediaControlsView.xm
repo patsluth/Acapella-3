@@ -53,6 +53,12 @@
     return MSHookIvar<UIView *>(self, "_artistAlbumConcatenatedLabel");
 }
 
+//%new
+//- (UIView *)transportControls
+//{
+//    return MSHookIvar<UIView *>(self, "_transportControls");
+//}
+
 %end
 
 

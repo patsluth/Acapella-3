@@ -53,9 +53,27 @@
 
 
 
-@interface MPButton : UIButton
 
-+ (id)easyTouchButtonWithType:(NSInteger)arg1;
+@interface MPRemoteCommand : NSObject
+
++ (id)sharedCommandCenter;
+
+@property (strong, nonatomic) NSArray *activeCommands;
+
+@property (strong, nonatomic) MPRemoteCommand/* MPSkipTrackCommand */ *nextTrackCommand;
+
+@end
+
+
+
+
+@interface MPRemoteCommandCenter : NSObject
+
++ (id)sharedCommandCenter;
+
+@property (strong, nonatomic) NSArray *activeCommands;
+
+@property (strong, nonatomic) MPRemoteCommand/* MPSkipTrackCommand */ *nextTrackCommand;
 
 @end
 
@@ -227,7 +245,7 @@
 //            
 ////            printstring = [NSString stringWithFormat:@"%@\n\n", printstring];
 //            //            [dict setObject:arr.copy forKey:NSStringFromClass(c)];
-//            
+//
 //            
 //        }
 //        free(classes);
@@ -450,10 +468,6 @@
     TRY
     
     //[self transportControlsView:self.transportControlsView tapOnControlType:1];
-    
-    UIButton *button = [%c(MPButton) easyTouchButtonWithType:1];
-    [button sendActionsForControlEvents:UIControlEventTouchUpInside];
-    
     CATCH_LOG
     ENDTRY
 }
@@ -463,10 +477,53 @@
 {
     TRY
     
-    //[self transportControlsView:self.transportControlsView tapOnControlType:4];
+    NSObject *x = MSHookIvar<NSObject *>(self, "transportControlsController");
+    NSLog(@"PAT PAT APT PAT PAT %@", x);
     
-    UIButton *button = [%c(MPButton) easyTouchButtonWithType:4];
-    [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+    
+    Class c = x.class;
+    
+    NSLog(@"\n%@",  NSStringFromClass(c));
+    
+    //            printstring = [NSString stringWithFormat:@"%@\n%@\n", printstring, NSStringFromClass(c)];
+    
+    
+    unsigned int varCount;
+    
+    Ivar *vars = class_copyIvarList(c, &varCount);
+    
+    for (int i = 0; i < varCount; i++) {
+        Ivar var = vars[i];
+        
+        const char* name = ivar_getName(var);
+        const char* typeEncoding = ivar_getTypeEncoding(var);
+        
+        NSLog(@"\n\t\t\t%s --- %s", name, typeEncoding);
+        
+        //                printstring = [NSString stringWithFormat:@"%@\n%s --- %s\n", printstring, name, typeEncoding];
+        
+        //                [arr addObject:[NSString stringWithFormat:@"%s %s", ivar_getName(var), ivar_getTypeEncoding(var)]];
+    }
+    
+    free(vars);
+    
+    
+    //            printstring = [NSString stringWithFormat:@"%@\n\n", printstring];
+    //            [dict setObject:arr.copy forKey:NSStringFromClass(c)];
+
+    
+    
+    
+    
+    
+    
+    
+    
+    //[self transportControlsView:self.transportControlsView tapOnControlType:4];
     
     CATCH_LOG
     ENDTRY

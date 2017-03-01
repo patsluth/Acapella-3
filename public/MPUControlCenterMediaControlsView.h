@@ -3,25 +3,22 @@
 
 
 
-@interface MPUControlCenterMediaControlsView : UIView
+#import "MPUMediaRemoteControlsView.h"
+
+
+
+
+
+@interface MPUControlCenterMediaControlsView : MPUMediaRemoteControlsView
 {
-//    _titleLabel --- @"MPUControlCenterMetadataView"
-//    _artistLabel --- @"MPUControlCenterMetadataView"
-//    _albumLabel --- @"MPUControlCenterMetadataView"
-//    _artistAlbumConcatenatedLabel --- @"MPUControlCenterMetadataView"
 }
     
 @property (strong, nonatomic) UIView /* MPUNowPlayingArtworkView */ *artworkView;
-
-@property (strong, nonatomic) UIView *timeView;
 
 @property (strong, nonatomic) UIView *titleLabel;
 @property (strong, nonatomic) UIView *artistLabel;
 @property (strong, nonatomic) UIView *albumLabel;
 @property (strong, nonatomic) UIView *artistAlbumConcatenatedLabel;
-
-@property (strong, nonatomic) UIView *transportControls;
-@property (strong, nonatomic) UIView *volumeView;
 
 
 /*
