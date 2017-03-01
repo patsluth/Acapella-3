@@ -10,6 +10,9 @@
 
 @interface SWAcapellaCloneContainer : UIView
 
+- (id)initWithViewsToClone:(NSArray<UIView *> *)viewsToClone;
+
+@property (strong, nonatomic, readonly) NSArray<UIView *> *viewsToClone;
 @property (nonatomic) CGPoint velocity;
 
 @end

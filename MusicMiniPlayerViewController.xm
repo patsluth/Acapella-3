@@ -156,7 +156,7 @@
             
             [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
                                                         referenceView:self.view
-                                                         viewsToClone:@[self.nowPlayingItemTitleLabel]]
+                                                         viewsToClone:@[self.artworkView, self.nowPlayingItemTitleLabel]]
                           forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
             
         }
@@ -269,7 +269,7 @@
     
 //    if (self.acapella) {
 //        
-//        [self.view bringSubviewToFront:self.acapella.cloneContainer];
+//        [self.acapella.cloneContainer setNeedsDisplay];
 //        
 //    }
     
@@ -477,44 +477,56 @@
 {
     TRY
     
-    NSObject *x = MSHookIvar<NSObject *>(self, "transportControlsController");
-    NSLog(@"PAT PAT APT PAT PAT %@", x);
+//    
+//    
+//    UIView *snapshotView = [self.nowPlayingItemTitleLabel snapshotViewAfterScreenUpdates:YES];
+//    [self.view addSubview:snapshotView];
+//    
     
     
     
     
     
     
-    Class c = x.class;
-    
-    NSLog(@"\n%@",  NSStringFromClass(c));
-    
-    //            printstring = [NSString stringWithFormat:@"%@\n%@\n", printstring, NSStringFromClass(c)];
     
     
-    unsigned int varCount;
-    
-    Ivar *vars = class_copyIvarList(c, &varCount);
-    
-    for (int i = 0; i < varCount; i++) {
-        Ivar var = vars[i];
-        
-        const char* name = ivar_getName(var);
-        const char* typeEncoding = ivar_getTypeEncoding(var);
-        
-        NSLog(@"\n\t\t\t%s --- %s", name, typeEncoding);
-        
-        //                printstring = [NSString stringWithFormat:@"%@\n%s --- %s\n", printstring, name, typeEncoding];
-        
-        //                [arr addObject:[NSString stringWithFormat:@"%s %s", ivar_getName(var), ivar_getTypeEncoding(var)]];
-    }
-    
-    free(vars);
     
     
-    //            printstring = [NSString stringWithFormat:@"%@\n\n", printstring];
-    //            [dict setObject:arr.copy forKey:NSStringFromClass(c)];
-
+    
+    
+    
+    
+    
+    
+//    NSObject *x = MSHookIvar<NSObject *>(self, "transportControlsController");
+//    NSLog(@"PAT PAT APT PAT PAT %@", x);
+//    
+//    
+//    
+//    
+//    
+//    
+//    Class c = x.class;
+//    
+//    NSLog(@"\n%@",  NSStringFromClass(c));
+//    
+//    //            printstring = [NSString stringWithFormat:@"%@\n%@\n", printstring, NSStringFromClass(c)];
+//    
+//    
+//    unsigned int varCount;
+//    
+//    Ivar *vars = class_copyIvarList(c, &varCount);
+//    
+//    for (int i = 0; i < varCount; i++) {
+//        Ivar var = vars[i];
+//        
+//        const char* name = ivar_getName(var);
+//        const char* typeEncoding = ivar_getTypeEncoding(var);
+//        
+//        NSLog(@"\n\t\t\t%s --- %s", name, typeEncoding);
+//    }
+//    
+//    free(vars);
     
     
     

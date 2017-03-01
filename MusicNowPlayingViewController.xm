@@ -228,8 +228,8 @@
         if (self.acapellaPrefs.enabled) {
             
 			[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                        referenceView:self.titlesStackView.superview
-                                                         viewsToClone:@[self.titlesStackView]]
+                                                        referenceView:self.titlesStackView
+                                                         viewsToClone:self.titlesStackView.subviews]
                           forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
             
         }
@@ -255,9 +255,9 @@
    
     
     
-    
-    BOOL progressVisible = YES;
-    BOOL volumeVisible = YES;
+//    
+//    BOOL progressVisible = YES;
+//    BOOL volumeVisible = YES;
     
 //    if (self.acapellaPrefs && self.acapellaPrefs.enabled) {
 //        progressVisible = self.acapellaPrefs.progressslider;
@@ -268,8 +268,8 @@
 //	}
 		
     // Show/Hide sliders
-    self.timeControl.hidden = YES;//!progressVisible;
-    self.volumeSlider.hidden = YES;//!volumeVisible;
+//    self.timeControl.hidden = YES;//!progressVisible;
+//    self.volumeSlider.hidden = YES;//!volumeVisible;
     
     
     
@@ -554,7 +554,12 @@
 {
     TRY
     
-    [self transportControlsView:self.transportControls tapOnControlType:4];
+//    for (UIView *subview in self.titlesStackView.subviews) {
+//        UIView *snapshotView = [subview snapshotViewAfterScreenUpdates:YES];
+//        [self.titlesStackView.superview addSubview:snapshotView];
+//    }
+    
+//    [self transportControlsView:self.transportControls tapOnControlType:4];
     
     CATCH_LOG
     ENDTRY

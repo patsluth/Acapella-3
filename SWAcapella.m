@@ -112,12 +112,21 @@
 		
 		[[NSNotificationCenter defaultCenter] removeObserver:acapella];
 		
-		for (SWAcapellaCloneView *clonedView in acapella.clonedViews) {
-            clonedView.viewToClone.userInteractionEnabled = YES;
-            clonedView.viewToClone.layer.opacity = 1.0;
-            
-            [clonedView removeFromSuperview];
+//		for (SWAcapellaCloneView *clonedView in acapella.clonedViews) {
+//            clonedView.viewToClone.userInteractionEnabled = YES;
+//            clonedView.viewToClone.layer.opacity = 1.0;
+//            
+//            [clonedView removeFromSuperview];
+//        }
+        for (UIView *viewToClone in acapella.cloneContainer.viewsToClone) {
+            viewToClone.userInteractionEnabled = YES;
+            viewToClone.layer.opacity = 1.0;
         }
+        for (UIView *subview in acapella.cloneContainer.subviews) {
+            [subview removeFromSuperview];
+        }
+        [acapella.cloneContainer removeFromSuperview];
+        acapella.cloneContainer = nil;
         acapella.clonedViews = nil;
 		
         [acapella.animator removeAllBehaviors];
@@ -210,19 +219,25 @@
         //	self.cloneContainer.tag = SWAcapellaTitlesStateNone;
         //	[self.referenceView addSubview:self.cloneContainer];
         
-        self.cloneContainer = [[SWAcapellaCloneContainer alloc] init];
+        self.cloneContainer = [[SWAcapellaCloneContainer alloc] initWithViewsToClone:viewsToClone];
         self.clonedViews = [NSArray new];
         
         self.cloneContainer.frame = self.referenceView.bounds;
         self.cloneContainer.tag = SWAcapellaTitlesStateNone;
         
-        for (UIView *viewToClone in viewsToClone) {
-            SWAcapellaCloneView *cloneView = [[SWAcapellaCloneView alloc] init];
-            cloneView.frame = viewToClone.frame;
-            self.clonedViews = [self.clonedViews arrayByAddingObject:cloneView];
-            [self.cloneContainer addSubview:cloneView];
-            cloneView.viewToClone = viewToClone;
-        }
+//        for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
+//            
+//            UIView *snapshotView = [viewToClone snapshotViewAfterScreenUpdates:YES];
+//            snapshotView.frame = viewToClone.frame;
+//            [self.cloneContainer addSubview:snapshotView];
+//            
+//            
+////            SWAcapellaCloneView *cloneView = [[SWAcapellaCloneView alloc] init];
+////            cloneView.frame = viewToClone.frame;
+////            self.clonedViews = [self.clonedViews arrayByAddingObject:cloneView];
+////            [self.cloneContainer addSubview:cloneView];
+////            cloneView.viewToClone = viewToClone;
+//        }
         
         [self.referenceView addSubview:self.cloneContainer];
         
@@ -347,9 +362,19 @@
 		self.cloneContainer.tag = SWAcapellaTitlesStatePanning;
 		[self.cloneContainer.layer removeAllAnimations];
 		self.cloneContainer.transform = CGAffineTransformScale(self.cloneContainer.transform, 1.0, 1.0);
-        for (SWAcapellaCloneView *clonedView in self.clonedViews) {
-            clonedView.viewToClone.layer.opacity = 0.0;
-        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 		[self.cloneContainer setNeedsDisplay];
 		self.cloneContainer.velocity = CGPointZero;
 		
@@ -463,8 +488,8 @@
 		
 		self.cloneContainer.tag = SWAcapellaTitlesStateWaitingToFinishWrapAround;
 //		self.titles.layer.opacity = 0.0;
-        for (SWAcapellaCloneView *clonedView in self.clonedViews) {
-            clonedView.viewToClone.layer.opacity = 0.0;
+        for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
+            viewToClone.layer.opacity = 0.0;
         }
 		
 		SEL sel = nil;
@@ -651,8 +676,11 @@
 - (void)setTitlesCloneVisible:(BOOL)visible
 {
 	self.cloneContainer.hidden = !visible;
-    for (SWAcapellaCloneView *clonedView in self.clonedViews) {
-        clonedView.viewToClone.layer.opacity = self.cloneContainer.hidden ? 1.0 : 0.0;
+//    for (SWAcapellaCloneView *clonedView in self.clonedViews) {
+//        clonedView.viewToClone.layer.opacity = self.cloneContainer.hidden ? 1.0 : 0.0;
+//    }
+    for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
+        viewToClone.layer.opacity = self.cloneContainer.hidden ? 1.0 : 0.0;
     }
 }
 

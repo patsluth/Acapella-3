@@ -41,6 +41,19 @@
 
 
 
+
+
+@interface UIView(SW)
+
+- (UIView *)sb_generateSnapshotViewAsynchronouslyOnQueue:(id)queue completionHandler:(id)completionHandler;
+
+@end
+
+
+
+
+
+
 #pragma mark - MPUSystemMediaControlsViewController
 
 %hook MPUControlCenterMediaControlsViewController
@@ -95,7 +108,7 @@
 		
         //if (self.acapellaPrefs.enabled) {
         
-        self.mediaControlsView.artworkView.clipsToBounds = YES;
+//        self.mediaControlsView.artworkView.clipsToBounds = YES;
         
 			[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
                                                         referenceView:self.mediaControlsView
@@ -263,6 +276,14 @@
 - (void)action_nexttrack:(id)arg1
 {
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:4];
+    
+    
+//    [self.mediaControlsView.titleLabel sb_generateSnapshotViewAsynchronouslyOnQueue:dispatch_get_main_queue()
+//                                                                  completionHandler:^(UIView *snapshotView) {
+//                                                                      [self.mediaControlsView addSubview:snapshotView];
+//                                                                  }];
+
+    
     
 //    MPUTransportControlMediaRemoteController *t = MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER;
 //    

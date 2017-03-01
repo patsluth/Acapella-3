@@ -42,9 +42,9 @@
 				2E491DB11E65075800EBD841 /* SWAcapellaCloneView.m */,
 				2ECE0BF91E6744CB003EE535 /* SBLockScreenManager.xm */,
 				2E57FCD31E4D26BA0074C616 /* MusicMiniPlayerViewController.xm */,
-				2ECE0BF71E673D87003EE535 /* MPULockScreenMediaControlsViewController.xm */,
 				2E57FCD11E4D12AA0074C616 /* MusicNowPlayingViewController.xm */,
 				2ECE0BF81E674174003EE535 /* MPULockScreenMediaControlsView.xm */,
+				2ECE0BF71E673D87003EE535 /* MPULockScreenMediaControlsViewController.xm */,
 				2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */,
 				2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */,
 			);

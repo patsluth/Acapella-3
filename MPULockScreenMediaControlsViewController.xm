@@ -38,6 +38,11 @@
                                                             *>(owner, "_transportControlMediaRemoteController")
 
 
+@interface UIView(SW)
+
+- (UIView *)sb_generateSnapshotViewAsynchronouslyOnQueue:(id)queue completionHandler:(id)completionHandler;
+
+@end
 
 
 
@@ -80,7 +85,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    %orig(animated);\
+    %orig(animated);
     
     
     
@@ -259,6 +264,20 @@
 - (void)action_nexttrack:(id)arg1
 {
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:4];
+    
+    
+//    [self.mediaControlsView.titlesView sb_generateSnapshotViewAsynchronouslyOnQueue:dispatch_get_main_queue()
+//                                                                  completionHandler:^(UIView *snapshotView) {
+//                                                                      [self.mediaControlsView addSubview:snapshotView];
+//                                                                  }];
+//    
+//    
+    
+    
+    
+    
+    
+    
     
 //    MPUTransportControlMediaRemoteController *t = MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER;
 //    
