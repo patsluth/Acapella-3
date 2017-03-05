@@ -1,12 +1,14 @@
 //
 //  SWAcapellaCloneContainer.m
-//  testtest
+//  SWAcapella3
 //
 //  Created by Pat Sluth on 2017-02-27.
 //  Copyright © 2017 patsluth. All rights reserved.
 //
 
 #import "SWAcapellaCloneContainer.h"
+
+#import <objc/runtime.h>
 
 
 
@@ -18,17 +20,13 @@
 
 @end
 
-@interface UIView(SW)
-
-- (UIView *)sb_generateSnapshotViewAsynchronouslyOnQueue:(id)queue completionHandler:(id)completionHandler;
-
-@end
-
 
 
 
 
 @implementation SWAcapellaCloneContainer
+
+#pragma mark - Init
 
 - (id)initWithViewsToClone:(NSArray<UIView *> *)viewsToClone
 {
@@ -37,6 +35,7 @@
         self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.userInteractionEnabled = NO;
+        self.clipsToBounds = YES;
         
         self.viewsToClone = viewsToClone;
     }
@@ -44,55 +43,111 @@
     return self;
 }
 
-- (void)setHidden:(BOOL)hidden
+- (void)setTag:(NSInteger)tag
 {
-    [super setHidden:hidden];
+    [super setTag:tag];
     
-    [self setNeedsDisplay];
+    //    [self refreshClones];
 }
 
-- (void)setNeedsDisplay
+- (void)refreshClones
 {
-    [super setNeedsDisplay];
-    
-    for (UIView *subview in self.subviews) {
-//        [subview setNeedsDisplay];
-        [subview removeFromSuperview];
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(refreshClones) withObject:nil waitUntilDone:NO];
+        return;
     }
     
-    for (UIView *viewToClone in self.viewsToClone) {
+    
+    if (self.tag == SWAcapellaCloneContainerStateNone) {
         
-        CGRect viewToCloneFrame = viewToClone.frame;
-        viewToClone.frame = CGRectOffset(viewToCloneFrame, 10000, 10000);
-        viewToClone.layer.opacity = 1.0;
-        
-        if ([viewToClone respondsToSelector:@selector(sb_generateSnapshotViewAsynchronouslyOnQueue:completionHandler:)]) {
-            
-            [viewToClone sb_generateSnapshotViewAsynchronouslyOnQueue:dispatch_get_main_queue()
-                                                    completionHandler:^(UIView *snapshotView) {
-                                                        snapshotView.frame = viewToCloneFrame;
-                                                        [self addSubview:snapshotView];
-                                                        viewToClone.layer.opacity = 0.0;
-                                                        viewToClone.frame = viewToCloneFrame;
-                                                    }];
-            
-        } else {
-            
-            UIView *snapshotView = [viewToClone snapshotViewAfterScreenUpdates:YES];
-            snapshotView.frame = viewToCloneFrame;
-            [self addSubview:snapshotView];
-            viewToClone.layer.opacity = 0.0;
-            viewToClone.frame = viewToCloneFrame;
-            
+        for (UIView *viewToClone in self.viewsToClone) {
+            if (viewToClone.superview == self) {
+                
+                // Add view back to original subview
+                CGRect viewToCloneFrame = viewToClone.frame;
+                [self.superview addSubview:viewToClone];
+                viewToClone.frame = viewToCloneFrame;
+                
+                // Remove our translated constraints and activate previously deactivated constraints
+                NSArray<NSLayoutConstraint *> *constraintsToActivate = objc_getAssociatedObject(viewToClone, @selector(_constraintsToDeactivate));
+                NSMutableArray<NSLayoutConstraint *> *constraintsToDeactivate = [NSMutableArray new];
+                for (NSLayoutConstraint *constraint in self.constraints) {
+                    if (constraint.firstItem == viewToClone) {
+                        [constraintsToDeactivate addObject:constraint];
+                    }
+                }
+                [NSLayoutConstraint activateConstraints:constraintsToActivate.copy];
+                [NSLayoutConstraint deactivateConstraints:constraintsToDeactivate.copy];
+                
+                objc_setAssociatedObject(viewToClone, @selector(layoutSubviews), NULL, OBJC_ASSOCIATION_RETAIN);
+            }
         }
         
-        
-        
-        
-        
-        
-        
+        return;
     }
+    
+    
+    
+    for (UIView *viewToClone in self.viewsToClone) {
+        if (viewToClone.superview != self) {
+            
+            // Add view to self
+            CGRect viewToCloneFrame = viewToClone.frame;
+            [self addSubview:viewToClone];
+            viewToClone.frame = viewToCloneFrame;
+            
+            // Deactivate constraints affecting viewToClone
+            NSMutableArray<NSLayoutConstraint *> *constraintsToDeactivate = [NSMutableArray new];
+            for (NSLayoutConstraint *constraint in self.superview.constraints) {
+                if (constraint.firstItem == viewToClone) {
+                    [constraintsToDeactivate addObject:constraint];
+                }
+            }
+            // Save deactivated constraints so we can re-activate later on
+            objc_setAssociatedObject(viewToClone, @selector(_constraintsToDeactivate), constraintsToDeactivate.copy, OBJC_ASSOCIATION_RETAIN);
+            [NSLayoutConstraint deactivateConstraints:constraintsToDeactivate.copy];
+            
+            
+            // Translate deactivated constraints to use self
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+                                                             attribute:NSLayoutAttributeLeft
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self
+                                                             attribute:NSLayoutAttributeLeft
+                                                            multiplier:1.0
+                                                              constant:CGRectGetMinX(viewToCloneFrame)]];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+                                                             attribute:NSLayoutAttributeRight
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self
+                                                             attribute:NSLayoutAttributeLeft
+                                                            multiplier:1.0
+                                                              constant:CGRectGetMaxX(viewToCloneFrame)]];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+                                                             attribute:NSLayoutAttributeTop
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self
+                                                             attribute:NSLayoutAttributeTop
+                                                            multiplier:1.0
+                                                              constant:CGRectGetMinY(viewToCloneFrame)]];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+                                                             attribute:NSLayoutAttributeBottom
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self
+                                                             attribute:NSLayoutAttributeTop
+                                                            multiplier:1.0
+                                                              constant:CGRectGetMaxY(viewToCloneFrame)]];
+            
+        }
+    }
+}
+
+- (void)_constraintsToDeactivate
+{
 }
 
 @end
+
+
+
+

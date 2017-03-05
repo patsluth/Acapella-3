@@ -8,11 +8,30 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
+
+typedef NS_ENUM(NSInteger, SWAcapellaCloneContainerState) {
+    SWAcapellaCloneContainerStateNone,
+    SWAcapellaCloneContainerStatePanning,
+    SWAcapellaCloneContainerStateWaitingToFinishWrapAround,
+    SWAcapellaCloneContainerStateWrappingAround,
+    SWAcapellaCloneContainerStateSnappingToCenter
+};
+
+
+
+
+
 @interface SWAcapellaCloneContainer : UIView
 
 - (id)initWithViewsToClone:(NSArray<UIView *> *)viewsToClone;
 
 @property (strong, nonatomic, readonly) NSArray<UIView *> *viewsToClone;
+@property (strong, nonatomic) NSLayoutConstraint *centerXConstraint;
 @property (nonatomic) CGPoint velocity;
+
+- (void)refreshClones;
 
 @end

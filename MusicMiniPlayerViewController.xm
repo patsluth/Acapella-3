@@ -18,10 +18,11 @@
 
 
 #import "MusicMiniPlayerViewController+SW.h"
+#import "_TtC5Music19ApplicationDelegate+SW.h"
+#import "MediaPlayer+SW.h"
 #import "MPUTransportControlsView+SW.h"
 
 #import "SWAcapella.h"
-#import "SWAcapellaCloneContainer.h"
 #import "SWAcapellaPrefs.h"
 //#import "SWAcapellaMediaItemPreviewViewController.h"
 
@@ -29,9 +30,6 @@
 
 #import "MPUTransportControlMediaRemoteController.h"
 #import "MusicTabBarController.h"
-
-#define MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER MSHookIvar<MPUTransportControlMediaRemoteController \
-                                                            *>(self, "_transportControlMediaRemoteController")
 
 
 
@@ -49,34 +47,6 @@
 @property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
 
 @end
-
-
-
-
-
-@interface MPRemoteCommand : NSObject
-
-+ (id)sharedCommandCenter;
-
-@property (strong, nonatomic) NSArray *activeCommands;
-
-@property (strong, nonatomic) MPRemoteCommand/* MPSkipTrackCommand */ *nextTrackCommand;
-
-@end
-
-
-
-
-@interface MPRemoteCommandCenter : NSObject
-
-+ (id)sharedCommandCenter;
-
-@property (strong, nonatomic) NSArray *activeCommands;
-
-@property (strong, nonatomic) MPRemoteCommand/* MPSkipTrackCommand */ *nextTrackCommand;
-
-@end
-
 
 
 
@@ -144,7 +114,7 @@
     
     
 //    [self.miniPlayerButton removeFromSuperview];
-    self.miniPlayerButton.enabled = NO;
+//
     
     
     
@@ -154,14 +124,16 @@
         
         if (self.acapellaPrefs.enabled) {
             
-            [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                        referenceView:self.view
-                                                         viewsToClone:@[self.artworkView, self.nowPlayingItemTitleLabel]]
-                          forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
+//            [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
+//                                                        referenceView:self.view
+//                                                         viewsToClone:@[self.nowPlayingItemTitleLabel]]
+//                          forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
             
         }
         
     }
+    
+    self.miniPlayerButton.enabled = (!self.acapella);
     
     if (self.acapella) {
         
@@ -467,7 +439,14 @@
 {
     TRY
     
-    //[self transportControlsView:self.transportControlsView tapOnControlType:1];
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.previousTrackCommand newCommandEvent];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        [self.acapella.cloneContainer refreshClones];
+        [self.acapella finishWrapAround];
+    }];
+    
     CATCH_LOG
     ENDTRY
 }
@@ -477,65 +456,13 @@
 {
     TRY
     
-//    
-//    
-//    UIView *snapshotView = [self.nowPlayingItemTitleLabel snapshotViewAfterScreenUpdates:YES];
-//    [self.view addSubview:snapshotView];
-//    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    NSObject *x = MSHookIvar<NSObject *>(self, "transportControlsController");
-//    NSLog(@"PAT PAT APT PAT PAT %@", x);
-//    
-//    
-//    
-//    
-//    
-//    
-//    Class c = x.class;
-//    
-//    NSLog(@"\n%@",  NSStringFromClass(c));
-//    
-//    //            printstring = [NSString stringWithFormat:@"%@\n%@\n", printstring, NSStringFromClass(c)];
-//    
-//    
-//    unsigned int varCount;
-//    
-//    Ivar *vars = class_copyIvarList(c, &varCount);
-//    
-//    for (int i = 0; i < varCount; i++) {
-//        Ivar var = vars[i];
-//        
-//        const char* name = ivar_getName(var);
-//        const char* typeEncoding = ivar_getTypeEncoding(var);
-//        
-//        NSLog(@"\n\t\t\t%s --- %s", name, typeEncoding);
-//    }
-//    
-//    free(vars);
-    
-    
-    
-    
-    
-    
-    
-    
-    //[self transportControlsView:self.transportControlsView tapOnControlType:4];
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        [self.acapella.cloneContainer refreshClones];
+        [self.acapella finishWrapAround];
+    }];
     
     CATCH_LOG
     ENDTRY
@@ -546,7 +473,12 @@
 {
     TRY
     
-    [self transportControlsView:self.transportControlsView tapOnControlType:2];
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.skipBackwardCommand newCommandEventWithInterval:20.0];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
     
     CATCH_LOG
     ENDTRY
@@ -557,7 +489,12 @@
 {
     TRY
     
-    [self transportControlsView:self.transportControlsView tapOnControlType:5];
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.skipForwardCommand newCommandEventWithInterval:20.0];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
     
     CATCH_LOG
     ENDTRY
@@ -568,15 +505,15 @@
 {
     TRY
     
-    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-    
-    [self transportControlsView:self.transportControlsView longPressBeginOnControlType:1];
-    
-    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-    
-    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
-        [self transportControlsView:self.transportControlsView longPressEndOnControlType:1];
-    }
+//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+//    
+//    [self transportControlsView:self.transportControlsView longPressBeginOnControlType:1];
+//    
+//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+//    
+//    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
+//        [self transportControlsView:self.transportControlsView longPressEndOnControlType:1];
+//    }
     
     CATCH_LOG
     ENDTRY
@@ -587,15 +524,15 @@
 {
     TRY
     
-    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-    
-    [self transportControlsView:self.transportControlsView longPressBeginOnControlType:4];
-    
-    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-    
-    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
-        [self transportControlsView:self.transportControlsView longPressEndOnControlType:4];
-    }
+//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+//    
+//    [self transportControlsView:self.transportControlsView longPressBeginOnControlType:4];
+//    
+//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+//    
+//    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
+//        [self transportControlsView:self.transportControlsView longPressEndOnControlType:4];
+//    }
     
     CATCH_LOG
     ENDTRY
@@ -604,22 +541,36 @@
 %new
 - (void)action_playpause:(id)arg1
 {
-    TRY
-    
-    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-    
-    [self transportControlsView:self.transportControlsView longPressEndOnControlType:1];
-    [self transportControlsView:self.transportControlsView longPressEndOnControlType:4];
-    
-    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-    
-    //if the 2 commands are different, then something happened when we told the transportControlView to
-    //stop seeking, meaning we were seeking
-    if (originalLPCommand == newLPCommand) {
-        [self transportControlsView:self.transportControlsView tapOnControlType:3];
-    }
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.togglePlayPauseCommand newCommandEvent];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
     
     [self.acapella pulse];
+    
+    
+    
+    
+    
+    
+    TRY
+    
+//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+//    
+//    [self transportControlsView:self.transportControlsView longPressEndOnControlType:1];
+//    [self transportControlsView:self.transportControlsView longPressEndOnControlType:4];
+//    
+//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+//    
+//    //if the 2 commands are different, then something happened when we told the transportControlView to
+//    //stop seeking, meaning we were seeking
+//    if (originalLPCommand == newLPCommand) {
+//        [self transportControlsView:self.transportControlsView tapOnControlType:3];
+//    }
+//    
+//    [self.acapella pulse];
     
     CATCH_LOG
     ENDTRY

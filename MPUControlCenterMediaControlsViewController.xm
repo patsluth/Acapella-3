@@ -54,6 +54,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 #pragma mark - MPUSystemMediaControlsViewController
 
 %hook MPUControlCenterMediaControlsViewController
@@ -112,7 +121,7 @@
         
 			[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
                                                         referenceView:self.mediaControlsView
-                                                         viewsToClone:@[//self.mediaControlsView.artworkView,
+                                                         viewsToClone:@[self.mediaControlsView.artworkView,
                                                                         self.mediaControlsView.titleLabel,
                                                                         self.mediaControlsView.artistLabel,
                                                                         self.mediaControlsView.albumLabel]]
@@ -276,6 +285,27 @@
 - (void)action_nexttrack:(id)arg1
 {
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:4];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
 //    [self.mediaControlsView.titleLabel sb_generateSnapshotViewAsynchronouslyOnQueue:dispatch_get_main_queue()

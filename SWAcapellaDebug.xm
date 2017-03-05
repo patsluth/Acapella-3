@@ -8,26 +8,15 @@
 
 #import "libsw/libSluthware/libSluthware.h"
 
-#import "UIKit/UIPreviewForceInteractionProgress.h"
 
 
-@interface MPUNowPlayingTitlesView : UIView
 
-@end
+@interface SBDashBoardScrollGestureController
 
-
-@interface MPAVQueueCoordinator : NSObject
-
-- (id)init;
-- (id)initWithPlayer:(id)arg1 dataSource:(id)arg2;
-
-@end
-
-@interface MPUNowPlayingController : UIViewController
-
-@end
-
-@interface MusicTableView : UIView
+- (_Bool)gestureRecognizerShouldBegin:(id)arg1;
+- (_Bool)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2;
+- (_Bool)gestureRecognizer:(id)arg1 shouldRequireFailureOfGestureRecognizer:(id)arg2;
+- (_Bool)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2;
 
 @end
 
@@ -38,54 +27,99 @@
 
 
 
-%hook MPUNowPlayingController
+%hook SBDashBoardScrollGestureController
 
-- (void)viewDidAppear:(bool)arg1
+- (id)init
 {
-    %orig(arg1);
+    self = %orig();
     
-    self.view.alpha = 0.25;
+    NSLog(@"SBDashBoardScrollGestureController %@", self);
+    
+    return self;
 }
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)arg1 shouldReceiveTouch:(UITouch *)arg2
+{
+    LOG_METHOD_START
+    NSLog(@"arg1:[%@]", arg1);
+    LOG_METHOD_END
+    
+    if ([arg2.view isKindOfClass:%c(MPUMediaRemoteViewController)]) {
+        return NO;
+    }
+    
+    return %orig(arg1, arg2);
+}
+
+- (BOOL)presentingController:(id)arg1 gestureRecognizerShouldBegin:(id)arg2
+{
+    LOG_METHOD_START
+    NSLog(@"arg1:[%@]", arg1);
+    NSLog(@"arg2:[%@]", arg2);
+    LOG_METHOD_END
+    
+    //    if ([arg3.view isKindOfClass:%c(MPUMediaRemoteViewController)]) {
+    //        return NO;
+    //    }
+    
+    return %orig(arg1, arg2);
+}
+
+- (_Bool)presentingController:(id)arg1 gestureRecognizer:(id)arg2 shouldReceiveTouch:(id)arg3
+{
+    LOG_METHOD_START
+    NSLog(@"arg1:[%@]", arg1);
+    NSLog(@"arg2:[%@]", arg2);
+    LOG_METHOD_END
+    
+    return %orig(arg1, arg2, arg3);
+}
+
+- (_Bool)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2
+{
+    LOG_METHOD_START
+    NSLog(@"arg1:[%@]", arg1);
+    NSLog(@"arg2:[%@]", arg2);
+    LOG_METHOD_END
+    
+    return %orig(arg1, arg2);
+}
+- (_Bool)gestureRecognizer:(id)arg1 shouldRequireFailureOfGestureRecognizer:(id)arg2
+{
+    LOG_METHOD_START
+    NSLog(@"arg1:[%@]", arg1);
+    NSLog(@"arg2:[%@]", arg2);
+    LOG_METHOD_END
+    
+    return %orig(arg1, arg2);
+}
+- (_Bool)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2
+{
+    LOG_METHOD_START
+    NSLog(@"arg1:[%@]", arg1);
+    NSLog(@"arg2:[%@]", arg2);
+    LOG_METHOD_END
+    
+    return %orig(arg1, arg2);
+}
+
+//- (BOOL)presentingController:(id)arg1 gestureRecognizer:(UIGestureRecognizer *)arg2 shouldReceiveTouch:(UITouch *)arg3
+//{
+//    LOG_METHOD_START
+//    NSLog(@"arg1:[%@]", arg1);
+//    NSLog(@"arg2:[%@]", arg2);
+//    LOG_METHOD_END
+//
+//    
+//    if ([arg3.view isKindOfClass:%c(MPUMediaRemoteViewController)]) {
+//        return NO;
+//    }
+//    
+//    return %orig(arg1, arg2, arg3);
+//}
 
 %end
 
-//MPUSystemMediaControlsView
-
-@interface MPULockScreenMediaControlsView : UIView
-
-@end
-
-%hook MPULockScreenMediaControlsView
-
-- (void)layoutSubviews
-{
-    %orig();
-    
-    NSLog(@"MPULockScreenMediaControlsView");
-    
-}
-
-%end
-
-
-
-@interface MPUControlCenterMediaControlsView : UIView
-
-@end
-
-%hook MPUControlCenterMediaControlsView
-
-- (void)layoutSubviews
-{
-    %orig();
-    
-    NSLog(@"MPUControlCenterMediaControlsView");
-    
-    
-    
-}
-
-%end
 
 
 
@@ -94,23 +128,6 @@
 
 
 
-
-
-
-
-
-@interface _TtC5Music24NowPlayingViewController : UIViewController
-
-@end
-
-%hook _TtC5Music24NowPlayingViewController
-
-- (void)viewDidLayoutSubviews
-{
-    %orig();
-}
-
-%end
 
 
 
@@ -158,7 +175,7 @@
 //	NSLog(@"arg4:[%@]", @(arg4));
 //	NSLog(@"retunVal:[%@]", orig);
 //	LOG_METHOD_END
-//	
+//
 //	return orig;
 //}
 //

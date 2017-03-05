@@ -11,23 +11,9 @@
 
 #import <objc/runtime.h>
 
+#import "SWAcapellaCloneContainer.h"
 #import "SWAcapellaCloneView.h"
 #import "SWAcapellaDelegate.h"
-
-@class SWAcapellaCloneContainer;
-
-
-
-
-
-typedef NS_ENUM(NSInteger, SWAcapellaTitlesState) {
-	SWAcapellaTitlesStateNone,
-	SWAcapellaTitlesStatePanning,
-	SWAcapellaTitlesStateWaitingToFinishWrapAround,
-	SWAcapellaTitlesStateWrappingAround,
-	SWAcapellaTitlesStateSnappingToCenter,
-	SWAcapellaTitlesStateForceScaling
-};
 
 
 
@@ -62,8 +48,6 @@ typedef NS_ENUM(NSInteger, SWAcapellaTitlesState) {
  *  Perform animation that 'pulses' the view. (Increase then decrease in size, like a hearbeat)
  */
 - (void)pulse;
-
-- (void)setTitlesCloneVisible:(BOOL)visible;
 
 @end
 

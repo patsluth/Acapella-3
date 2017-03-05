@@ -27,7 +27,18 @@ TARGET = iphone:clang:latest:7.0
 TWEAK_NAME = Acapella3
 
 Acapella3_CFLAGS = -fobjc-arc -Wno-arc-performSelector-leaks
-Acapella3_FILES = MusicNowPlayingTitlesView.xm MusicNowPlayingViewController.xm MPUControlCenterMediaControlsViewController.xm MPULockScreenMediaControlsView.xm MPULockScreenMediaControlsViewController.xm SWAcapellaPrefs.xm SWAcapella.m SWAcapellaCloneContainer.m SBLockScreenManager.xm SWAcapellaCloneView.m MPUControlCenterMediaControlsView.xm
+Acapella3_FILES =   MusicNowPlayingTitlesView.xm \
+                    MusicMiniPlayerViewController.xm \
+                    MusicNowPlayingViewController.xm \
+                    MPUControlCenterMediaControlsViewController.xm \
+                    MPULockScreenMediaControlsView.xm \
+                    MPULockScreenMediaControlsViewController.xm \
+                    SWAcapellaPrefs.xm \
+                    SWAcapella.m \
+                    SWAcapellaCloneContainer.m \
+                    SBLockScreenManager.xm \
+                    SWAcapellaCloneView.m  \
+                    MPUControlCenterMediaControlsView.xm
 
 ifeq ($(DEBUG), 1)
 	Acapella3_CFLAGS += -Wno-unused-variable
@@ -72,7 +83,7 @@ after-install after-uninstall::
 	$(ECHO_NOTHING)install.exec "killall -9 Music > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 	$(ECHO_NOTHING)install.exec "killall -9 Podcasts > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 	$(ECHO_NOTHING)install.exec "killall -9 Preferences > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
-	$(ECHO_NOTHING)install.exec "killall -9 backboardd > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
+	#$(ECHO_NOTHING)install.exec "killall -9 backboardd > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 
 
 
