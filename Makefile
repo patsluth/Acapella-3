@@ -44,7 +44,7 @@ ifeq ($(DEBUG), 1)
 endif
 
 Acapella3_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore
-Acapella3_OTHER_FRAMEWORKS = Sluthware
+#Acapella3_OTHER_FRAMEWORKS = Sluthware
 Acapella3_PRIVATE_FRAMEWORKS = MediaRemote
 Acapella3_LIBRARIES = substrate sw packageinfo MobileGestalt
 

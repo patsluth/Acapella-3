@@ -43,14 +43,12 @@ static id prefValueForKey(NSString *key)
         if ([gesture containsString:@"tap"]) {
             
             //no volume control for mini
-            if ([gesture containsString:@"centre"] || [prefix isEqualToString:@"musicmini"]) {
+            if ([gesture containsString:@"centre"]) {
                 return @"action_playpause";
-            } else {
-                if ([gesture containsString:@"left"]) {
-                    return @"action_decreasevolume";
-                } else if ([gesture containsString:@"right"]) {
-                    return @"action_increasevolume";
-                }
+            } else if ([gesture containsString:@"left"]) {
+                return @"action_decreasevolume";
+            } else if ([gesture containsString:@"right"]) {
+                return @"action_increasevolume";
             }
             
         } else if ([gesture containsString:@"swipe"]) {
@@ -61,7 +59,7 @@ static id prefValueForKey(NSString *key)
                 return @"action_previoustrack";
             }
             
-        } else if ([gesture containsString:@"press"] || [gesture containsString:@"popaction"]) {
+        } else if ([gesture containsString:@"press"]) {
             
             if ([gesture containsString:@"left"]) {
                 return @"action_intervalrewind";
@@ -87,61 +85,53 @@ static id prefValueForKey(NSString *key)
         
     } else if ([option isEqualToString:@"progressslider"]) {
         
-        if ([prefix isEqualToString:@"cleo"]) {
-            return @(NO);
-        } else {
-            return @(YES);
-        }
+        return @(YES);
         
     } else if ([option isEqualToString:@"transport"]) {
         
-        if (parts.count < 3) {
-            NSLog(@"Invalid Transport Key %@", key);
-            return nil;
-        }
-        
-        if ([prefix isEqualToString:@"musicmini"] ||
-            [prefix isEqualToString:@"cleo"]) { //all transport controls disabled for mini and cleo
-            return @(NO);
-        }
-        
-        NSString *transport = [parts objectAtIndex:3];
-        
-        if ([transport isEqualToString:@"heart"]) {
-            return @(YES);
-        } else if ([transport isEqualToString:@"previoustrack"]) {
-            return @(NO);
-        } else if ([transport isEqualToString:@"intervalrewind"]) {
-            return @(NO);
-        } else if ([transport isEqualToString:@"playpause"]) {
-            return @(NO);
-        } else if ([transport isEqualToString:@"nexttrack"]) {
-            return @(NO);
-        } else if ([transport isEqualToString:@"intervalforward"]) {
-            return @(NO);
-        } else if ([transport isEqualToString:@"upnext"]) {
-            return @(YES);
-        } else if ([transport isEqualToString:@"share"]) {
-            return @(YES);
-        } else if ([transport isEqualToString:@"shuffle"]) {
-            return @(YES);
-        } else if ([transport isEqualToString:@"repeat"]) {
-            return @(YES);
-        } else if ([transport isEqualToString:@"contextual"]) {
-            return @(YES);
-        } else if ([transport isEqualToString:@"playbackrate"]) {
-            return @(YES);
-        } else if ([transport isEqualToString:@"sleeptimer"]) {
-            return @(YES);
-        }
+//        if (parts.count < 3) {
+//            NSLog(@"Invalid Transport Key %@", key);
+//            return nil;
+//        }
+//        
+//        if ([prefix isEqualToString:@"musicmini"] ||
+//            [prefix isEqualToString:@"cleo"]) { //all transport controls disabled for mini and cleo
+//            return @(NO);
+//        }
+//        
+//        NSString *transport = [parts objectAtIndex:3];
+//        
+//        if ([transport isEqualToString:@"heart"]) {
+//            return @(YES);
+//        } else if ([transport isEqualToString:@"previoustrack"]) {
+//            return @(NO);
+//        } else if ([transport isEqualToString:@"intervalrewind"]) {
+//            return @(NO);
+//        } else if ([transport isEqualToString:@"playpause"]) {
+//            return @(NO);
+//        } else if ([transport isEqualToString:@"nexttrack"]) {
+//            return @(NO);
+//        } else if ([transport isEqualToString:@"intervalforward"]) {
+//            return @(NO);
+//        } else if ([transport isEqualToString:@"upnext"]) {
+//            return @(YES);
+//        } else if ([transport isEqualToString:@"share"]) {
+//            return @(YES);
+//        } else if ([transport isEqualToString:@"shuffle"]) {
+//            return @(YES);
+//        } else if ([transport isEqualToString:@"repeat"]) {
+//            return @(YES);
+//        } else if ([transport isEqualToString:@"contextual"]) {
+//            return @(YES);
+//        } else if ([transport isEqualToString:@"playbackrate"]) {
+//            return @(YES);
+//        } else if ([transport isEqualToString:@"sleeptimer"]) {
+//            return @(YES);
+//        }
         
     } else if ([option isEqualToString:@"volumeslider"]) {
         
-        if ([prefix isEqualToString:@"cleo"]) {
-            return @(NO);
-        } else {
-            return @(YES);
-        }
+        return @(YES);
         
     }
     
@@ -210,12 +200,17 @@ int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
-        //get data from standart input. In the form 'DIRECTORY;ROOTDETAIL'
-        NSFileHandle *standardInput = [NSFileHandle fileHandleWithStandardInput];
-        NSString *input = [[NSString alloc] initWithData:[standardInput readDataToEndOfFile] encoding:NSUTF8StringEncoding];
-        NSArray *arguments = [input componentsSeparatedByString:@";"];
+        //get data from standard input. In the form 'DIRECTORY;ROOTDETAIL'
+//        NSFileHandle *standardInput = [NSFileHandle fileHandleWithStandardInput];
+//        NSString *input = [[NSString alloc] initWithData:[standardInput readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+//        NSArray *arguments = [input componentsSeparatedByString:@";"];
+//        
+//        NSLog(@"ARGS %@", arguments);
         
-        if (arguments.count > 2) {
+        NSArray *arguments = @[@"/Users/patsluth/Development/jailbreak_workspace/Acapella3/AcapellaPrefs/",
+                               @"SWAcapellaPSListController"];
+        
+        if (arguments.count == 2) {
             
             NSString *directory = [NSString stringWithFormat:@"%@/Resources/", arguments[0]];
             NSString *rootDetail = arguments[1];

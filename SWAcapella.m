@@ -142,34 +142,12 @@
 
 #pragma mark - Init
 
-//- (id)initWithOwner:(UIViewController<SWAcapellaDelegate> *)owner
-//	  referenceView:(UIView *)referenceView
-//			 titles:(UIView *)titles
-//{
-//	NSAssert(owner != nil, @"SWAcapella owner cannot be nil");
-//	NSAssert(referenceView != nil, @"SWAcapella referenceView cannot be nil");
-//	NSAssert(titles != nil, @"SWAcapella titles cannot be nil");
-//	
-//	if (self = [super init]) {
-//		
-//		self.owner = owner;
-//		self.referenceView = referenceView;
-//		self.titles = titles;
-//		
-//		[self initialize];
-//		
-//	}
-//	
-//	return self;
-//}
-
 - (id)initWithOwner:(UIViewController<SWAcapellaDelegate> *)owner referenceView:(UIView *)referenceView viewsToClone:(NSArray<UIView *> *)viewsToClone
 {
     if (self = [super init]) {
         
         self.owner = owner;
         self.referenceView = referenceView;
-        self.referenceView.clipsToBounds = YES;
         
         [SWAcapella setAcapella:self forObject:self.referenceView withPolicy:OBJC_ASSOCIATION_ASSIGN];
         
@@ -328,59 +306,25 @@
     
     if (pan.state == UIGestureRecognizerStateBegan) {
         
+        self.referenceView.clipsToBounds = YES;
         self.wrapAroundFallback = nil;
         [self.animator removeAllBehaviors];
-        //        self.cloneContainer.hidden = NO;
         self.cloneContainer.tag = SWAcapellaCloneContainerStatePanning;
         [self.cloneContainer.layer removeAllAnimations];
         self.cloneContainer.transform = CGAffineTransformScale(self.cloneContainer.transform, 1.0, 1.0);
-        
-        
-        
-//        [self.cloneContainer refreshClones];
-        
-        
-        
-        
-        
-        
-        
-        //        self.cloneContainer.center = CGPointMake(CGRectGetMidX(self.referenceView.bounds), self.cloneContainer.center.y);
-        //        self.cloneContainer.centerXConstraint.constant = 0.0;
-        //        [self.referenceView setNeedsLayout];
-        
+        self.cloneContainer.velocity = CGPointZero;
+        self.bAttachment.anchorPoint = CGPointMake(panLocation.x, self.cloneContainer.center.y);
         __unsafe_unretained SWAcapella *weakSelf = self;
         self.bAttachment.action = ^{
             weakSelf.cloneContainer.centerXConstraint.constant = weakSelf.cloneContainer.center.x - CGRectGetMidX(weakSelf.referenceView.bounds);
             [weakSelf.referenceView setNeedsLayout];
         };
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        self.cloneContainer.velocity = CGPointZero;
-        
-        self.bAttachment.anchorPoint = CGPointMake(panLocation.x, self.cloneContainer.center.y);
         [self.animator addBehavior:self.bAttachment];
-        
-        //        for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
-        //            [self.animator addBehavior:[UIAttachmentBehavior fixedAttachmentWithItem:viewToClone attachedToItem:self.cloneContainer attachmentAnchor:CGPointZero]];
-        //        }
         
     } else if (pan.state == UIGestureRecognizerStateChanged) {
         
         self.bAttachment.anchorPoint = CGPointMake(panLocation.x, self.bAttachment.anchorPoint.y);
-        
-        //        self.cloneContainer.centerXConstraint.constant = self.cloneContainer.center.x;
-        //        NSLog(@"%@", @(self.cloneContainer.centerXConstraint.constant));
-        //        [self.referenceView setNeedsLayout];
         
     } else if (pan.state == UIGestureRecognizerStateEnded) {
         
@@ -409,7 +353,7 @@
             if (weakSelf.cloneContainer.center.x < offScreenLeftX) {
                 
                 [weakSelf.animator removeAllBehaviors];
-                //				weakSelf.cloneContainer.center = CGPointMake(offScreenRightX, weakSelf.cloneContainer.center.y);
+//                weakSelf.cloneContainer.center = CGPointMake(offScreenRightX, weakSelf.cloneContainer.center.y);
                 weakSelf.cloneContainer.centerXConstraint.constant = offScreenRightX - CGRectGetMidX(weakSelf.referenceView.bounds);
                 [weakSelf.referenceView setNeedsLayout];
                 [weakSelf didWrapAround:-1];
@@ -417,7 +361,7 @@
             } else if (weakSelf.cloneContainer.center.x > offScreenRightX) {
                 
                 [weakSelf.animator removeAllBehaviors];
-                //				weakSelf.cloneContainer.center = CGPointMake(offScreenLeftX, weakSelf.cloneContainer.center.y);
+//                weakSelf.cloneContainer.center = CGPointMake(offScreenLeftX, weakSelf.cloneContainer.center.y);
                 weakSelf.cloneContainer.centerXConstraint.constant = offScreenLeftX - CGRectGetMidX(weakSelf.referenceView.bounds);
                 [weakSelf.referenceView setNeedsLayout];
                 [weakSelf didWrapAround:1];
@@ -457,8 +401,6 @@
         } else { // centre
             sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_presscentre]);
         }
-        
-        NSLog(@"PAT %@", NSStringFromSelector(sel));
         
         if (sel && [self.owner respondsToSelector:sel]) {
             if (!self.cloneContainer.hidden) {
@@ -600,8 +542,8 @@
                 bDynamicItem.friction = 1.0;
                 [self.animator addBehavior:bDynamicItem];
                 
-                UISnapBehavior *bSnap = [[UISnapBehavior alloc] initWithItem:self.cloneContainer
-                                                                 snapToPoint:CGPointMake(CGRectGetMidX(self.referenceView.bounds), self.cloneContainer.center.y)];
+                CGPoint snapPoint = CGPointMake(CGRectGetMidX(self.referenceView.bounds), self.cloneContainer.center.y);
+                UISnapBehavior *bSnap = [[UISnapBehavior alloc] initWithItem:self.cloneContainer snapToPoint:snapPoint];
                 bSnap.damping = 0.3;
                 [self.animator addBehavior:bSnap];
                 

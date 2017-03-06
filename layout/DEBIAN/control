@@ -1,7 +1,7 @@
 Package: org.thebigboss.acapella3
 Name: Acapella III
-Depends: firmware (>= 8.4), mobilesubstrate, com.patsluth.libsw (>= 1.0-15)
-Conflicts: com.patsluth.swgesturemusiccontrols, org.thebigboss.gesturemusiccontrols, org.thebigboss.acapella, com.patsluth.swacapella, com.patsluth.swacapella2
+Depends: firmware (>= 10.2), mobilesubstrate, com.patsluth.libsw (>= 1.0-15)
+Conflicts: com.patsluth.swgesturemusiccontrols, org.thebigboss.gesturemusiccontrols, org.thebigboss.acapella, org.thebigboss.acapella2, com.patsluth.swacapella, com.patsluth.swacapella2
 Architecture: iphoneos-arm
 Description: Elegant, gesture based enhancements to the default iOS Music controls.
 Maintainer: Pat Sluth
