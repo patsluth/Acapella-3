@@ -6,123 +6,87 @@
 //
 //
 
+#import "SWAcapella.h"
+
 #import "libsw/libSluthware/libSluthware.h"
 
 
 
 
-@interface SBDashBoardScrollGestureController
-
-- (_Bool)gestureRecognizerShouldBegin:(id)arg1;
-- (_Bool)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2;
-- (_Bool)gestureRecognizer:(id)arg1 shouldRequireFailureOfGestureRecognizer:(id)arg2;
-- (_Bool)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2;
-
-@end
 
 
 
 
 
 
-
-
-%hook SBDashBoardScrollGestureController
-
-- (id)init
-{
-    self = %orig();
-    
-    NSLog(@"SBDashBoardScrollGestureController %@", self);
-    
-    return self;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)arg1 shouldReceiveTouch:(UITouch *)arg2
-{
-    LOG_METHOD_START
-    NSLog(@"arg1:[%@]", arg1);
-    LOG_METHOD_END
-    
-    if ([arg2.view isKindOfClass:%c(MPUMediaRemoteViewController)]) {
-        return NO;
-    }
-    
-    return %orig(arg1, arg2);
-}
-
-- (BOOL)presentingController:(id)arg1 gestureRecognizerShouldBegin:(id)arg2
-{
-    LOG_METHOD_START
-    NSLog(@"arg1:[%@]", arg1);
-    NSLog(@"arg2:[%@]", arg2);
-    LOG_METHOD_END
-    
-    //    if ([arg3.view isKindOfClass:%c(MPUMediaRemoteViewController)]) {
-    //        return NO;
-    //    }
-    
-    return %orig(arg1, arg2);
-}
-
-- (_Bool)presentingController:(id)arg1 gestureRecognizer:(id)arg2 shouldReceiveTouch:(id)arg3
-{
-    LOG_METHOD_START
-    NSLog(@"arg1:[%@]", arg1);
-    NSLog(@"arg2:[%@]", arg2);
-    LOG_METHOD_END
-    
-    return %orig(arg1, arg2, arg3);
-}
-
-- (_Bool)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2
-{
-    LOG_METHOD_START
-    NSLog(@"arg1:[%@]", arg1);
-    NSLog(@"arg2:[%@]", arg2);
-    LOG_METHOD_END
-    
-    return %orig(arg1, arg2);
-}
-- (_Bool)gestureRecognizer:(id)arg1 shouldRequireFailureOfGestureRecognizer:(id)arg2
-{
-    LOG_METHOD_START
-    NSLog(@"arg1:[%@]", arg1);
-    NSLog(@"arg2:[%@]", arg2);
-    LOG_METHOD_END
-    
-    return %orig(arg1, arg2);
-}
-- (_Bool)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2
-{
-    LOG_METHOD_START
-    NSLog(@"arg1:[%@]", arg1);
-    NSLog(@"arg2:[%@]", arg2);
-    LOG_METHOD_END
-    
-    return %orig(arg1, arg2);
-}
-
-//- (BOOL)presentingController:(id)arg1 gestureRecognizer:(UIGestureRecognizer *)arg2 shouldReceiveTouch:(UITouch *)arg3
-//{
-//    LOG_METHOD_START
-//    NSLog(@"arg1:[%@]", arg1);
-//    NSLog(@"arg2:[%@]", arg2);
-//    LOG_METHOD_END
+//@interface SBDashBoardViewController : UIViewController
 //
-//    
-//    if ([arg3.view isKindOfClass:%c(MPUMediaRemoteViewController)]) {
-//        return NO;
-//    }
-//    
-//    return %orig(arg1, arg2, arg3);
+//- (BOOL)allowSystemGestureAtLocation:(CGPoint)arg1;
+//- (BOOL)isSystemGesturePermittedForPresentingController:(id)arg1;
+//
+//- (BOOL)_isSourceForHorizontalScrolling:(id)arg1;
+//- (BOOL)_overSlidingControlForLocation:(CGPoint)arg1 inView:(id)arg2;
+//- (BOOL)_gestureRecognizer:(id)arg1 isLocatedOverHorizontalContentRegionInViewController:(id)arg2;
+//
+//@end
+//
+//
+//%hook SBDashBoardViewController
+//
+////- (BOOL)allowSystemGestureAtLocation:(CGPoint)arg1
+////{
+////    LOG_METHOD_START
+////    NSLog(@"arg1:[%@]", NSStringFromCGPoint(arg1));
+////    LOG_METHOD_END
+////    
+////    return %orig(arg1);
+////}
+////
+////- (BOOL)isSystemGesturePermittedForPresentingController:(id)arg1
+////{
+////    LOG_METHOD_START
+////    NSLog(@"arg1:[%@]", arg1);
+////    LOG_METHOD_END
+////    
+////    return %orig(arg1);
+////}
+////
+////
+////- (BOOL)_isSourceForHorizontalScrolling:(id)arg1
+////{
+////    LOG_METHOD_START
+////    NSLog(@"arg1:[%@]", arg1);
+////    LOG_METHOD_END
+////    
+////    return %orig(arg1);
+////}
+////
+////- (BOOL)_overSlidingControlForLocation:(CGPoint)arg1 inView:(id)arg2
+////{
+////    LOG_METHOD_START
+////    NSLog(@"arg1:[%@]", NSStringFromCGPoint(arg1));
+////    NSLog(@"arg2:[%@]", arg2);
+////    LOG_METHOD_END
+////    
+////    return %orig(arg1, arg2);
+////}
+////
+////- (BOOL)_gestureRecognizer:(id)arg1 isLocatedOverHorizontalContentRegionInViewController:(id)arg2
+////{
+////    LOG_METHOD_START
+////    NSLog(@"arg1:[%@]", arg1);
+////    NSLog(@"arg2:[%@]", arg2);
+////    LOG_METHOD_END
+////    
+////    return %orig(arg1, arg2);
+////}
+//
+//- (NSString *)description
+//{
+//    return @"";
 //}
-
-%end
-
-
-
-
+//
+//%end
 
 
 

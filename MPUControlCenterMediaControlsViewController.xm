@@ -21,6 +21,8 @@
 
 //#import "MPUTransportControlMediaRemoteController.h"
 
+#import "SBMediaController.h"
+
 
 
 #define TRY @try {
@@ -113,22 +115,15 @@
     }
     
     
-    if (!self.acapella) {
-		
-        //if (self.acapellaPrefs.enabled) {
+    if (!self.acapella && self.acapellaPrefs.enabled) {
         
-//        self.mediaControlsView.artworkView.clipsToBounds = YES;
-        
-			[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                        referenceView:self.mediaControlsView
-                                                         viewsToClone:@[self.mediaControlsView.artworkView,
-                                                                        self.mediaControlsView.titleLabel,
-                                                                        self.mediaControlsView.artistLabel,
-                                                                        self.mediaControlsView.albumLabel]]
-						  forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
-            
-        //}
-        
+        [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
+                                                    referenceView:self.mediaControlsView
+                                                     viewsToClone:@[self.mediaControlsView.artworkView,
+                                                                    self.mediaControlsView.titleLabel,
+                                                                    self.mediaControlsView.artistLabel,
+                                                                    self.mediaControlsView.albumLabel]]
+                      forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
     }
 	
     if (self.acapella) {
@@ -162,32 +157,12 @@
     [self.view layoutSubviews];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
 	[SWAcapella removeAcapella:[SWAcapella acapellaForObject:self]];
     self.acapellaPrefs = nil;
     
     %orig(animated);
-}
-
-//- (void)viewDidLayoutSubviews
-//{
-//	%orig();
-//}
-
-#pragma mark - Acapella(Helper)
-
-%new
-- (NSString *)acapellaKeyPrefix
-{
-    return @"cc";
-//    return @"ls";
-}
-
-%new
-- (SWAcapella *)acapella
-{
-    return [SWAcapella acapellaForObject:self];
 }
 
 #pragma mark - MPUSystemMediaControlsViewController
@@ -247,7 +222,47 @@
 //    return %orig(arg1, arg2);
 //}
 
-#pragma mark - Acapella(Actions)
+#pragma mark - SWAcapellaDelegate
+
+%new
+- (SWAcapella *)acapella
+{
+    return [SWAcapella acapellaForObject:self];
+}
+
+%new
+- (NSString *)acapellaKeyPrefix
+{
+    return @"cc";
+}
+
+%new
+- (SWAcapellaPrefs *)acapellaPrefs
+{
+    return objc_getAssociatedObject(self, @selector(_acapellaPrefs));
+}
+
+%new
+- (void)setAcapellaPrefs:(SWAcapellaPrefs *)acapellaPrefs
+{
+    objc_setAssociatedObject(self, @selector(_acapellaPrefs),
+                             acapellaPrefs,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    // Keep a weak reference so our titles view can access our prefs
+    //    objc_setAssociatedObject(((MPUControlCenterMediaControlsView *)self.view).titleLabel,
+    //                             @selector(_acapellaPrefs),
+    //                             acapellaPrefs,
+    //                             OBJC_ASSOCIATION_ASSIGN);
+}
+
+%new
+- (void)acapella_didRecognizeVerticalPanUp:(id)arg1
+{
+}
+
+- (void)acapella_didRecognizeVerticalPanDown:(id)arg1
+{
+}
 
 %new
 - (void)action_nil:(id)arg1
@@ -257,7 +272,7 @@
 %new
 - (void)action_heart:(id)arg1
 {
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView tapOnControlType:6];
+     [[%c(SBMediaController) sharedInstance] likeTrack];
 }
 
 %new
@@ -268,135 +283,66 @@
 %new
 - (void)action_previoustrack:(id)arg1
 {
-     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:1];
-//    
-//    MPUTransportControlMediaRemoteController *t = MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER;
-//    
-//    if (![t.nowPlayingInfo valueForKey:@"kMRMediaRemoteNowPlayingInfoTitle"]) { //wrap around instantly if nothing is playing
-//        
-//        if ([self.acapella respondsToSelector:@selector(finishWrapAround)]) {
-//            [self.acapella performSelector:@selector(finishWrapAround) withObject:nil afterDelay:0.0];
-//        }
-//        
-//    }
+//    [[%c(SBMediaController) sharedInstance] changeTrack:-1];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:1];
+    [self.acapella finishWrapAround];
 }
 
 %new
 - (void)action_nexttrack:(id)arg1
 {
+//    [[%c(SBMediaController) sharedInstance] changeTrack:1];
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:4];
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    [self.mediaControlsView.titleLabel sb_generateSnapshotViewAsynchronouslyOnQueue:dispatch_get_main_queue()
-//                                                                  completionHandler:^(UIView *snapshotView) {
-//                                                                      [self.mediaControlsView addSubview:snapshotView];
-//                                                                  }];
-
-    
-    
-//    MPUTransportControlMediaRemoteController *t = MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER;
-//    
-//    if (![t.nowPlayingInfo valueForKey:@"kMRMediaRemoteNowPlayingInfoTitle"]) { //wrap around instantly if nothing is playing
-//        if ([self.acapella respondsToSelector:@selector(finishWrapAround)]) {
-//            [self.acapella performSelector:@selector(finishWrapAround) withObject:nil afterDelay:0.0];
-//        }
-//    }
+    [self.acapella finishWrapAround];
 }
 
 %new
 - (void)action_intervalrewind:(id)arg1
 {
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView tapOnControlType:2];
+//    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:2];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:2];
 }
 
 %new
 - (void)action_intervalforward:(id)arg1
 {
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView tapOnControlType:5];
+//    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:5];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:5];
 }
 
 %new
 - (void)action_seekrewind:(id)arg1
 {
-//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView longPressBeginOnControlType:1];
-//    
-//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
-//        [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView longPressEndOnControlType:1];
-//    }
 }
 
 %new
 - (void)action_seekforward:(id)arg1
 {
-//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView longPressBeginOnControlType:4];
-//    
-//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
-//        [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView longPressEndOnControlType:4];
-//    }
 }
 
 %new
 - (void)action_playpause:(id)arg1
 {
-//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView longPressEndOnControlType:1];
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView longPressEndOnControlType:4];
-//    
-//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    //if the 2 commands are different, then something happened when we told the transportControlView to
-//    //stop seeking, meaning we were seeking
-//    if (originalLPCommand == newLPCommand) {
-//        [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView tapOnControlType:3];
-//    }
-//    
-//    [self.acapella pulse];
+//    [[%c(SBMediaController) sharedInstance] togglePlayPause];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
 }
 
 %new
 - (void)action_share:(id)arg1
 {
-//    [self transportControlsView:MPU_SYSTEM_MEDIA_CONTROLS_VIEW.transportControlsView tapOnControlType:8];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:8];
 }
 
 %new
 - (void)action_toggleshuffle:(id)arg1
 {
+    [[%c(SBMediaController) sharedInstance] toggleShuffle];
 }
 
 %new
 - (void)action_togglerepeat:(id)arg1
 {
+    [[%c(SBMediaController) sharedInstance] toggleRepeat];
 }
 
 %new
@@ -420,54 +366,18 @@
 %new
 - (void)action_decreasevolume:(id)arg1
 {
-//    id vc = [MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView valueForKey:@"volumeController"];
-//    [vc performSelector:@selector(incrementVolumeInDirection:) withObject:@(-1) afterDelay:0.0];
+    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:-0.1];
 }
 
 %new
 - (void)action_increasevolume:(id)arg1
 {
-//    id vc = [MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView valueForKey:@"volumeController"];
-//    [vc performSelector:@selector(incrementVolumeInDirection:) withObject:@(1) afterDelay:0.0];
+    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:0.1];
 }
 
 %new
 - (void)action_equalizereverywhere:(id)arg1
 {
-//    UIView *curView = self.acapella.referenceView.superview;
-//    
-//    while(curView) {
-//        
-//        if ([curView isKindOfClass:NSClassFromString(@"SBEqualizerScrollView")]) {
-//            UIScrollView *ee = (UIScrollView *)curView;
-//            [ee setContentOffset:CGPointMake(CGRectGetWidth(ee.frame), 0.0) animated:YES];
-//            curView = nil;
-//        } else {
-//            curView = curView.superview;
-//        }
-//        
-//    }
-}
-
-#pragma mark - Associated Objects
-
-%new
-- (SWAcapellaPrefs *)acapellaPrefs
-{
-    return objc_getAssociatedObject(self, @selector(_acapellaPrefs));
-}
-
-%new
-- (void)setAcapellaPrefs:(SWAcapellaPrefs *)acapellaPrefs
-{
-    objc_setAssociatedObject(self, @selector(_acapellaPrefs),
-                             acapellaPrefs,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    // Keep a weak reference so our titles view can access our prefs
-//    objc_setAssociatedObject(((MPUControlCenterMediaControlsView *)self.view).titleLabel,
-//                             @selector(_acapellaPrefs),
-//                             acapellaPrefs,
-//                             OBJC_ASSOCIATION_ASSIGN);
 }
 
 %end

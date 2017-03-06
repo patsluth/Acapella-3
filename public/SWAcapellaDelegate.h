@@ -19,10 +19,13 @@
 
 @required
 
-@property (strong, nonatomic) NSString *acapellaKeyPrefix;
-@property (strong, nonatomic) SWAcapellaPrefs *acapellaPrefs;
-
 - (SWAcapella *)acapella;
+- (NSString *)acapellaKeyPrefix;
+- (SWAcapellaPrefs *)acapellaPrefs;
+- (void)setAcapellaPrefs:(SWAcapellaPrefs *)acapellaPrefs;
+
+- (void)acapella_didRecognizeVerticalPanUp:(id)arg1;
+- (void)acapella_didRecognizeVerticalPanDown:(id)arg1;
 
 - (void)action_heart:(id)arg1;
 - (void)action_upnext:(id)arg1;

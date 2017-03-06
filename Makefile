@@ -36,7 +36,7 @@ Acapella3_FILES =   MusicNowPlayingTitlesView.xm \
                     SWAcapellaPrefs.xm \
                     SWAcapella.m \
                     SWAcapellaCloneContainer.m \
-                    SBLockScreenManager.xm \
+                    SBDashBoardScrollGestureController.xm \
                     SWAcapellaCloneView.m  \
                     MPUControlCenterMediaControlsView.xm
 

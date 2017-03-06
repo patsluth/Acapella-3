@@ -32,6 +32,8 @@
 {
     if (self = [super init]) {
         
+        self.tag = SWAcapellaCloneContainerStateNone;
+        
         self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.userInteractionEnabled = NO;
@@ -47,8 +49,10 @@
 {
     [super setTag:tag];
     
-    //    [self refreshClones];
+    [self refreshClones];
 }
+
+#pragma mark 
 
 - (void)refreshClones
 {
@@ -85,7 +89,6 @@
         
         return;
     }
-    
     
     
     for (UIView *viewToClone in self.viewsToClone) {

@@ -62,6 +62,26 @@
 
 
 
+@interface MPAdvanceRepeatModeCommand : MPRemoteCommand
+
+- (MPRemoteCommandEvent *)newCommandEventWithPreservesRepeatMode:(BOOL)arg1;
+
+@end
+
+
+
+
+
+@interface MPAdvanceShuffleModeCommand : MPRemoteCommand
+
+- (MPRemoteCommandEvent *)newCommandEventWithPreservesShuffleMode:(BOOL)arg1;
+
+@end
+
+
+
+
+
 @interface MPRemoteCommandCenter : NSObject
 {
     void *_mediaRemoteCommandHandler;
@@ -72,8 +92,8 @@
 @property (getter=_activeCommands, nonatomic, readonly) NSArray *activeCommands;
 //@property (nonatomic, readonly) MPFeedbackCommand *addItemToLibraryCommand;
 //@property (nonatomic, readonly) MPFeedbackCommand *addNowPlayingItemToLibraryCommand;
-//@property (nonatomic, readonly) MPAdvanceRepeatModeCommand *advanceRepeatModeCommand;
-//@property (nonatomic, readonly) MPAdvanceShuffleModeCommand *advanceShuffleModeCommand;
+@property (nonatomic, readonly) MPAdvanceRepeatModeCommand *advanceRepeatModeCommand;
+@property (nonatomic, readonly) MPAdvanceShuffleModeCommand *advanceShuffleModeCommand;
 //@property (nonatomic, readonly) MPFeedbackCommand *bookmarkCommand;
 //@property (nonatomic, readonly) MPPurchaseCommand *buyAlbumCommand;
 //@property (nonatomic, readonly) MPPurchaseCommand *buyTrackCommand;
@@ -131,3 +151,25 @@
 @interface MPCMediaPlayerLegacyPlayer : MPCPlayer
 
 @end
+
+
+
+
+
+@interface MPVolumeController : NSObject
+{
+}
+
+@property (nonatomic, readonly) float volumeValue;
+
+
+- (void)_forcefullySetVolumeValue:(float)arg1;
+- (void)_internalSetVolumeValue:(float)arg1;
+
+- (float)setVolumeValue:(float)arg1;
+
+@end
+
+
+
+

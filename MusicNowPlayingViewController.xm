@@ -159,17 +159,12 @@
     }
     
     
-    if (!self.acapella) {
+    if (!self.acapella && self.acapellaPrefs.enabled) {
         
-        if (self.acapellaPrefs.enabled) {
-            
-			[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                        referenceView:self.titlesStackView.superview
-                                                         viewsToClone:@[self.titlesStackView]]
-                          forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
-            
-        }
-        
+        [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
+                                                    referenceView:self.titlesStackView.superview
+                                                     viewsToClone:@[self.titlesStackView]]
+                      forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
     }
 	
 	[self viewDidLayoutSubviews];
@@ -178,10 +173,10 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	%orig(animated);
-	
     [SWAcapella removeAcapella:[SWAcapella acapellaForObject:self]];
     self.acapellaPrefs = nil;
+    
+    %orig(animated);
 }
 
 - (void)viewDidLayoutSubviews
@@ -254,31 +249,311 @@
 	
 }
 
-#pragma mark - Acapella(Helper)
-
-%new
-- (NSString *)acapellaKeyPrefix
-{
-	@autoreleasepool {
-//
-//		UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
-//		
-//		if (%c(MusicTabBarController) && [rootVC class] == %c(MusicTabBarController)) { // Music App
-			return @"musicnowplaying";
-//		} else if (%c(MTMusicTabController) && [rootVC class] == %c(MTMusicTabController)) { // Podcast App
-//			return @"podcastsnowplaying";
-//		}
-//		
-	}
-
-    return nil;
-}
+#pragma mark - SWAcapellaDelegate
 
 %new
 - (SWAcapella *)acapella
 {
     return [SWAcapella acapellaForObject:self];
 }
+
+%new
+- (NSString *)acapellaKeyPrefix
+{
+    return @"musicnowplaying";
+}
+
+%new
+- (SWAcapellaPrefs *)acapellaPrefs
+{
+    return objc_getAssociatedObject(self, @selector(_acapellaPrefs));
+}
+
+%new
+- (void)setAcapellaPrefs:(SWAcapellaPrefs *)acapellaPrefs
+{
+    objc_setAssociatedObject(self, @selector(_acapellaPrefs), acapellaPrefs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+%new
+- (void)acapella_didRecognizeVerticalPanUp:(id)arg1
+{
+}
+
+- (void)acapella_didRecognizeVerticalPanDown:(id)arg1
+{
+}
+
+%new
+- (void)action_nil:(id)arg1
+{
+}
+
+%new
+- (void)action_heart:(id)arg1
+{
+    TRY
+    [self transportControlsView:self.transportControls tapOnControlType:6];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_upnext:(id)arg1
+{
+    TRY
+    
+    [self transportControlsView:self.transportControls tapOnControlType:7];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_previoustrack:(id)arg1
+{
+    TRY
+    
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.previousTrackCommand newCommandEvent];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        [self.acapella.cloneContainer refreshClones];
+        [self.acapella finishWrapAround];
+    }];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_nexttrack:(id)arg1
+{
+    TRY
+    
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        [self.acapella.cloneContainer refreshClones];
+        [self.acapella finishWrapAround];
+    }];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_intervalrewind:(id)arg1
+{
+    TRY
+    
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.skipBackwardCommand newCommandEventWithInterval:20.0];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_intervalforward:(id)arg1
+{
+    TRY
+    
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.skipForwardCommand newCommandEventWithInterval:20.0];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_seekrewind:(id)arg1
+{
+    TRY
+    
+    //    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+    //
+    //    [self transportControlsView:self.transportControls longPressBeginOnControlType:1];
+    //
+    //    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+    //
+    //    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
+    //        [self transportControlsView:self.transportControls longPressEndOnControlType:1];
+    //    }
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_seekforward:(id)arg1
+{
+    TRY
+    
+    //    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+    //
+    //    [self transportControlsView:self.transportControls longPressBeginOnControlType:4];
+    //
+    //    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
+    //
+    //    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
+    //        [self transportControlsView:self.transportControls longPressEndOnControlType:4];
+    //    }
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_playpause:(id)arg1
+{
+    TRY
+    
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.togglePlayPauseCommand newCommandEvent];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_share:(id)arg1
+{
+    TRY
+    
+    [self transportControlsView:self.secondaryTransportControls tapOnControlType:8];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_toggleshuffle:(id)arg1
+{
+    TRY
+    
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.advanceShuffleModeCommand newCommandEventWithPreservesShuffleMode:NO];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_togglerepeat:(id)arg1
+{
+    TRY
+    
+    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+    MPRemoteCommandEvent *commandEvent = [commandCenter.advanceRepeatModeCommand newCommandEventWithPreservesRepeatMode:NO];
+    [delegate.player performCommandEvent:commandEvent completion:^{
+        
+    }];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_contextual:(id)arg1
+{
+    TRY
+    
+    [self transportControlsView:self.secondaryTransportControls tapOnControlType:11];
+    
+    CATCH_LOG
+    ENDTRY
+}
+
+%new
+- (void)action_openapp:(id)arg1
+{
+}
+
+%new
+- (void)action_showratings:(id)arg1
+{
+    TRY
+    
+    // iOS <= 9.0.2
+    [self _setRatingsVisible:self.ratingControl.hidden];
+    
+    CATCH_LOG
+    
+    TRY
+    
+    // iOS 9.0.3 shows the ratings view in the lyrics view now
+    // Hide the lyrics view if it is visible
+    [self _setLyricsVisible:![self lyricsViewVisible]];
+    
+    CATCH_LOG
+    ENDTRY
+    
+    ENDTRY
+}
+
+%new
+- (void)action_decreasevolume:(id)arg1
+{
+    @autoreleasepool {
+        
+        TRY
+        
+        MPVolumeController *volumeController = [%c(MPVolumeController) new];
+        [volumeController setVolumeValue:volumeController.volumeValue - 0.1];
+        volumeController = nil;
+        
+        CATCH_LOG
+        ENDTRY
+        
+    }
+}
+
+%new
+- (void)action_increasevolume:(id)arg1
+{
+    @autoreleasepool {
+        
+        TRY
+        
+        MPVolumeController *volumeController = [%c(MPVolumeController) new];
+        [volumeController setVolumeValue:volumeController.volumeValue + 0.1];
+        volumeController = nil;
+        
+        CATCH_LOG
+        ENDTRY
+        
+    }
+}
+
+%new
+- (void)action_equalizereverywhere:(id)arg1
+{
+}
+
+
+
+
+
 
 
 
@@ -444,341 +719,6 @@
 	
 	// Hide Acapella if Ratings are visible
     self.acapella.cloneContainer.hidden = arg1;
-}
-
-#pragma mark - Acaplla(Actions)
-
-%new
-- (void)action_nil:(id)arg1
-{
-}
-
-%new
-- (void)action_heart:(id)arg1
-{
-    TRY
-    [self transportControlsView:self.transportControls tapOnControlType:6];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_upnext:(id)arg1
-{
-    TRY
-    
-    [self transportControlsView:self.transportControls tapOnControlType:7];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_previoustrack:(id)arg1
-{
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.previousTrackCommand newCommandEvent];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
-    }];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_nexttrack:(id)arg1
-{
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
-    }];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_intervalrewind:(id)arg1
-{
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.skipBackwardCommand newCommandEventWithInterval:20.0];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_intervalforward:(id)arg1
-{
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.skipForwardCommand newCommandEventWithInterval:20.0];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_seekrewind:(id)arg1
-{
-    TRY
-    
-//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    [self transportControlsView:self.transportControls longPressBeginOnControlType:1];
-//    
-//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
-//        [self transportControlsView:self.transportControls longPressEndOnControlType:1];
-//    }
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_seekforward:(id)arg1
-{
-    TRY
-    
-//    unsigned int originalLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    [self transportControlsView:self.transportControls longPressBeginOnControlType:4];
-//    
-//    unsigned int newLPCommand = MSHookIvar<unsigned int>(MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER, "_runningLongPressCommand");
-//    
-//    if (originalLPCommand == newLPCommand) { //if the commands havent changed we are seeking, so we should stop seeking
-//        [self transportControlsView:self.transportControls longPressEndOnControlType:4];
-//    }
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_playpause:(id)arg1
-{
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.togglePlayPauseCommand newCommandEvent];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    [self.acapella pulse];
-    
-    [self.acapella pulse];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_share:(id)arg1
-{
-    TRY
-    
-    [self transportControlsView:self.secondaryTransportControls tapOnControlType:8];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_toggleshuffle:(id)arg1
-{
-    TRY
-    
-    [self transportControlsView:self.secondaryTransportControls tapOnControlType:10];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_togglerepeat:(id)arg1
-{
-    TRY
-    
-    [self transportControlsView:self.secondaryTransportControls tapOnControlType:9];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_contextual:(id)arg1
-{
-    TRY
-    
-    [self transportControlsView:self.secondaryTransportControls tapOnControlType:11];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_openapp:(id)arg1
-{
-}
-
-%new
-- (void)action_showratings:(id)arg1
-{
-    TRY
-    
-    // iOS <= 9.0.2
-    [self _setRatingsVisible:self.ratingControl.hidden];
-    
-    CATCH_LOG
-    
-    TRY
-    
-    // iOS 9.0.3 shows the ratings view in the lyrics view now
-    // Hide the lyrics view if it is visible
-    [self _setLyricsVisible:![self lyricsViewVisible]];
-    
-    CATCH_LOG
-    ENDTRY
-    
-    ENDTRY
-}
-
-%new
-- (void)action_decreasevolume:(id)arg1
-{
-    TRY
-    
-    id vc = [self.volumeSlider valueForKey:@"volumeController"];
-    [vc performSelector:@selector(incrementVolumeInDirection:) withObject:@(-1) afterDelay:0.0];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_increasevolume:(id)arg1
-{
-    TRY
-    
-    id vc = [self.volumeSlider valueForKey:@"volumeController"];
-    [vc performSelector:@selector(incrementVolumeInDirection:) withObject:@(1) afterDelay:0.0];
-    
-    CATCH_LOG
-    ENDTRY
-}
-
-%new
-- (void)action_equalizereverywhere:(id)arg1
-{
-}
-
-#pragma mark - UIViewControllerPreviewing
-
-//%new // peek
-//- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
-//{
-//    if (!self.acapella || self.presentedViewController) {
-//        return nil;
-//    }
-//    
-//    // Show the entire media control area as the source rect, not just the titles view
-//    CGRect sourceRect = self.playbackProgressSliderView.frame;
-//    sourceRect.size.height = CGRectGetHeight(self.view.bounds) - sourceRect.origin.y;
-//    previewingContext.sourceRect = sourceRect;
-//    
-//    if (CGRectContainsPoint(sourceRect, location)) { // Don't allow previewing if outside the media control area
-//        
-//        SWAcapellaMediaItemPreviewViewController *previewViewController = [[SWAcapellaMediaItemPreviewViewController alloc] initWithDelegate:self];
-//        [previewViewController configureWithCurrentNowPlayingInfo];
-//        
-//        
-//        CGFloat xPercentage = location.x / CGRectGetWidth(self.view.bounds);
-//        
-//        if (xPercentage <= 0.25) { // left
-//            
-//            previewViewController.popAction = self.acapellaPrefs.gestures_popactionleft;
-//            previewViewController.acapellaPreviewActionItems = @[[previewViewController intervalRewindAction],
-//                                                                 [previewViewController seekRewindAction]];
-//            
-//        } else if (xPercentage > 0.75) { // right
-//            
-//            previewViewController.popAction = self.acapellaPrefs.gestures_popactionright;
-//            previewViewController.acapellaPreviewActionItems = @[[previewViewController intervalForwardAction],
-//                                                                 [previewViewController seekForwardAction]];
-//            
-//        } else { // centre
-//            
-//            previewViewController.popAction = self.acapellaPrefs.gestures_popactioncentre;
-//            previewViewController.acapellaPreviewActionItems = @[[previewViewController heartAction],
-//                                                                 [previewViewController upNextAction],
-//                                                                 [previewViewController shareAction],
-//                                                                 [previewViewController contextualAction],
-//                                                                 [previewViewController showRatingsAction]];
-//            
-//        }
-//        
-//        
-//        return previewViewController;
-//        
-//    }
-//    
-//    
-//    return nil;
-//}
-//
-//%new // pop
-//- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext
-//commitViewController:(SWAcapellaMediaItemPreviewViewController *)viewControllerToCommit
-//{
-//    dispatch_async(dispatch_get_main_queue(), ^(void) {
-//        
-//        SEL sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", viewControllerToCommit.popAction]);
-//        
-//        if (sel && [self respondsToSelector:sel]) {
-//            [self performSelectorOnMainThread:sel withObject:nil waitUntilDone:NO];
-//        }
-//        
-//    });
-//}
-
-#pragma mark - Associated Objects
-
-%new
-- (SWAcapellaPrefs *)acapellaPrefs
-{
-    return objc_getAssociatedObject(self, @selector(_acapellaPrefs));
-}
-
-%new
-- (void)setAcapellaPrefs:(SWAcapellaPrefs *)acapellaPrefs
-{
-    objc_setAssociatedObject(self, @selector(_acapellaPrefs), acapellaPrefs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 %end

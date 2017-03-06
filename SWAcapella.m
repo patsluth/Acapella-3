@@ -9,7 +9,7 @@
 #import "SWAcapella.h"
 #import "SWAcapellaPrefs.h"
 
-//#import "libsw/libSluthware/libSluthware.h"
+#import "libsw/libSluthware/libSluthware.h"
 //TODO: REMOVE
 //#import "libsw/libSluthware/UISnapBehaviorHorizontal.h"
 #import "libsw/libSluthware/NSTimer+SW.h"
@@ -88,52 +88,6 @@
 
 #pragma mark - SWAcapella
 
-
-//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-//{
-//    if (gestureRecognizer == self.pan && otherGestureRecognizer != self.tap && otherGestureRecognizer != self.press) {
-////        NSLog(@"PAT YYYYYY 1 %@", gestureRecognizer);
-////        NSLog(@"PAT YYYYYY 1 %@", otherGestureRecognizer);
-////        return YES;
-//    } else if (otherGestureRecognizer == self.pan && gestureRecognizer != self.tap && gestureRecognizer != self.press) {
-//        NSLog(@"PAT ZZZZZZ 1 %@", otherGestureRecognizer);
-//        NSLog(@"PAT ZZZZZZ 1 %@", gestureRecognizer);
-//        return YES;
-//    }
-//    
-//    return NO;
-//}
-//
-//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-//{
-//    if (gestureRecognizer == self.pan && otherGestureRecognizer != self.tap && otherGestureRecognizer != self.press) {
-//        NSLog(@"PAT YYYYYY 2 %@", gestureRecognizer);
-//        NSLog(@"PAT YYYYYY 2 %@", otherGestureRecognizer);
-//        return NO;
-//    } else if (otherGestureRecognizer == self.pan && gestureRecognizer != self.tap && gestureRecognizer != self.press) {
-//        NSLog(@"PAT ZZZZZZ 2 %@", otherGestureRecognizer);
-//        NSLog(@"PAT ZZZZZZ 2 %@", gestureRecognizer);
-//    }
-//    
-//    return NO;
-//}
-//
-//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-//{
-//    if (gestureRecognizer == self.pan && otherGestureRecognizer != self.tap && otherGestureRecognizer != self.press) {
-//        NSLog(@"PAT YYYYYY 3 %@", gestureRecognizer);
-//        NSLog(@"PAT YYYYYY 3 %@", otherGestureRecognizer);
-//        return NO;
-//    } else if (otherGestureRecognizer == self.pan && gestureRecognizer != self.tap && gestureRecognizer != self.press) {
-//        NSLog(@"PAT ZZZZZZ 3 %@", otherGestureRecognizer);
-//        NSLog(@"PAT ZZZZZZ 3 %@", gestureRecognizer);
-//        return NO;
-//    }
-//    
-//    return NO;
-//}
-
-
 - (void)_acapella
 {
 }
@@ -153,19 +107,10 @@
     if (acapella) {
 		
 		[[NSNotificationCenter defaultCenter] removeObserver:acapella];
-		
-//		for (SWAcapellaCloneView *clonedView in acapella.clonedViews) {
-//            clonedView.viewToClone.userInteractionEnabled = YES;
-//            clonedView.viewToClone.layer.opacity = 1.0;
-//            
-//            [clonedView removeFromSuperview];
-//        }
+        
+        acapella.cloneContainer.tag = SWAcapellaCloneContainerStateNone;    // Reset views and constraints
         for (UIView *viewToClone in acapella.cloneContainer.viewsToClone) {
             viewToClone.userInteractionEnabled = YES;
-            viewToClone.layer.opacity = 1.0;
-        }
-        for (UIView *subview in acapella.cloneContainer.subviews) {
-            [subview removeFromSuperview];
         }
         [acapella.cloneContainer removeFromSuperview];
         acapella.cloneContainer = nil;
@@ -188,7 +133,10 @@
         acapella.press = nil;
         
         [acapella.referenceView layoutSubviews];
-		
+		[acapella.referenceView setNeedsDisplay];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:onAcapellaDestroyedNotificationName()
+                                                            object:acapella];
     }
     
 //    [SWAcapella setAcapella:nil forObject:acapella.titles withPolicy:OBJC_ASSOCIATION_ASSIGN];
@@ -233,10 +181,6 @@
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
         
-        for (UIView *viewToClone in viewsToClone) {
-            viewToClone.userInteractionEnabled = NO;
-        }
-        
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.referenceView];
         self.animator.delegate = self;
         
@@ -255,41 +199,11 @@
         
         
         
-        
-        
-        
-        //	self.cloneContainer = [[SWAcapellaCloneView alloc] init];
-        //	self.cloneContainer.tag = SWAcapellaCloneContainerStateNone;
-        //	[self.referenceView addSubview:self.cloneContainer];
-        
         self.cloneContainer = [[SWAcapellaCloneContainer alloc] initWithViewsToClone:viewsToClone];
-//        self.cloneContainer.hidden = NO;
-        self.clonedViews = [NSArray new];
-        
-        
-        
-        
-//        for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
-//            
-//            UIView *snapshotView = [viewToClone snapshotViewAfterScreenUpdates:YES];
-//            snapshotView.frame = viewToClone.frame;
-//            [self.cloneContainer addSubview:snapshotView];
-//            
-//            
-////            SWAcapellaCloneView *cloneView = [[SWAcapellaCloneView alloc] init];
-////            cloneView.frame = viewToClone.frame;
-////            self.clonedViews = [self.clonedViews arrayByAddingObject:cloneView];
-////            [self.cloneContainer addSubview:cloneView];
-////            cloneView.viewToClone = viewToClone;
-//        }
-        
+        for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
+            viewToClone.userInteractionEnabled = NO;
+        }
         [self.referenceView addSubview:self.cloneContainer];
-//        
-        self.cloneContainer.tag = SWAcapellaCloneContainerStateNone;
-        
-        
-//        [self.referenceView setNeedsDisplay];
-        
         
         
         self.cloneContainer.centerXConstraint = [NSLayoutConstraint constraintWithItem:self.cloneContainer
@@ -322,13 +236,15 @@
                                                                       multiplier:1.0
                                                                         constant:0.0]];
         
-//        [self.referenceView setNeedsUpdateConstraints];
+        [self.referenceView setNeedsLayout];
+        [self.referenceView setNeedsDisplay];
         
-        
-//        self.cloneContainer.frame = self.referenceView.bounds;
-//        [self.cloneContainer setNeedsDisplay];
         
         self.bAttachment = [[UIAttachmentBehavior alloc] initWithItem:self.cloneContainer attachedToAnchor:CGPointZero];
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:onAcapellaCreatedNotificationName()
+                                                            object:self];
     }
     
     return self;
@@ -341,7 +257,7 @@
     @autoreleasepool {
         
         if (gestureRecognizer == self.tap || gestureRecognizer == self.pan) {
-            if (![self.cloneContainer.viewsToClone containsObject:touch.view] && [touch.view isKindOfClass:[UIControl class]]) {
+            if ([touch.view isKindOfClass:[UIControl class]]) {
                 UIControl *control = (UIControl *)touch.view;
                 return !control.isEnabled;
             }
@@ -357,7 +273,20 @@
 	if (gestureRecognizer == self.pan) {
 		
 		CGPoint panVelocity = [self.pan velocityInView:self.pan.view];
-		return (ABS(panVelocity.x) > ABS(panVelocity.y)); // Only accept horizontal pans
+        
+        BOOL isHorizontal = (ABS(panVelocity.x) > ABS(panVelocity.y));
+        BOOL isVertical = (ABS(panVelocity.y) > ABS(panVelocity.x));
+        
+        if (isVertical) {
+            SEL sel = (panVelocity.y >= 0.0) ? @selector(acapella_didRecognizeVerticalPanUp:) : @selector(acapella_didRecognizeVerticalPanDown:);
+            if ([self.owner respondsToSelector:sel]) {
+                if (!self.cloneContainer.hidden) {
+                    [self.owner performSelectorOnMainThread:sel withObject:gestureRecognizer waitUntilDone:NO];
+                }
+            }
+        }
+        
+		return isHorizontal;
 		
 	}
 	
@@ -368,28 +297,26 @@
 
 - (void)onTap:(UITapGestureRecognizer *)tap
 {
-	if (!self.cloneContainer.hidden) { // Don't do anything when titles view is hidden (ex when ratings view is visible)
-		
-		CGFloat xPercentage = [tap locationInView:tap.view].x / CGRectGetWidth(tap.view.bounds);
-		//CGFloat yPercentage = [tap locationInView:tap.view].y / CGRectGetHeight(tap.view.bounds);
-		
-		SEL sel = nil;
-		
-		if (xPercentage <= 0.25) { // left
-			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_tapleft]);
-		} else if (xPercentage > 0.75) { // right
-			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_tapright]);
-		} else { // centre
-			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_tapcentre]);
-		}
-		
-		if (sel && [self.owner respondsToSelector:sel]) {
-			[self.owner performSelectorOnMainThread:sel withObject:tap waitUntilDone:NO];
-		}
-		
-		SW_PIRACY;
-		
-	}
+    CGFloat xPercentage = [tap locationInView:tap.view].x / CGRectGetWidth(tap.view.bounds);
+    //CGFloat yPercentage = [tap locationInView:tap.view].y / CGRectGetHeight(tap.view.bounds);
+    
+    SEL sel = nil;
+    
+    if (xPercentage <= 0.25) { // left
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_tapleft]);
+    } else if (xPercentage > 0.75) { // right
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_tapright]);
+    } else { // centre
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_tapcentre]);
+    }
+    
+    if (sel && [self.owner respondsToSelector:sel]) {
+        if (!self.cloneContainer.hidden) {
+            [self.owner performSelectorOnMainThread:sel withObject:tap waitUntilDone:NO];
+        }
+    }
+    
+    SW_PIRACY;
 }
 
 - (void)onPan:(UIPanGestureRecognizer *)pan
@@ -412,7 +339,7 @@
         
         
         
-        [self.cloneContainer refreshClones];
+//        [self.cloneContainer refreshClones];
         
         
         
@@ -518,36 +445,31 @@
 - (void)onPress:(UILongPressGestureRecognizer *)press
 {
     if (press.state == UIGestureRecognizerStateBegan) {
-        [self pressAtLocation:[press locationInView:press.view] inView:press.view];
+        
+        CGPoint location = [press locationInView:press.view];
+        CGFloat xPercentage = location.x / CGRectGetWidth(press.view.bounds);
+        //	CGFloat yPercentage = location.y / CGRectGetHeight(press.view.bounds);
+        
+        SEL sel = nil;
+        
+        if (xPercentage <= 0.25) { // left
+            sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_pressleft]);
+        } else if (xPercentage > 0.75) { // right
+            sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_pressright]);
+        } else { // centre
+            sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_presscentre]);
+        }
+        
+        NSLog(@"PAT %@", NSStringFromSelector(sel));
+        
+        if (sel && [self.owner respondsToSelector:sel]) {
+            if (!self.cloneContainer.hidden) {
+                [self.owner performSelectorOnMainThread:sel withObject:self.press waitUntilDone:NO];
+            }
+        }
+        
+        SW_PIRACY;
     }
-}
-
-- (void)pressAtLocation:(CGPoint)location inView:(UIView *)view
-{
-	if (!self.cloneContainer.hidden) { // Don't do anything when titles view is hidden (ex when ratings view is visible)
-		
-		CGFloat xPercentage = location.x / CGRectGetWidth(view.bounds);
-		//	CGFloat yPercentage = location.y / CGRectGetHeight(view.bounds);
-		
-		SEL sel = nil;
-		
-		if (xPercentage <= 0.25) { // left
-			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_pressleft]);
-		} else if (xPercentage > 0.75) { // right
-			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_pressright]);
-		} else { // centre
-			sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", self.owner.acapellaPrefs.gestures_presscentre]);
-		}
-		
-		if (sel && [self.owner respondsToSelector:sel]) {
-			if (!self.cloneContainer.hidden) { // Don't do anything when titles view is hidded (ex when ratings view is visible)
-				[self.owner performSelectorOnMainThread:sel withObject:self.press waitUntilDone:NO];
-			}
-		}
-		
-		SW_PIRACY;
-		
-	}
 }
 
 #pragma mark - UIDynamics
@@ -562,10 +484,6 @@
 	if (self.cloneContainer.tag == SWAcapellaCloneContainerStatePanning) {
 		
 		self.cloneContainer.tag = SWAcapellaCloneContainerStateWaitingToFinishWrapAround;
-//		self.titles.layer.opacity = 0.0;
-//        for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
-//            viewToClone.layer.opacity = 0.0;
-//        }
 		
 		SEL sel = nil;
 		
@@ -576,7 +494,9 @@
 		}
 		
 		if (sel && [self.owner respondsToSelector:sel]) {
-			[self.owner performSelectorOnMainThread:sel withObject:self.pan waitUntilDone:NO];
+            if (!self.cloneContainer.hidden) {
+                [self.owner performSelectorOnMainThread:sel withObject:self.pan waitUntilDone:NO];
+            }
 		}
 		
 		
@@ -650,9 +570,7 @@
                 };
                 
                 self.cloneContainer.velocity = CGPointZero;
-                
             }
-            
         }
     });
 }
@@ -666,19 +584,15 @@
                 self.cloneContainer.tag == SWAcapellaCloneContainerStateWrappingAround) {
                 
                 [self.animator removeAllBehaviors];
-                [self.cloneContainer refreshClones];
+                self.cloneContainer.tag = SWAcapellaCloneContainerStateSnappingToCenter;
                 
                 UIDynamicItemBehavior *bDynamicItem = [[UIDynamicItemBehavior alloc] initWithItems:@[self.cloneContainer]];
                 
                 __unsafe_unretained SWAcapella *weakSelf = self;
-                //            __unsafe_unretained UIDynamicItemBehavior *weakbDynamicItem = bDynamicItem;
-                
                 bDynamicItem.action = ^{
                     weakSelf.cloneContainer.centerXConstraint.constant = weakSelf.cloneContainer.center.x - CGRectGetMidX(weakSelf.referenceView.bounds);
                     [weakSelf.referenceView setNeedsLayout];
                 };
-                
-                
                 
                 
                 bDynamicItem.density = 70.0;
@@ -693,8 +607,6 @@
                 bSnap.damping = 0.3;
                 [self.animator addBehavior:bSnap];
                 
-                self.cloneContainer.tag = SWAcapellaCloneContainerStateSnappingToCenter;
-                
             }
             
         }
@@ -705,68 +617,17 @@
 {
     //this method will get called if we stop dragging, but still have our finger down
     //check to see if we are dragging to make sure we dont remove all behaviours
-    
     if (self.cloneContainer.tag != SWAcapellaCloneContainerStateSnappingToCenter) {
         return;
     }
     
     [animator removeAllBehaviors];
     
-    //    self.cloneContainer.hidden = YES;
-    //	self.cloneContainer.centerXConstraint.constant = 0.0;
     self.cloneContainer.center = CGPointMake(CGRectGetMidX(self.referenceView.bounds), self.cloneContainer.center.y);
     self.cloneContainer.centerXConstraint.constant = CGRectGetMidX(self.referenceView.bounds) - self.cloneContainer.center.x;
     [self.referenceView setNeedsLayout];
     
     self.cloneContainer.tag = SWAcapellaCloneContainerStateNone;
-    
-    [self.cloneContainer refreshClones];
-}
-
-#pragma mark - Public
-
-- (void)pulse
-{
-	self.cloneContainer.tag = SWAcapellaCloneContainerStateNone;
-	self.wrapAroundFallback = nil;
-	[self.animator removeAllBehaviors];
-	self.cloneContainer.velocity = CGPointZero;
-	[self.cloneContainer.layer removeAllAnimations];
-//	self.cloneContainer.frame = self.referenceView.frame;
-//	self.cloneContainer.centerXConstraint.constant = 0.0;
-	[self.referenceView setNeedsLayout];
-	[self.cloneContainer setNeedsDisplay];
-	
-	[UIView animateWithDuration:0.11
-						  delay:0.01
-						options:UIViewAnimationOptionBeginFromCurrentState
-					 animations:^{
-						 
-						 self.cloneContainer.transform = CGAffineTransformMakeScale(1.15, 1.15);
-					 
-					 } completion:^(BOOL finished) {
-						 
-						 if (finished) {
-							 
-							 [UIView animateWithDuration:0.11
-												   delay:0.0
-												 options:UIViewAnimationOptionBeginFromCurrentState
-											  animations:^{
-												  
-												  self.cloneContainer.transform = CGAffineTransformIdentity;
-												  
-											  } completion:^(BOOL finished) {
-												  
-												  if (finished) {
-													  self.cloneContainer.transform = CGAffineTransformIdentity;
-												  }
-												  
-											  }];
-                             
-                         }
-                         
-                     }];
-
 }
 
 #pragma mark - NSNotificationCenter
@@ -777,7 +638,7 @@
 	[self.referenceView setNeedsLayout];
 	[self.referenceView layoutIfNeeded];
 	
-//	self.cloneContainer.frame = self.referenceView.frame;
+    self.cloneContainer.centerXConstraint.constant = CGRectGetMidX(self.referenceView.bounds) - self.cloneContainer.center.x;
     [self.cloneContainer setNeedsDisplay];
 }
 
