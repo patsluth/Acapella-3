@@ -70,6 +70,18 @@
 {
     %orig();
     
+
+    
+    if (self.acapellaKeyPrefix) {
+        self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
+    }
+    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
+    if (!hasAcapella) {
+        return;
+    }
+    
+    
+    
     
     self.transportControlsStackView.hidden = YES;
     
@@ -148,10 +160,7 @@
     
     
     
-    // Initialize prefs for this instance
-    if (self.acapellaKeyPrefix) {
-        self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
-    }
+    
     
     
     // Reload our transport buttons

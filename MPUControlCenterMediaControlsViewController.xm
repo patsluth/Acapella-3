@@ -34,17 +34,6 @@
 
 
 
-
-//#define MPU_SYSTEM_MEDIA_CONTROLS_VIEW MSHookIvar<MPUSystemMediaControlsView *>(self, "_mediaControlsView")
-#define MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER(owner) MSHookIvar<MPUTransportControlMediaRemoteController \
-                                                            *>(owner, "_transportControlMediaRemoteController")
-
-
-
-
-
-
-
 @interface UIView(SW)
 
 - (UIView *)sb_generateSnapshotViewAsynchronouslyOnQueue:(id)queue completionHandler:(id)completionHandler;
@@ -87,6 +76,8 @@
 		self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
 	
+    
+    
 	
     //Reload our transport buttons
     //See [self transportControlsView:arg1 buttonForControlType:arg2];
@@ -122,39 +113,22 @@
                                                      viewsToClone:@[self.mediaControlsView.artworkView,
                                                                     self.mediaControlsView.titleLabel,
                                                                     self.mediaControlsView.artistLabel,
-                                                                    self.mediaControlsView.albumLabel]]
+                                                                    self.mediaControlsView.albumLabel,
+                                                                    self.mediaControlsView.artistAlbumConcatenatedLabel]]
                       forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
-    }
-	
-    if (self.acapella) {
-        
-        // Show/Hide progress slider
-//        if (self.acapellaPrefs.enabled && !self.acapellaPrefs.progressslider) {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.timeInformationView.layer.opacity = 0.0;
-//        } else {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.timeInformationView.layer.opacity = 1.0;
-//        }
-//        
-//        //Show/Hide volume slider
-//        if (self.acapellaPrefs.enabled && !self.acapellaPrefs.volumeslider) {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView.layer.opacity = 0.0;
-//        } else {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView.layer.opacity = 1.0;
-//        }
-        
-        
-    } else { //restore original state
-		
-        // Only reset values for default media center instances
-//        NSString *acapellaKeyPrefix = [self acapellaKeyPrefix];
-//        if ([acapellaKeyPrefix isEqualToString:@"cc"] || [acapellaKeyPrefix isEqualToString:@"ls"]) {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.timeInformationView.layer.opacity = 1.0;
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView.layer.opacity = 1.0;
-//        }
-        
     }
     
     [self.view layoutSubviews];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    %orig();
+    
+    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
+    
+    self.mediaControlsView.transportControls.hidden = hasAcapella;
+    self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
 }
 
 - (void)viewDidDisappear:(BOOL)animated

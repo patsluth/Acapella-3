@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>title</key>
-	<string>Acapella II</string>
+	<string>Acapella III</string>
 	<key>items</key>
 	<array>
 		<dict>
@@ -14,7 +14,7 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>key</key>
-			<string>acapella2_cc</string>
+			<string>acapella3_cc</string>
 			<key>label</key>
 			<string>Control Center</string>
 			<key>defaults</key>
@@ -28,7 +28,7 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>key</key>
-			<string>acapella2_ls</string>
+			<string>acapella3_ls</string>
 			<key>label</key>
 			<string>Lock Screen</string>
 			<key>defaults</key>
@@ -42,7 +42,7 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>key</key>
-			<string>acapella2_musicnowplaying</string>
+			<string>acapella3_musicnowplaying</string>
 			<key>label</key>
 			<string>Music (Now Playing)</string>
 			<key>defaults</key>
@@ -56,99 +56,9 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>key</key>
-			<string>acapella2_musicmini</string>
+			<string>acapella3_musicmini</string>
 			<key>label</key>
 			<string>Music (Mini Player)</string>
-			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Third Party</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>detail</key>
-			<string>SWAPSListController_Instance</string>
-			<key>isController</key>
-			<string>1</string>
-			<key>key</key>
-			<string>acapella2_otm</string>
-			<key>label</key>
-			<string>OnTapMusic</string>
-			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>detail</key>
-			<string>SWAPSListController_Instance</string>
-			<key>isController</key>
-			<string>1</string>
-			<key>key</key>
-			<string>acapella2_auxo</string>
-			<key>label</key>
-			<string>Auxo</string>
-			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>detail</key>
-			<string>SWAPSListController_Instance</string>
-			<key>isController</key>
-			<string>1</string>
-			<key>key</key>
-			<string>acapella2_vertex</string>
-			<key>label</key>
-			<string>Vertex</string>
-			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>detail</key>
-			<string>SWAPSListController_Instance</string>
-			<key>isController</key>
-			<string>1</string>
-			<key>key</key>
-			<string>acapella2_seng</string>
-			<key>label</key>
-			<string>Seng</string>
-			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>detail</key>
-			<string>SWAPSListController_Instance</string>
-			<key>isController</key>
-			<string>1</string>
-			<key>key</key>
-			<string>acapella2_widux</string>
-			<key>label</key>
-			<string>Widux</string>
-			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>detail</key>
-			<string>SWAPSListController_Instance</string>
-			<key>isController</key>
-			<string>1</string>
-			<key>key</key>
-			<string>acapella2_cleo</string>
-			<key>label</key>
-			<string>Cleo</string>
 			<key>defaults</key>
 			<string>com.patsluth.acapella2</string>
 		</dict>

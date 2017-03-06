@@ -51,10 +51,21 @@
 
         if ([notification.object isKindOfClass:[SWAcapella class]]) {
             SWAcapella *acapella = notification.object;
-            UIGestureRecognizer *gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_scrollViewGestureRecognizer");
+            UIGestureRecognizer *gestureRecognizer;
+            
+            gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_screenEdgeGestureRecognizer");
+            [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+            
+            gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_swallowGestureRecognizer");
+            [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+            
+            gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_scrollViewGestureRecognizer");
+            [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+            
+            gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_horizontalFailureGestureRecognizer");
             [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
         }
-        
+    
     }
 }
 

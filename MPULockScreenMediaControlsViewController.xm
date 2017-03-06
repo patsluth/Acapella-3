@@ -71,7 +71,7 @@
     %orig(animated);
     
     
-    self.mediaControlsView.transportControls.hidden = YES;
+//    self.mediaControlsView.transportControls.hidden = YES;
 //    self.mediaControlsView.transportControls.layer.opacity = 0.0;
     
 	
@@ -80,6 +80,7 @@
     if (self.acapellaKeyPrefix) {
 		self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
+    
 	
 	
     //Reload our transport buttons
@@ -119,38 +120,18 @@
                                                      viewsToClone:@[self.mediaControlsView.titlesView]]
                       forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
     }
-	
-    if (self.acapella) {
-        
-        
-        
-        // Show/Hide progress slider
-//        if (self.acapellaPrefs.enabled && !self.acapellaPrefs.progressslider) {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.timeInformationView.layer.opacity = 0.0;
-//        } else {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.timeInformationView.layer.opacity = 1.0;
-//        }
-//        
-//        //Show/Hide volume slider
-//        if (self.acapellaPrefs.enabled && !self.acapellaPrefs.volumeslider) {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView.layer.opacity = 0.0;
-//        } else {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView.layer.opacity = 1.0;
-//        }
-        
-        
-    } else { //restore original state
-		
-        // Only reset values for default media center instances
-//        NSString *acapellaKeyPrefix = [self acapellaKeyPrefix];
-//        if ([acapellaKeyPrefix isEqualToString:@"cc"] || [acapellaKeyPrefix isEqualToString:@"ls"]) {
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.timeInformationView.layer.opacity = 1.0;
-//            MPU_SYSTEM_MEDIA_CONTROLS_VIEW.volumeView.layer.opacity = 1.0;
-//        }
-        
-    }
     
     [self.view layoutSubviews];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    %orig();
+    
+    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
+    
+    self.mediaControlsView.transportControls.hidden = hasAcapella;
+    self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
 }
 
 - (void)viewDidDisappear:(BOOL)animated

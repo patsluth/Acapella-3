@@ -144,42 +144,42 @@
 	
     #pragma mark - Initialize Keys
     
-    NSString *enabledKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"enabled"];
+    NSString *enabledKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"enabled"];
     
     #pragma mark Gestures
     
-    NSString *gestures_tapleftKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_tapleft"];
-    NSString *gestures_tapcentreKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_tapcentre"];
-    NSString *gestures_taprightKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_tapright"];
-    NSString *gestures_swipeleftKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_swipeleft"];
-    NSString *gestures_swiperightKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_swiperight"];
-    NSString *gestures_pressleftKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_pressleft"];
-    NSString *gestures_presscentreKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_presscentre"];
-    NSString *gestures_pressrightKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"gestures_pressright"];
+    NSString *gestures_tapleftKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_tapleft"];
+    NSString *gestures_tapcentreKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_tapcentre"];
+    NSString *gestures_taprightKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_tapright"];
+    NSString *gestures_swipeleftKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_swipeleft"];
+    NSString *gestures_swiperightKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_swiperight"];
+    NSString *gestures_pressleftKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_pressleft"];
+    NSString *gestures_presscentreKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_presscentre"];
+    NSString *gestures_pressrightKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"gestures_pressright"];
     
     #pragma mark UI(Progress Slider)
     
-    NSString *progresssliderKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"progressslider"];
+    NSString *progresssliderKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"progressslider"];
     
     #pragma mark UI(Transport)
     
-    NSString *transport_heartKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_heart"];
-    NSString *transport_upnextKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_upnext"];
-    NSString *transport_previoustrackKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_previoustrack"];
-    NSString *transport_nexttrackKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_nexttrack"];
-    NSString *transport_intervalrewindKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_intervalrewind"];
-    NSString *transport_intervalforwardKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_intervalforward"];
-    NSString *transport_playpauseKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_playpause"];
-    NSString *transport_shareKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_share"];
-    NSString *transport_shuffleKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_shuffle"];
-    NSString *transport_repeatKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_repeat"];
-    NSString *transport_contextualKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_contextual"];
-    NSString *transport_playbackrateKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_playbackrate"];
-    NSString *transport_sleeptimerKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"transport_sleeptimer"];
+    NSString *transport_heartKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_heart"];
+    NSString *transport_upnextKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_upnext"];
+    NSString *transport_previoustrackKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_previoustrack"];
+    NSString *transport_nexttrackKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_nexttrack"];
+    NSString *transport_intervalrewindKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_intervalrewind"];
+    NSString *transport_intervalforwardKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_intervalforward"];
+    NSString *transport_playpauseKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_playpause"];
+    NSString *transport_shareKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_share"];
+    NSString *transport_shuffleKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_shuffle"];
+    NSString *transport_repeatKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_repeat"];
+    NSString *transport_contextualKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_contextual"];
+    NSString *transport_playbackrateKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_playbackrate"];
+    NSString *transport_sleeptimerKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"transport_sleeptimer"];
     
     #pragma mark UI(Volume Slider)
     
-    NSString *volumesliderKey = [NSString stringWithFormat:@"acapella2_%@_%@", self.keyPrefix, @"volumeslider"];
+    NSString *volumesliderKey = [NSString stringWithFormat:@"acapella3_%@_%@", self.keyPrefix, @"volumeslider"];
     
     
     

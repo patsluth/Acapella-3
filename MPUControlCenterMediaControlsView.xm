@@ -8,15 +8,10 @@
 
 #import "MPUControlCenterMediaControlsView.h"
 
-#import "libsw/libSluthware/libSluthware.h"
-#import "libsw/SWAppLauncher.h"
+#import "SWAcapella.h"
 
 
-#define TRY @try {
-#define CATCH } @catch (NSException *exception) {
-#define CATCH_LOG } @catch (NSException *exception) { NSLog(@"%@", exception);
-#define FINALLY } @finally {
-#define ENDTRY }
+
 
 
 #pragma mark - MPUControlCenterMediaControlsView
@@ -53,11 +48,43 @@
     return MSHookIvar<UIView *>(self, "_artistAlbumConcatenatedLabel");
 }
 
-//%new
-//- (UIView *)transportControls
-//{
-//    return MSHookIvar<UIView *>(self, "_transportControls");
-//}
+- (void)layoutSubviews
+{
+    %orig();
+    
+    SWAcapella *acapella = [SWAcapella acapellaForObject:self];
+   
+    if (!acapella) {
+        return;
+    }
+    
+    // Show tap to play text
+    self.emptyNowPlayingView.shouldShowActionText = YES;
+    
+    // Calcualate centre based on visible controls
+    if (!self.useCompactStyle) {
+        
+        self.timeView.frame = CGRectMake(CGRectGetMinX(self.timeView.frame),
+                                         CGRectGetMinX(self.artworkView.frame),
+                                         CGRectGetWidth(self.timeView.bounds),
+                                         CGRectGetHeight(self.timeView.bounds));
+        
+        
+        CGFloat topGuideline = CGRectGetMaxY(self.timeView.frame);
+        CGFloat bottomGuideline = CGRectGetMinY(self.volumeView.frame);
+        
+        CGFloat midPoint = (topGuideline + (ABS(topGuideline - bottomGuideline) * 0.5));
+        CGFloat deltaY = ABS(midPoint - CGRectGetMidX(self.artworkView.bounds));
+        
+        
+        self.artworkView.center = CGPointMake(self.artworkView.center.x, midPoint);
+        // Move labels down by same ammount as the artworkView was moved
+        self.titleLabel.center = CGPointMake(self.titleLabel.center.x, self.titleLabel.center.y + deltaY);
+        self.artistLabel.center = CGPointMake(self.artistLabel.center.x, self.artistLabel.center.y + deltaY);
+        self.albumLabel.center = CGPointMake(self.albumLabel.center.x, self.albumLabel.center.y + deltaY);
+        self.artistAlbumConcatenatedLabel.center = CGPointMake(self.artistAlbumConcatenatedLabel.center.x, self.artistAlbumConcatenatedLabel.center.y + deltaY);
+    }
+}
 
 %end
 

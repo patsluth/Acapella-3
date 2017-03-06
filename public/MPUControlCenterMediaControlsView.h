@@ -5,6 +5,8 @@
 
 #import "MPUMediaRemoteControlsView.h"
 
+#import "MPUEmptyNowPlayingView.h"
+
 
 
 
@@ -19,6 +21,10 @@
 @property (strong, nonatomic) UIView *artistLabel;
 @property (strong, nonatomic) UIView *albumLabel;
 @property (strong, nonatomic) UIView *artistAlbumConcatenatedLabel;
+
+@property (nonatomic, readonly) MPUEmptyNowPlayingView *emptyNowPlayingView;
+
+@property (nonatomic) BOOL useCompactStyle;
 
 
 /*

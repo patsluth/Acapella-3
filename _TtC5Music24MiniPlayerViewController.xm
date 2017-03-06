@@ -42,7 +42,9 @@
 @property (strong, nonatomic) UIView *transportControlsStack;
 
 @property (strong, nonatomic) UIButton *miniPlayerButton;
+
 @property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+@property (strong, nonatomic) UILongPressGestureRecognizer *playbackCancellationGesture;
 
 @end
 
@@ -57,6 +59,22 @@
 - (void)viewDidLoad
 {
     %orig();
+    
+    
+    
+    
+    if (self.acapellaKeyPrefix) {
+        self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
+    }
+    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
+    if (!hasAcapella) {
+        return;
+    }
+    
+    
+    
+    
+    
     
     self.transportControlsStack.hidden = YES;
     
@@ -106,11 +124,6 @@
     
     
     
-//    [self.miniPlayerButton removeFromSuperview];
-//
-    
-    
-    
     
     
     if (!self.acapella && self.acapellaPrefs.enabled) {
@@ -125,7 +138,9 @@
     
     if (self.acapella) {
         
-//        [self.panGestureRecognizer requireGestureRecognizerToFail:self.acapella.pan];
+        [self.panGestureRecognizer requireGestureRecognizerToFail:self.acapella.pan];
+        [self.playbackCancellationGesture requireGestureRecognizerToFail:self.acapella.pan];
+        [self.playbackCancellationGesture requireGestureRecognizerToFail:self.acapella.press];
         
     }
     

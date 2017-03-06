@@ -73,7 +73,6 @@
 @property (strong, nonatomic, readwrite) UITapGestureRecognizer *tap;
 @property (strong, nonatomic, readwrite) UIPanGestureRecognizer *pan;
 @property (strong, nonatomic, readwrite) UILongPressGestureRecognizer *press;
-@property (weak, nonatomic, readwrite) UIGestureRecognizer *forceTouchGestureRecognizer;
 
 @property (strong, nonatomic) NSTimer *wrapAroundFallback;
 
@@ -137,7 +136,7 @@
                                                             object:acapella];
     }
     
-//    [SWAcapella setAcapella:nil forObject:acapella.titles withPolicy:OBJC_ASSOCIATION_ASSIGN];
+    [SWAcapella setAcapella:nil forObject:acapella.referenceView withPolicy:OBJC_ASSOCIATION_ASSIGN];
     [SWAcapella setAcapella:nil forObject:acapella.owner withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
 }
 
@@ -172,7 +171,7 @@
         self.referenceView = referenceView;
         self.referenceView.clipsToBounds = YES;
         
-        //	[SWAcapella setAcapella:self forObject:self.titles withPolicy:OBJC_ASSOCIATION_ASSIGN];
+        [SWAcapella setAcapella:self forObject:self.referenceView withPolicy:OBJC_ASSOCIATION_ASSIGN];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationDidBecomeActive:)
@@ -202,6 +201,7 @@
             viewToClone.userInteractionEnabled = NO;
         }
         [self.referenceView addSubview:self.cloneContainer];
+        [self.referenceView sendSubviewToBack:self.cloneContainer];
         
         
         self.cloneContainer.centerXConstraint = [NSLayoutConstraint constraintWithItem:self.cloneContainer
