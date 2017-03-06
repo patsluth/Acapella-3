@@ -66,7 +66,6 @@
 }
 
 @property (strong, nonatomic, readwrite) SWAcapellaCloneContainer *cloneContainer;
-@property (strong, nonatomic, readwrite) NSArray<SWAcapellaCloneView *> *clonedViews;
 
 @property (strong, nonatomic) UIDynamicAnimator *animator;
 @property (strong, nonatomic) UIAttachmentBehavior *bAttachment;
@@ -114,7 +113,6 @@
         }
         [acapella.cloneContainer removeFromSuperview];
         acapella.cloneContainer = nil;
-        acapella.clonedViews = nil;
 		
         [acapella.animator removeAllBehaviors];
 		acapella.animator = nil;
@@ -259,7 +257,7 @@
         if (gestureRecognizer == self.tap || gestureRecognizer == self.pan) {
             if ([touch.view isKindOfClass:[UIControl class]]) {
                 UIControl *control = (UIControl *)touch.view;
-                return !control.isEnabled;
+                return (!control.isEnabled || touch.view.layer.opacity <= 0.0);
             }
         }
         
@@ -278,7 +276,7 @@
         BOOL isVertical = (ABS(panVelocity.y) > ABS(panVelocity.x));
         
         if (isVertical) {
-            SEL sel = (panVelocity.y >= 0.0) ? @selector(acapella_didRecognizeVerticalPanUp:) : @selector(acapella_didRecognizeVerticalPanDown:);
+            SEL sel = (panVelocity.y <= 0.0) ? @selector(acapella_didRecognizeVerticalPanUp:) : @selector(acapella_didRecognizeVerticalPanDown:);
             if ([self.owner respondsToSelector:sel]) {
                 if (!self.cloneContainer.hidden) {
                     [self.owner performSelectorOnMainThread:sel withObject:gestureRecognizer waitUntilDone:NO];

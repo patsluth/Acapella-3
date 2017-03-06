@@ -1,6 +1,6 @@
 //
-//  MusicNowPlayingViewController.xm
-//  Acapella2
+//  MusicNowPlayingControlsViewController.xm
+//  Acapella3
 //
 //  Created by Pat Sluth on 2015-12-27.
 //
@@ -23,10 +23,6 @@
 
 
 
-
-#import "MusicNowPlayingViewController+SW.h"
-#import "MPUTransportControlsView+SW.h"
-
 #import "SWAcapella.h"
 #import "_TtC5Music19ApplicationDelegate+SW.h"
 #import "MediaPlayer+SW.h"
@@ -43,13 +39,17 @@
 
 
 
-#pragma mark - MusicNowPlayingViewController
+#import "Sluthware/Sluthware.h"
 
-@interface _TtC5Music24NowPlayingViewController : MusicNowPlayingViewController
 
-@end
 
-@interface MusicNowPlayingControlsViewController : MusicNowPlayingViewController
+
+
+
+
+#pragma mark - MusicNowPlayingControlsViewController
+
+@interface MusicNowPlayingControlsViewController : UIViewController <SWAcapellaDelegate>
 
 @property (strong, nonatomic) UIView *timeControl;
 @property (strong, nonatomic) UIView *titlesStackView;
@@ -66,9 +66,82 @@
 
 #pragma mark - Init
 
+- (void)viewDidLoad
+{
+    %orig();
+    
+    
+    self.transportControlsStackView.hidden = YES;
+    
+    
+    // Remove titlesStackView current vertical position constraint
+    NSMutableArray<NSLayoutConstraint *> *constraintsToDeactivate = [NSMutableArray new];
+    for (NSLayoutConstraint *constraint in self.view.constraints) {
+        if (constraint.firstItem == self.titlesStackView) {
+            if (constraint.firstAttribute == NSLayoutAttributeFirstBaseline) {
+                [constraintsToDeactivate addObject:constraint];
+            }
+        }
+    }
+    [NSLayoutConstraint deactivateConstraints:constraintsToDeactivate.copy];
+    
+    
+    // Placeholder view to vertically align titlesStackView
+    UIView *titlesAlignmentView = [UIView new];
+    titlesAlignmentView.userInteractionEnabled = NO;
+    titlesAlignmentView.backgroundColor = [UIColor clearColor];
+    titlesAlignmentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:titlesAlignmentView];
+    [self.view sendSubviewToBack:titlesAlignmentView];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:titlesAlignmentView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:titlesAlignmentView
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:titlesAlignmentView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.timeControl
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:titlesAlignmentView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.volumeSlider
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    
+    
+    // Add new titlesStackView vertical position constraint
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.titlesStackView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:titlesAlignmentView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
-	%orig(animated);
+    %orig(animated);
+    
+    
+    
+    
+    
     
     
     
@@ -85,26 +158,26 @@
     // See [self transportControlsView:arg1 buttonForControlType:arg2];
     
     TRY
-        
+    
     // TOP ROW
-//    [self.transportControls reloadTransportButtonWithControlType:6];
-//    [self.transportControls reloadTransportButtonWithControlType:1];
-//    [self.transportControls reloadTransportButtonWithControlType:2];
-//    [self.transportControls reloadTransportButtonWithControlType:3];
-//    [self.transportControls reloadTransportButtonWithControlType:4];
-//    [self.transportControls reloadTransportButtonWithControlType:5];
-//    [self.transportControls reloadTransportButtonWithControlType:7];
-//    
-//    // BOTTOM ROW
-//    [self.secondaryTransportControls reloadTransportButtonWithControlType:8];
-//    [self.secondaryTransportControls reloadTransportButtonWithControlType:10];
-//    [self.secondaryTransportControls reloadTransportButtonWithControlType:9];
-//    [self.secondaryTransportControls reloadTransportButtonWithControlType:11];
-//    
-//    // PODCAST TOP ROW
-//    [self.transportControls reloadTransportButtonWithControlType:12];
-//    // PODCAST BOTTOM ROW
-//    [self.secondaryTransportControls reloadTransportButtonWithControlType:13];
+    //    [self.transportControls reloadTransportButtonWithControlType:6];
+    //    [self.transportControls reloadTransportButtonWithControlType:1];
+    //    [self.transportControls reloadTransportButtonWithControlType:2];
+    //    [self.transportControls reloadTransportButtonWithControlType:3];
+    //    [self.transportControls reloadTransportButtonWithControlType:4];
+    //    [self.transportControls reloadTransportButtonWithControlType:5];
+    //    [self.transportControls reloadTransportButtonWithControlType:7];
+    //
+    //    // BOTTOM ROW
+    //    [self.secondaryTransportControls reloadTransportButtonWithControlType:8];
+    //    [self.secondaryTransportControls reloadTransportButtonWithControlType:10];
+    //    [self.secondaryTransportControls reloadTransportButtonWithControlType:9];
+    //    [self.secondaryTransportControls reloadTransportButtonWithControlType:11];
+    //
+    //    // PODCAST TOP ROW
+    //    [self.transportControls reloadTransportButtonWithControlType:12];
+    //    // PODCAST BOTTOM ROW
+    //    [self.secondaryTransportControls reloadTransportButtonWithControlType:13];
     
     CATCH_LOG
     ENDTRY
@@ -166,9 +239,6 @@
                                                      viewsToClone:@[self.titlesStackView]]
                       forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
     }
-	
-	[self viewDidLayoutSubviews];
-	
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -177,76 +247,6 @@
     self.acapellaPrefs = nil;
     
     %orig(animated);
-}
-
-- (void)viewDidLayoutSubviews
-{
-	%orig();
-    
-   
-    
-    
-//    
-//    BOOL progressVisible = YES;
-//    BOOL volumeVisible = YES;
-    
-//    if (self.acapellaPrefs && self.acapellaPrefs.enabled) {
-//        progressVisible = self.acapellaPrefs.progressslider;
-//		volumeVisible = self.acapellaPrefs.volumeslider;
-////		self.dismissButton.hidden = YES;
-//	} else {
-////		self.dismissButton.hidden = NO;
-//	}
-		
-    // Show/Hide sliders
-//    self.timeControl.hidden = YES;//!progressVisible;
-//    self.volumeSlider.hidden = YES;//!volumeVisible;
-    
-    
-    
-    
-    return;
-    
-    
-    
-    
-    
-    
-    // Intelligently calcualate centre based on visible controls, which we dont want to do on iPad
-    if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)) { return; }
-    
-    
-    CGFloat topGuideline = CGRectGetMinY(self.titlesStackView.frame);
-    
-    if (!self.volumeSlider.hidden) { // Visible
-        topGuideline += CGRectGetHeight(self.titlesStackView.bounds);
-    }
-    
-    
-    CGFloat bottomGuideline = CGRectGetMinY(self.transportControlsStackView.frame); // Top of primary transport controls
-    
-    
-    if (self.transportControlsStackView.hidden) {//[self.transportControlsStackView acapella_hidden]) {
-        
-        bottomGuideline = CGRectGetMinY(self.volumeSlider.frame); // Top of volume slider
-        
-        if (self.volumeSlider.hidden) { // Hidden
-            
-//            bottomGuideline = CGRectGetMinY(self.secondaryTransportControls.frame); // Top of transport secondary controls
-            
-//            if ([self.secondaryTransportControls acapella_hidden]) {
-                bottomGuideline = CGRectGetMaxY(self.titlesView.superview.bounds); // Bottom of screen
-//            }
-            
-        }
-        
-    }
-	
-	
-	// The midpoint between the currently visible views. This is where we will place our titles
-	NSInteger midPoint = (topGuideline + (ABS(topGuideline - bottomGuideline) / 2.0));
-	self.titlesView.center = CGPointMake(self.titlesView.center.x, midPoint);
-	
 }
 
 #pragma mark - SWAcapellaDelegate
@@ -293,7 +293,7 @@
 - (void)action_heart:(id)arg1
 {
     TRY
-    [self transportControlsView:self.transportControls tapOnControlType:6];
+    //    [self transportControlsView:self.transportControls tapOnControlType:6];
     
     CATCH_LOG
     ENDTRY
@@ -304,7 +304,7 @@
 {
     TRY
     
-    [self transportControlsView:self.transportControls tapOnControlType:7];
+    //    [self transportControlsView:self.transportControls tapOnControlType:7];
     
     CATCH_LOG
     ENDTRY
@@ -435,7 +435,7 @@
 {
     TRY
     
-    [self transportControlsView:self.secondaryTransportControls tapOnControlType:8];
+    //    [self transportControlsView:self.secondaryTransportControls tapOnControlType:8];
     
     CATCH_LOG
     ENDTRY
@@ -478,7 +478,7 @@
 {
     TRY
     
-    [self transportControlsView:self.secondaryTransportControls tapOnControlType:11];
+    //    [self transportControlsView:self.secondaryTransportControls tapOnControlType:11];
     
     CATCH_LOG
     ENDTRY
@@ -494,20 +494,7 @@
 {
     TRY
     
-    // iOS <= 9.0.2
-    [self _setRatingsVisible:self.ratingControl.hidden];
-    
     CATCH_LOG
-    
-    TRY
-    
-    // iOS 9.0.3 shows the ratings view in the lyrics view now
-    // Hide the lyrics view if it is visible
-    [self _setLyricsVisible:![self lyricsViewVisible]];
-    
-    CATCH_LOG
-    ENDTRY
-    
     ENDTRY
 }
 
@@ -560,12 +547,12 @@
 %new
 - (BOOL)lyricsViewVisible
 {
-//	NSString *classString = NSStringFromClass([self.presentedDetailViewController class]);
-//	if ([classString isEqualToString:@"MusicNowPlayingLyricsViewController"]) {
-//		return YES;
-//	}
-	
-	return NO;
+    //	NSString *classString = NSStringFromClass([self.presentedDetailViewController class]);
+    //	if ([classString isEqualToString:@"MusicNowPlayingLyricsViewController"]) {
+    //		return YES;
+    //	}
+    
+    return NO;
 }
 
 #pragma mark - MusicNowPlayingViewController
@@ -594,14 +581,14 @@
     // 12 playback rate (1x, 2x etc. )
     // PODCAST BOTTOM ROW
     // 13 sleep timer
-	
-	
-	// Sometimes this won't be ready until the view has appeared, so return nil so the buttons don't flash
-	// once if acapella is enabled
-	if (!self.acapellaPrefs) {
-		return nil;
-	}
-	
+    
+    
+    // Sometimes this won't be ready until the view has appeared, so return nil so the buttons don't flash
+    // once if acapella is enabled
+    if (!self.acapellaPrefs) {
+        return nil;
+    }
+    
     
     if (self.acapellaPrefs.enabled) {
         
@@ -655,7 +642,7 @@
         if (arg2 == 12 && !self.acapellaPrefs.transport_playbackrate) {
             return nil;
         }
-
+        
         // PODCAST BOTTOM ROW
         if (arg2 == 13 && !self.acapellaPrefs.transport_sleeptimer) {
             return nil;
@@ -670,14 +657,14 @@
 //- (void)_handleTapGestureRecognizerAction:(UITapGestureRecognizer *)arg1 //tap on artwork
 //{
 //	if (self.acapella) {
-//		
+//
 //		// touch is on the artwork view
 //		if (![[arg1.view hitTest:[arg1 locationInView:arg1.view] withEvent:nil]
 //			  isDescendantOfView:self.currentItemViewControllerContainerView]) {
 //			return;
 //		}
 //	}
-//	
+//
 //	%orig(arg1);
 //}
 
@@ -688,37 +675,15 @@
  */
 - (void)dismissDetailViewController:(id)arg1
 {
-	%orig(arg1);
-	
-	@try {
-		[self _setRatingsVisible:NO];
-	} @catch (NSException *exception) {
-		NSLog(@"%@", exception);
-	} @finally {
-        self.acapella.cloneContainer.hidden = NO;
-	}
-}
-
-- (void)_showUpNext
-{
-    self.acapella.cloneContainer.hidden = YES;
-	
-    %orig();
-}
-
-- (void)_showUpNext:(id)arg1
-{
-    self.acapella.cloneContainer.hidden = NO;
-	
-	%orig(arg1);
-}
-
-- (void)_setRatingsVisible:(BOOL)arg1		// No longer available on iOS 9.3.3
-{
-	%orig(arg1);
-	
-	// Hide Acapella if Ratings are visible
-    self.acapella.cloneContainer.hidden = arg1;
+    %orig(arg1);
+    
+    //	@try {
+    //		[self _setRatingsVisible:NO];
+    //	} @catch (NSException *exception) {
+    //		NSLog(@"%@", exception);
+    //	} @finally {
+    //        self.acapella.cloneContainer.hidden = NO;
+    //	}
 }
 
 %end

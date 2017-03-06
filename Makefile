@@ -27,18 +27,16 @@ TARGET = iphone:clang:latest:7.0
 TWEAK_NAME = Acapella3
 
 Acapella3_CFLAGS = -fobjc-arc -Wno-arc-performSelector-leaks
-Acapella3_FILES =   MusicNowPlayingTitlesView.xm \
-                    MusicMiniPlayerViewController.xm \
-                    MusicNowPlayingViewController.xm \
+Acapella3_FILES =   _TtC5Music24MiniPlayerViewController.xm \
+                    MusicNowPlayingControlsViewController.xm \
+                    MPUControlCenterMediaControlsView.xm \
                     MPUControlCenterMediaControlsViewController.xm \
                     MPULockScreenMediaControlsView.xm \
                     MPULockScreenMediaControlsViewController.xm \
-                    SWAcapellaPrefs.xm \
+                    SBDashBoardScrollGestureController.xm \
                     SWAcapella.m \
                     SWAcapellaCloneContainer.m \
-                    SBDashBoardScrollGestureController.xm \
-                    SWAcapellaCloneView.m  \
-                    MPUControlCenterMediaControlsView.xm
+                    SWAcapellaPrefs.xm
 
 ifeq ($(DEBUG), 1)
 	Acapella3_CFLAGS += -Wno-unused-variable
@@ -63,7 +61,7 @@ AcapellaSupport_INSTALL_PATH = /Library/Application Support
 
 
 
-#SUBPROJECTS += AcapellaPrefs
+SUBPROJECTS += AcapellaPrefs
 
 
 

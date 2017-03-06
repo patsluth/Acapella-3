@@ -10,10 +10,8 @@
 		2E16F0501E4BD47A00F40B96 /* Acapella3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Acapella3.plist; sourceTree = "<group>"; };
 		2E491DAF1E65075800EBD841 /* SWAcapella.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapella.m; sourceTree = "<group>"; };
 		2E491DB01E65075800EBD841 /* SWAcapellaCloneContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapellaCloneContainer.m; sourceTree = "<group>"; };
-		2E491DB11E65075800EBD841 /* SWAcapellaCloneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapellaCloneView.m; sourceTree = "<group>"; };
-		2E57FCCF1E4D12450074C616 /* MusicNowPlayingTitlesView.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicNowPlayingTitlesView.xm; sourceTree = "<group>"; };
-		2E57FCD11E4D12AA0074C616 /* MusicNowPlayingViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicNowPlayingViewController.xm; sourceTree = "<group>"; };
-		2E57FCD31E4D26BA0074C616 /* MusicMiniPlayerViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicMiniPlayerViewController.xm; sourceTree = "<group>"; };
+		2E57FCD11E4D12AA0074C616 /* MusicNowPlayingControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicNowPlayingControlsViewController.xm; sourceTree = "<group>"; };
+		2E57FCD31E4D26BA0074C616 /* _TtC5Music24MiniPlayerViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = _TtC5Music24MiniPlayerViewController.xm; sourceTree = "<group>"; };
 		2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = SWAcapellaDebug.xm; sourceTree = "<group>"; };
 		2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsView.xm; sourceTree = "<group>"; };
 		2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsViewController.xm; sourceTree = "<group>"; };
@@ -34,21 +32,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2EB874E21E4D5DE900DAD90C /* NEW */ = {
+		2EB874E21E4D5DE900DAD90C /* src */ = {
 			isa = PBXGroup;
 			children = (
+				2EEC8AAD1E6D0AD700A84C40 /* Music */,
+				2EEC8AAE1E6D0ADB00A84C40 /* Springboard */,
 				2E491DAF1E65075800EBD841 /* SWAcapella.m */,
 				2E491DB01E65075800EBD841 /* SWAcapellaCloneContainer.m */,
-				2E491DB11E65075800EBD841 /* SWAcapellaCloneView.m */,
-				2ECE0BF91E6744CB003EE535 /* SBDashBoardScrollGestureController.xm */,
-				2E57FCD31E4D26BA0074C616 /* MusicMiniPlayerViewController.xm */,
-				2E57FCD11E4D12AA0074C616 /* MusicNowPlayingViewController.xm */,
-				2ECE0BF81E674174003EE535 /* MPULockScreenMediaControlsView.xm */,
-				2ECE0BF71E673D87003EE535 /* MPULockScreenMediaControlsViewController.xm */,
-				2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */,
-				2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */,
+				2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */,
+				2EF29A751C3C65BD001032FE /* SWAcapellaPrefs.xm */,
 			);
-			name = NEW;
+			name = src;
 			sourceTree = "<group>";
 		};
 		2EBB756F1BE97BB900A3A82D = {
@@ -58,12 +52,30 @@
 				2EBB75821BE97C5A00A3A82D /* public */,
 				2E16F0501E4BD47A00F40B96 /* Acapella3.plist */,
 				2EBB758B1BE97C5A00A3A82D /* Makefile */,
-				2E57FCCF1E4D12450074C616 /* MusicNowPlayingTitlesView.xm */,
-				2EB874E21E4D5DE900DAD90C /* NEW */,
-				2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */,
-				2EF29A751C3C65BD001032FE /* SWAcapellaPrefs.xm */,
+				2EB874E21E4D5DE900DAD90C /* src */,
 				2E5E51811CC3F052004DB6FF /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		2EEC8AAD1E6D0AD700A84C40 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				2E57FCD31E4D26BA0074C616 /* _TtC5Music24MiniPlayerViewController.xm */,
+				2E57FCD11E4D12AA0074C616 /* MusicNowPlayingControlsViewController.xm */,
+			);
+			name = Music;
+			sourceTree = "<group>";
+		};
+		2EEC8AAE1E6D0ADB00A84C40 /* Springboard */ = {
+			isa = PBXGroup;
+			children = (
+				2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */,
+				2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */,
+				2ECE0BF81E674174003EE535 /* MPULockScreenMediaControlsView.xm */,
+				2ECE0BF71E673D87003EE535 /* MPULockScreenMediaControlsViewController.xm */,
+				2ECE0BF91E6744CB003EE535 /* SBDashBoardScrollGestureController.xm */,
+			);
+			name = Springboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

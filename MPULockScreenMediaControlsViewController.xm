@@ -71,8 +71,8 @@
     %orig(animated);
     
     
-    
-    
+    self.mediaControlsView.transportControls.hidden = YES;
+//    self.mediaControlsView.transportControls.layer.opacity = 0.0;
     
 	
 	
@@ -385,53 +385,6 @@
 //}
 
 //%end
-
-
-
-
-
-//#pragma mark - MPUSystemMediaControlsView
-//
-//%hook MPUSystemMediaControlsView
-//
-//- (void)layoutSubviews
-//{
-//    %orig();
-//	
-//	
-//    // Calcualate centre based on visible controls
-//    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-//        
-//        CGFloat topGuideline = 0;
-//        
-//        if (self.timeInformationView.layer.opacity > 0.0) { // Visible
-//            topGuideline += CGRectGetMaxY(self.timeInformationView.frame);
-//        }
-//        
-//        
-//        CGFloat bottomGuideline = CGRectGetMaxY(self.bounds);
-//        
-//        if (![self.transportControlsView acapella_hidden]) {
-//            bottomGuideline = CGRectGetMinY(self.transportControlsView.frame);
-//        } else {
-//            if (self.volumeView.layer.opacity > 0.0) { // Visible
-//                bottomGuideline = CGRectGetMinY(self.volumeView.frame);
-//            }
-//        }
-//        
-//        
-//        // The midpoint between the currently visible views. This is where we will place our titles
-//        NSInteger midPoint = (topGuideline + (ABS(topGuideline - bottomGuideline) * 0.5));
-//		self.trackInformationView.center = CGPointMake(self.trackInformationView.center.x, midPoint);
-//		
-//    }
-//}
-//
-//%end
-
-
-
-
 
 %ctor
 {

@@ -12,7 +12,6 @@
 #import <objc/runtime.h>
 
 #import "SWAcapellaCloneContainer.h"
-#import "SWAcapellaCloneView.h"
 #import "SWAcapellaDelegate.h"
 
 

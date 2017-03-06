@@ -17,10 +17,8 @@
 #define ENDTRY }
 
 
-#import "MusicMiniPlayerViewController+SW.h"
 #import "_TtC5Music19ApplicationDelegate+SW.h"
 #import "MediaPlayer+SW.h"
-#import "MPUTransportControlsView+SW.h"
 
 #import "SWAcapella.h"
 #import "SWAcapellaPrefs.h"
@@ -35,9 +33,9 @@
 
 
 
-#pragma mark - MusicMiniPlayerViewController
+#pragma mark - _TtC5Music24MiniPlayerViewController
 
-@interface _TtC5Music24MiniPlayerViewController : MusicMiniPlayerViewController
+@interface _TtC5Music24MiniPlayerViewController : UIViewController <SWAcapellaDelegate>
 
 @property (strong, nonatomic) UIView *artworkView;
 @property (strong, nonatomic) UIView *nowPlayingItemTitleLabel;
@@ -56,49 +54,44 @@
 
 #pragma mark - Init
 
+- (void)viewDidLoad
+{
+    %orig();
+    
+    self.transportControlsStack.hidden = YES;
+    
+    
+    
+    NSMutableArray<NSLayoutConstraint *> *constraintsToDeactivate = [NSMutableArray new];
+    for (NSLayoutConstraint *constraint in self.view.constraints) {
+        if (constraint.firstItem == self.nowPlayingItemTitleLabel && constraint.secondItem == self.transportControlsStack) {
+            if (constraint.firstAttribute == NSLayoutAttributeTrailing && constraint.secondAttribute == NSLayoutAttributeLeading) {
+                [constraintsToDeactivate addObject:constraint];
+            }
+        }
+    }
+    [NSLayoutConstraint deactivateConstraints:constraintsToDeactivate.copy];
+    
+    
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.nowPlayingItemTitleLabel
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     %orig(animated);
-    
     
     // Initialize prefs for this instance
     if (self.acapellaKeyPrefix) {
         self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
-    
-    
-    
-    
-    TRY
-    
-    
-    //Reload our transport buttons
-    //See [self transportControlsView:arg1 buttonForControlType:arg2];
-    
-    //LEFT SECTION
-//    [self.transportControlsView reloadTransportButtonWithControlType:1];
-//    [self.transportControlsView reloadTransportButtonWithControlType:3];
-//    [self.transportControlsView reloadTransportButtonWithControlType:4];
-//    
-//    //RIGHT SECTION
-//    [self.secondaryTransportControlsView reloadTransportButtonWithControlType:7];
-//    [self.secondaryTransportControlsView reloadTransportButtonWithControlType:11];
-    
-    CATCH_LOG
-    ENDTRY
-    
-    [self viewDidLayoutSubviews];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -145,65 +138,6 @@
     self.acapellaPrefs = nil;
     
     %orig(animated);
-}
-
-- (void)viewDidLayoutSubviews
-{
-	%orig();
-    
-//    if (self.acapella) {
-//        
-//        [self.acapella.cloneContainer setNeedsDisplay];
-//        
-//    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    TRY
-    
-    
-    
-    
-    
-    
-//    self.artworkView.hidden = YES;
-//    self.nowPlayingItemTitleLabel.backgroundColor = [UIColor redColor];
-//    self.transportControlsStack.backgroundColor = [UIColor yellowColor];
-    
-    
-	
-	
-//	// Show/Hide progress slider
-//	if (self.acapellaPrefs && self.acapellaPrefs.enabled && !self.acapellaPrefs.progressslider) {
-//		self.playbackProgressView.layer.opacity = 0.0;
-//	} else {
-//		self.playbackProgressView.layer.opacity = 1.0;
-//	}
-//	
-//	
-//	// Update titles constraints
-//    CGRect titlesFrame = self.titlesView.frame;
-//    
-//    //intelligently calcualate titles frame based on visible transport controls
-//    if ([self.transportControlsView acapella_hidden]) {
-//        titlesFrame.origin.x = 0.0;
-//        titlesFrame.size.width = self.secondaryTransportControlsView.frame.origin.x;
-//    }
-//    
-//    if ([self.secondaryTransportControlsView acapella_hidden]) {
-//        titlesFrame.size.width = CGRectGetWidth(self.titlesView.superview.bounds) - titlesFrame.origin.x;
-//    }
-//	
-//    self.titlesView.frame = titlesFrame;
-    
-    CATCH_LOG
-    ENDTRY
 }
 
 #pragma mark - SWAcapellaDelegate
@@ -269,24 +203,24 @@
 {
     TRY
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
-        [self transportControlsView:self.secondaryTransportControlsView tapOnControlType:7];
-        
-    } else {
-        
-        UIViewController<SWAcapellaDelegate> *nowPlayingViewController;
-        nowPlayingViewController = [(MusicTabBarController *)self.parentViewController nowPlayingViewController];
-        
-        [self.parentViewController presentViewController:nowPlayingViewController
-                                                animated:YES
-                                              completion:^() {
-                                                  
-                                                  [nowPlayingViewController action_upnext:nil];
-                                                  
-                                              }];
-        
-    }
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        
+//        [self transportControlsView:self.secondaryTransportControlsView tapOnControlType:7];
+//        
+//    } else {
+//        
+//        UIViewController<SWAcapellaDelegate> *nowPlayingViewController;
+//        nowPlayingViewController = [(MusicTabBarController *)self.parentViewController nowPlayingViewController];
+//        
+//        [self.parentViewController presentViewController:nowPlayingViewController
+//                                                animated:YES
+//                                              completion:^() {
+//                                                  
+//                                                  [nowPlayingViewController action_upnext:nil];
+//                                                  
+//                                              }];
+//        
+//    }
     
     CATCH_LOG
     ENDTRY
@@ -426,7 +360,7 @@
 {
     TRY
     
-    [self transportControlsView:self.secondaryTransportControlsView tapOnControlType:11];
+//    [self transportControlsView:self.secondaryTransportControlsView tapOnControlType:11];
     
     CATCH_LOG
     ENDTRY
