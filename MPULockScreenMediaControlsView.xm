@@ -44,10 +44,8 @@
     
     if (!self.transportControls.hidden && self.transportControls.layer.opacity > 0.0) {
         bottomGuideline = CGRectGetMinY(self.transportControls.frame);
-    } else {
-        if (!self.volumeView.hidden && self.volumeView.layer.opacity > 0.0) { // Visible
-            bottomGuideline = CGRectGetMinY(self.volumeView.frame);
-        }
+    } else if (!self.volumeView.hidden && self.volumeView.layer.opacity > 0.0) {
+        bottomGuideline = CGRectGetMinY(self.volumeView.frame);
     }
     
     CGFloat midPoint = (topGuideline + (ABS(topGuideline - bottomGuideline) * 0.5));

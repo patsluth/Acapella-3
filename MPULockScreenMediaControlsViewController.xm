@@ -108,10 +108,9 @@
     
     
     // special case where the pref key prefix is not ready in viewWillAppear, but it will always be ready here
-    if (!self.acapellaPrefs) {
-        [self viewWillAppear:NO];
-    }
-    
+//    if (!self.acapellaPrefs) {
+//        [self viewWillAppear:NO];
+//    }
     
     if (!self.acapella && self.acapellaPrefs.enabled) {
         
@@ -121,17 +120,12 @@
                       forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
     }
     
-    [self.view layoutSubviews];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    %orig();
-    
     BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
     
     self.mediaControlsView.transportControls.hidden = hasAcapella;
     self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
+    
+    [self.view layoutSubviews];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
