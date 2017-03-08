@@ -136,6 +136,16 @@
     %orig(animated);
 }
 
+- (void)viewDidLayoutSubviews
+{
+    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
+    
+    self.mediaControlsView.transportControls.hidden = hasAcapella;
+    self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
+    
+    %orig();
+}
+
 #pragma mark - SWAcapellaDelegate
 
 %new
