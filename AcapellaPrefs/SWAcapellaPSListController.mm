@@ -8,7 +8,7 @@
 
 #import "SWAcapellaPSListController.h"
 
-#import "libsw/libSluthware/libSluthware.h"
+#import "Sluthware/Sluthware.h"
 
 
 

@@ -9,11 +9,11 @@
 #import "SWAcapella.h"
 #import "SWAcapellaPrefs.h"
 
-#import "libsw/libSluthware/libSluthware.h"
+#import "Sluthware/Sluthware.h"
 //TODO: REMOVE
 //#import "libsw/libSluthware/UISnapBehaviorHorizontal.h"
-#import "libsw/libSluthware/NSTimer+SW.h"
-//#import "libsw/libSluthware/SWPrefs.h"
+#import "Sluthware/NSTimer+SW.h"
+#import "Sluthware/SWPrefs.h"
 
 #import <CoreGraphics/CoreGraphics.h>
 //#import <MobileGestalt/MobileGestalt.h>
@@ -513,6 +513,11 @@
             }
         }
     });
+}
+
+- (void)pulse
+{
+    // TODOL
 }
 
 - (void)snapToCenter

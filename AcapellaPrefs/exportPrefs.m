@@ -25,7 +25,7 @@ static id prefValueForKey(NSString *key)
         return nil;
     }
     
-    //NSString *app = [parts objectAtIndex:0]; // acapella2
+    //NSString *app = [parts objectAtIndex:0]; // acapella3
     NSString *prefix = [parts objectAtIndex:1]; //cc, ls, etc..
     NSString *option = [parts objectAtIndex:2];
     

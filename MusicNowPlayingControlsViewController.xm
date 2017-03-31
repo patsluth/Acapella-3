@@ -6,42 +6,18 @@
 //
 //
 
-
-
-
-
-
-
-#define TRY @try {
-#define CATCH } @catch (NSException *exception) {
-#define CATCH_LOG } @catch (NSException *exception) { NSLog(@"%@", exception);
-#define FINALLY } @finally {
-#define ENDTRY }
-
-
-
-
-
-
 #import "SWAcapella.h"
 #import "_TtC5Music19ApplicationDelegate+SW.h"
 #import "MediaPlayer+SW.h"
 #import "SWAcapellaPrefs.h"
 //#import "SWAcapellaMediaItemPreviewViewController.h"
 
-#import "libsw/libSluthware/libSluthware.h"
+//#import "libsw/libSluthware/libSluthware.h"
+#import "Sluthware/Sluthware.h"
 
 #import "MPUTransportControlMediaRemoteController.h"
 
 #import <objc/runtime.h>
-
-
-
-
-
-#import "Sluthware/Sluthware.h"
-
-
 
 
 
@@ -189,7 +165,7 @@
     //    [self.secondaryTransportControls reloadTransportButtonWithControlType:13];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
     
     [self viewDidLayoutSubviews];
 }
@@ -305,7 +281,7 @@
     //    [self transportControlsView:self.transportControls tapOnControlType:6];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -316,7 +292,7 @@
     //    [self transportControlsView:self.transportControls tapOnControlType:7];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -333,7 +309,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -350,7 +326,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -366,7 +342,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -382,7 +358,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -401,7 +377,7 @@
     //    }
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -420,7 +396,7 @@
     //    }
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -435,8 +411,10 @@
         
     }];
     
+    [self.acapella pulse];
+    
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -447,7 +425,7 @@
     //    [self transportControlsView:self.secondaryTransportControls tapOnControlType:8];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -463,7 +441,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -479,7 +457,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -490,7 +468,7 @@
     //    [self transportControlsView:self.secondaryTransportControls tapOnControlType:11];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -504,7 +482,7 @@
     TRY
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -519,7 +497,7 @@
         volumeController = nil;
         
         CATCH_LOG
-        ENDTRY
+        TRY_END
         
     }
 }
@@ -536,7 +514,7 @@
         volumeController = nil;
         
         CATCH_LOG
-        ENDTRY
+        TRY_END
         
     }
 }

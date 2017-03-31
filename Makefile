@@ -3,9 +3,9 @@
 
 
 
-FINALPACKAGE = 1
-DEBUG = 0
-PACKAGE_VERSION = 1.0-2
+FINALPACKAGE = 0
+DEBUG = 1
+PACKAGE_VERSION = 1.0-3
 
 
 
@@ -14,9 +14,9 @@ PACKAGE_VERSION = 1.0-2
 ifeq ($(DEBUG), 1)
 	ARCHS = arm64
 else
-    ARCHS = armv7 armv7s arm64
+    ARCHS = armv7 arm64
 endif
-TARGET = iphone:clang:latest:7.0
+TARGET = iphone:clang:latest:8.0
 
 
 
@@ -27,7 +27,9 @@ TARGET = iphone:clang:latest:7.0
 TWEAK_NAME = Acapella3
 
 Acapella3_CFLAGS = -fobjc-arc -Wno-arc-performSelector-leaks
-Acapella3_FILES =   _TtC5Music24MiniPlayerViewController.xm \
+Acapella3_LDFLAGS += -Ftheos/lib/
+Acapella3_FILES =   Acapella3.xm \
+                    _TtC5Music24MiniPlayerViewController.xm \
                     MusicNowPlayingControlsViewController.xm \
                     MPUControlCenterMediaControlsView.xm \
                     MPUControlCenterMediaControlsViewController.xm \
@@ -43,14 +45,17 @@ ifeq ($(DEBUG), 1)
 	Acapella3_FILES += SWAcapellaDebug.xm
 endif
 
-Acapella3_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore
-#Acapella3_OTHER_FRAMEWORKS = Sluthware
+Acapella3_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore Sluthware
 Acapella3_PRIVATE_FRAMEWORKS = MediaRemote
-Acapella3_LIBRARIES = substrate sw packageinfo MobileGestalt
+Acapella3_WEAK_FRAMEWORKS = MediaRemote Sluthware
+Acapella3_LIBRARIES = substrate packageinfo MobileGestalt
 
 ADDITIONAL_CFLAGS = -Ipublic
 
 
+TWEAK_NAME = Acapella3_Preferences
+
+Acapella3_Preferences_FILES =   SWAcapella.xm \
 
 
 
@@ -79,7 +84,6 @@ include theos/makefiles/swcommon.mk
 
 after-install after-uninstall::
 	$(ECHO_NOTHING)install.exec "killall -9 Music > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
-	$(ECHO_NOTHING)install.exec "killall -9 Podcasts > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 	$(ECHO_NOTHING)install.exec "killall -9 Preferences > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 	$(ECHO_NOTHING)install.exec "killall -9 backboardd > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 

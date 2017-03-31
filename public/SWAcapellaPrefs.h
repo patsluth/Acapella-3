@@ -1,18 +1,18 @@
 //
 //  SWAcapellaPrefs.h
-//  Acapella2
+//  Acapella3
 //
 //  Created by Pat Sluth on 2015-12-27.
+//  Copyright © 2016 Pat Sluth. All rights reserved.
 //
-//
 
-#import "libsw/libSluthware/SWPrefs.h"
-
+#import "Sluthware/Sluthware.h"
 
 
 
 
-@interface SWAcapellaPrefs : SWPrefs
+
+@interface SWAcapellaPrefs : NSObject
 {
 }
 

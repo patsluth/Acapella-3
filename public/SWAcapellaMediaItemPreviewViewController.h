@@ -1,6 +1,6 @@
 //
 //  SWAcapellaMediaItemPreviewViewController.h
-//  Acapella2
+//  Acapella3
 //
 //  Created by Pat Sluth on 2016-01-11.
 //  Copyright © 2016 Pat Sluth. All rights reserved.

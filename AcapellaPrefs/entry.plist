@@ -1,6 +1,6 @@
 {
 	entry = {
-		bundle = AcapellaPrefs2;
+		bundle = AcapellaPrefs3;
 		cell = PSLinkCell;
 		detail = "SWAcapellaPSListController";
 		isController = 1;

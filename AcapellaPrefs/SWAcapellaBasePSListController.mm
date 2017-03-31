@@ -10,8 +10,9 @@
 
 #import "SWAcapellaBasePSListController.h"
 
-#import "libsw/libSluthware/libSluthware.h"
-#import "libsw/libSluthware/SWPrefs.h"
+#import <Sluthware/Sluthware.h>
+#import "Sluthware/SWPrefs.h"
+
 
 
 
@@ -28,6 +29,20 @@
 
 @implementation SWAcapellaBasePSListController
 
++ (void)load
+{
+    [super load];
+    
+    NSBundle *bundle = [NSBundle bundleWithPath:@"/Library/Frameworks/Sluthware.framework"];
+    if (!bundle.isLoaded) {
+        NSError *error = nil;
+        [bundle loadAndReturnError:&error];
+        if (error) {
+            NSLog(@"Error loading Sluthware.framework!");
+        }
+    }
+}
+
 /**
  *  Lazy Load prefs
  *
@@ -37,12 +52,12 @@
 {
 	if (![super prefs]) {
 		
-		NSString *preferencePath = @"/var/mobile/Library/Preferences/com.patsluth.acapella2.plist";
+		NSString *preferencePath = @"/var/mobile/Library/Preferences/com.patsluth.acapella3.plist";
 		NSString *defaultsPath = [self.bundle pathForResource:@"prefsDefaults" ofType:@".plist"];
 		
 		self.prefs = [[SWPrefs alloc] initWithPreferenceFilePath:preferencePath
 													defaultsPath:defaultsPath
-													 application:@"com.patsluth.acapella2"];
+													 application:@"com.patsluth.acapella3"];
 	}
 	
 	return [super prefs];

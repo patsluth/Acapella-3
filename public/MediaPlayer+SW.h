@@ -130,6 +130,8 @@
 - (void)_pushMediaRemoteCommand:(NSUInteger)arg1 withOptions:(NSDictionary *)arg2;
 - (void)_pushMediaRemoteCommand:(NSUInteger)arg1 withOptions:(NSDictionary *)arg2 completion:(id)arg3;
 
+- (void)dispatchCommandEvent:(id)arg1 completion:(id)arg2;
+
 @end
 
 

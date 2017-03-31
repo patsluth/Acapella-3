@@ -1,6 +1,6 @@
 //
 //  SWAcapella.h
-//  Acapella2
+//  Acapella3
 //
 //  Created by Pat Sluth on 2015-07-08.
 //  Copyright (c) 2015 Pat Sluth. All rights reserved.
@@ -38,6 +38,7 @@
 @property (strong, nonatomic, readonly) UILongPressGestureRecognizer *press;
 
 - (void)finishWrapAround;
+- (void)pulse;
 
 @end
 

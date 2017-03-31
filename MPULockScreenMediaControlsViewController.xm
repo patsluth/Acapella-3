@@ -8,43 +8,19 @@
 
 #import "MPULockScreenMediaControlsViewController.h"
 #import "MPULockScreenMediaControlsView.h"
-//#import "MPUTransportControlsView+SW.h"
-//#import "MPUMediaControlsTitlesView+SW.h"
-//#import "FuseUI/MPUSystemMediaControlsView.h"
 
 #import "SWAcapella.h"
 #import "SWAcapellaPrefs.h"
-//#import "SWAcapellaMediaItemPreviewViewController.h"
 
-#import "libsw/libSluthware/libSluthware.h"
-#import "libsw/SWAppLauncher.h"
+//#import "libsw/libSluthware/libSluthware.h"
+#import "Sluthware/Sluthware.h"
+//#import "libsw/SWAppLauncher.h"
 
 //#import "MPUTransportControlMediaRemoteController.h"
 
 #import "SBMediaController.h"
 
 
-
-#define TRY @try {
-#define CATCH } @catch (NSException *exception) {
-#define CATCH_LOG } @catch (NSException *exception) { NSLog(@"%@", exception);
-#define FINALLY } @finally {
-#define ENDTRY }
-
-
-
-
-
-//#define MPU_SYSTEM_MEDIA_CONTROLS_VIEW MSHookIvar<MPUSystemMediaControlsView *>(self, "_mediaControlsView")
-#define MPU_TRANSPORT_MEDIA_REMOTE_CONTROLLER(owner) MSHookIvar<MPUTransportControlMediaRemoteController \
-                                                            *>(owner, "_transportControlMediaRemoteController")
-
-
-@interface UIView(SW)
-
-- (UIView *)sb_generateSnapshotViewAsynchronouslyOnQueue:(id)queue completionHandler:(id)completionHandler;
-
-@end
 
 
 
@@ -249,6 +225,8 @@
 {
     //    [[%c(SBMediaController) sharedInstance] togglePlayPause];
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
+    
+    [self.acapella pulse];
 }
 
 %new

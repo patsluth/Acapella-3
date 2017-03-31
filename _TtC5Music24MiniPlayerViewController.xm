@@ -1,21 +1,10 @@
 //
 //  MusicMiniPlayerViewController.xm
-//  Acapella2
+//  Acapella3
 //
 //  Created by Pat Sluth on 2015-12-27.
+//  Copyright © 2016 Pat Sluth. All rights reserved.
 //
-//
-
-
-
-
-
-#define TRY @try {
-#define CATCH } @catch (NSException *exception) {
-#define CATCH_LOG } @catch (NSException *exception) { NSLog(@"%@", exception);
-#define FINALLY } @finally {
-#define ENDTRY }
-
 
 #import "_TtC5Music19ApplicationDelegate+SW.h"
 #import "MediaPlayer+SW.h"
@@ -24,7 +13,8 @@
 #import "SWAcapellaPrefs.h"
 //#import "SWAcapellaMediaItemPreviewViewController.h"
 
-#import "libsw/libSluthware/libSluthware.h"
+//#import "libsw/libSluthware/libSluthware.h"
+#import "Sluthware/Sluthware.h"
 
 #import "MPUTransportControlMediaRemoteController.h"
 #import "MusicTabBarController.h"
@@ -189,7 +179,7 @@
     [self.miniPlayerButton sendActionsForControlEvents:UIControlEventTouchUpInside];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 - (void)acapella_didRecognizeVerticalPanDown:(id)arg1
@@ -205,7 +195,7 @@
     [self.miniPlayerButton sendActionsForControlEvents:UIControlEventTouchUpInside];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -238,7 +228,7 @@
 //    }
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -255,7 +245,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -272,7 +262,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -288,7 +278,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -304,7 +294,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -325,12 +315,14 @@
     _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
     MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
     MPRemoteCommandEvent *commandEvent = [commandCenter.togglePlayPauseCommand newCommandEvent];
-    [delegate.player performCommandEvent:commandEvent completion:^{
+    [commandCenter dispatchCommandEvent:commandEvent completion:^{
         
     }];
     
+    [self.acapella pulse];
+    
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -351,7 +343,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -367,7 +359,7 @@
     }];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -378,7 +370,7 @@
 //    [self transportControlsView:self.secondaryTransportControlsView tapOnControlType:11];
     
     CATCH_LOG
-    ENDTRY
+    TRY_END
 }
 
 %new
@@ -403,7 +395,7 @@
         volumeController = nil;
         
         CATCH_LOG
-        ENDTRY
+        TRY_END
         
     }
 }
@@ -420,7 +412,7 @@
         volumeController = nil;
         
         CATCH_LOG
-        ENDTRY
+        TRY_END
         
     }
 }

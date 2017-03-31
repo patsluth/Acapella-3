@@ -17,7 +17,8 @@ typedef NS_ENUM(NSInteger, SWAcapellaCloneContainerState) {
     SWAcapellaCloneContainerStatePanning,
     SWAcapellaCloneContainerStateWaitingToFinishWrapAround,
     SWAcapellaCloneContainerStateWrappingAround,
-    SWAcapellaCloneContainerStateSnappingToCenter
+    SWAcapellaCloneContainerStateSnappingToCenter,
+    SWAcapellaCloneContainerStateAnimating
 };
 
 

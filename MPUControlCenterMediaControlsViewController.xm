@@ -8,47 +8,23 @@
 
 #import "MPUControlCenterMediaControlsViewController.h"
 #import "MPUControlCenterMediaControlsView.h"
-//#import "MPUTransportControlsView+SW.h"
-//#import "MPUMediaControlsTitlesView+SW.h"
-//#import "FuseUI/MPUSystemMediaControlsView.h"
+
+#import "MediaPlayer+SW.h"
 
 #import "SWAcapella.h"
 #import "SWAcapellaPrefs.h"
-//#import "SWAcapellaMediaItemPreviewViewController.h"
 
-#import "libsw/libSluthware/libSluthware.h"
-#import "libsw/SWAppLauncher.h"
+//#import "libsw/libSluthware/libSluthware.h"
+//#import "Sluthware/Sluthware.h"
+//#import "libsw/SWAppLauncher.h"
 
 //#import "MPUTransportControlMediaRemoteController.h"
 
 #import "SBMediaController.h"
 
 
-
-#define TRY @try {
-#define CATCH } @catch (NSException *exception) {
-#define CATCH_LOG } @catch (NSException *exception) { NSLog(@"%@", exception);
-#define FINALLY } @finally {
-#define ENDTRY }
-
-
-
-
-@interface UIView(SW)
-
-- (UIView *)sb_generateSnapshotViewAsynchronouslyOnQueue:(id)queue completionHandler:(id)completionHandler;
-
-@end
-
-
-
-
-
-
-
-
-
-
+#import "Sluthware/SWPrefs.h"
+#import "Sluthware/NSTimer+SW.h"
 
 
 
@@ -70,13 +46,10 @@
 {
     %orig(animated);
 	
-	
 	// Initialize prefs for this instance
     if (self.acapellaKeyPrefix) {
 		self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
-	
-    
     
 	
     //Reload our transport buttons
@@ -117,6 +90,8 @@
                                                                     self.mediaControlsView.artistAlbumConcatenatedLabel]]
                       forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
     }
+    
+    //[self.acapellaPrefs log];
     
     BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
     
@@ -304,6 +279,8 @@
 {
 //    [[%c(SBMediaController) sharedInstance] togglePlayPause];
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
+    
+    [self.acapella pulse];
 }
 
 %new
@@ -361,48 +338,6 @@
 
 %end
 
-
-
-
-
-//#pragma mark - MPUSystemMediaControlsView
-//
-//%hook MPUSystemMediaControlsView
-//
-//- (void)layoutSubviews
-//{
-//    %orig();
-//	
-//	
-//    // Calcualate centre based on visible controls
-//    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-//        
-//        CGFloat topGuideline = 0;
-//        
-//        if (self.timeInformationView.layer.opacity > 0.0) { // Visible
-//            topGuideline += CGRectGetMaxY(self.timeInformationView.frame);
-//        }
-//        
-//        
-//        CGFloat bottomGuideline = CGRectGetMaxY(self.bounds);
-//        
-//        if (![self.transportControlsView acapella_hidden]) {
-//            bottomGuideline = CGRectGetMinY(self.transportControlsView.frame);
-//        } else {
-//            if (self.volumeView.layer.opacity > 0.0) { // Visible
-//                bottomGuideline = CGRectGetMinY(self.volumeView.frame);
-//            }
-//        }
-//        
-//        
-//        // The midpoint between the currently visible views. This is where we will place our titles
-//        NSInteger midPoint = (topGuideline + (ABS(topGuideline - bottomGuideline) * 0.5));
-//		self.trackInformationView.center = CGPointMake(self.trackInformationView.center.x, midPoint);
-//		
-//    }
-//}
-//
-//%end
 
 
 

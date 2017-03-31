@@ -13,6 +13,8 @@
 		2E57FCD11E4D12AA0074C616 /* MusicNowPlayingControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicNowPlayingControlsViewController.xm; sourceTree = "<group>"; };
 		2E57FCD31E4D26BA0074C616 /* _TtC5Music24MiniPlayerViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = _TtC5Music24MiniPlayerViewController.xm; sourceTree = "<group>"; };
 		2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = SWAcapellaDebug.xm; sourceTree = "<group>"; };
+		2E7B503E1E8EC56700CB119F /* Acapella3_Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Acapella3_Preferences.plist; sourceTree = "<group>"; };
+		2E7B503F1E8EC5AF00CB119F /* Acapella3.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = Acapella3.xm; sourceTree = "<group>"; };
 		2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsView.xm; sourceTree = "<group>"; };
 		2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsViewController.xm; sourceTree = "<group>"; };
 		2EBB75811BE97C5A00A3A82D /* layout */ = {isa = PBXFileReference; lastKnownFileType = folder; path = layout; sourceTree = "<group>"; };
@@ -35,6 +37,7 @@
 		2EB874E21E4D5DE900DAD90C /* src */ = {
 			isa = PBXGroup;
 			children = (
+				2E7B503F1E8EC5AF00CB119F /* Acapella3.xm */,
 				2EEC8AAD1E6D0AD700A84C40 /* Music */,
 				2EEC8AAE1E6D0ADB00A84C40 /* Springboard */,
 				2E491DAF1E65075800EBD841 /* SWAcapella.m */,
@@ -51,6 +54,7 @@
 				2EBB75811BE97C5A00A3A82D /* layout */,
 				2EBB75821BE97C5A00A3A82D /* public */,
 				2E16F0501E4BD47A00F40B96 /* Acapella3.plist */,
+				2E7B503E1E8EC56700CB119F /* Acapella3_Preferences.plist */,
 				2EBB758B1BE97C5A00A3A82D /* Makefile */,
 				2EB874E21E4D5DE900DAD90C /* src */,
 				2E5E51811CC3F052004DB6FF /* Products */,

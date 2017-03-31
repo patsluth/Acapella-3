@@ -18,7 +18,7 @@
 			<key>label</key>
 			<string>Control Center</string>
 			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
+			<string>com.patsluth.acapella3</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -32,7 +32,7 @@
 			<key>label</key>
 			<string>Lock Screen</string>
 			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
+			<string>com.patsluth.acapella3</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -46,7 +46,7 @@
 			<key>label</key>
 			<string>Music (Now Playing)</string>
 			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
+			<string>com.patsluth.acapella3</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -60,7 +60,7 @@
 			<key>label</key>
 			<string>Music (Mini Player)</string>
 			<key>defaults</key>
-			<string>com.patsluth.acapella2</string>
+			<string>com.patsluth.acapella3</string>
 		</dict>
 		<dict>
 			<key>cell</key>

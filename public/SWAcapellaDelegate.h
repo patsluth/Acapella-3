@@ -1,9 +1,9 @@
 //
 //  SWAcapellaDelegate.h
-//  Acapella2
+//  Acapella3
 //
 //  Created by Pat Sluth on 2015-12-25.
-//
+//  Copyright © 2016 Pat Sluth. All rights reserved.
 //
 
 #ifndef SWAcapellaDelegate_h

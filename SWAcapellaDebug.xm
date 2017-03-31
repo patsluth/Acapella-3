@@ -1,14 +1,15 @@
 //
 //  SWAcapellaDebug.xm
-//  Acapella2
+//  Acapella3
 //
 //  Created by Pat Sluth on 2015-12-27.
-//
+//  Copyright © 2016 Pat Sluth. All rights reserved.
 //
 
 #import "SWAcapella.h"
 
-#import "libsw/libSluthware/libSluthware.h"
+//#import "libsw/libSluthware/libSluthware.h"
+//#import "Sluthware/Sluthware.h"
 
 
 
@@ -19,71 +20,36 @@
 
 
 
-//@interface SBDashBoardViewController : UIViewController
+
+
+
+//@interface _TtC5Music32CompositeCollectionViewCountData : NSObject
+//{
+//    id componentGroups;
+//}
 //
-//- (BOOL)allowSystemGestureAtLocation:(CGPoint)arg1;
-//- (BOOL)isSystemGesturePermittedForPresentingController:(id)arg1;
+//@end
 //
-//- (BOOL)_isSourceForHorizontalScrolling:(id)arg1;
-//- (BOOL)_overSlidingControlForLocation:(CGPoint)arg1 inView:(id)arg2;
-//- (BOOL)_gestureRecognizer:(id)arg1 isLocatedOverHorizontalContentRegionInViewController:(id)arg2;
+//@interface _TtC5Music33CompositeCollectionViewController : UICollectionViewController
+//{
+//    _TtC5Music32CompositeCollectionViewCountData *countData;
+//}
 //
 //@end
 //
 //
-//%hook SBDashBoardViewController
+//%hook _TtC5Music33CompositeCollectionViewController
 //
-////- (BOOL)allowSystemGestureAtLocation:(CGPoint)arg1
-////{
-////    LOG_METHOD_START
-////    NSLog(@"arg1:[%@]", NSStringFromCGPoint(arg1));
-////    LOG_METHOD_END
-////    
-////    return %orig(arg1);
-////}
-////
-////- (BOOL)isSystemGesturePermittedForPresentingController:(id)arg1
-////{
-////    LOG_METHOD_START
-////    NSLog(@"arg1:[%@]", arg1);
-////    LOG_METHOD_END
-////    
-////    return %orig(arg1);
-////}
-////
-////
-////- (BOOL)_isSourceForHorizontalScrolling:(id)arg1
-////{
-////    LOG_METHOD_START
-////    NSLog(@"arg1:[%@]", arg1);
-////    LOG_METHOD_END
-////    
-////    return %orig(arg1);
-////}
-////
-////- (BOOL)_overSlidingControlForLocation:(CGPoint)arg1 inView:(id)arg2
-////{
-////    LOG_METHOD_START
-////    NSLog(@"arg1:[%@]", NSStringFromCGPoint(arg1));
-////    NSLog(@"arg2:[%@]", arg2);
-////    LOG_METHOD_END
-////    
-////    return %orig(arg1, arg2);
-////}
-////
-////- (BOOL)_gestureRecognizer:(id)arg1 isLocatedOverHorizontalContentRegionInViewController:(id)arg2
-////{
-////    LOG_METHOD_START
-////    NSLog(@"arg1:[%@]", arg1);
-////    NSLog(@"arg2:[%@]", arg2);
-////    LOG_METHOD_END
-////    
-////    return %orig(arg1, arg2);
-////}
-//
-//- (NSString *)description
+//- (void)viewDidAppear:(BOOL)animated
 //{
-//    return @"";
+//    %orig(animated);
+//    
+//    LOG_METHOD_START
+//    _TtC5Music32CompositeCollectionViewCountData *countData = MSHookIvar<_TtC5Music32CompositeCollectionViewCountData *>(self, "countData");
+//    NSLog(@"countData:[%@]", countData);
+//    id componentGroups = MSHookIvar<id>(countData, "componentGroups");
+//    NSLog(@"componentGroups:[%@]", componentGroups);
+//    LOG_METHOD_END
 //}
 //
 //%end
