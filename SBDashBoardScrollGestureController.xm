@@ -27,10 +27,6 @@
 
 - (id)initWithDashBoardView:(id)arg1 systemGestureManager:(id)arg2
 {
-    
-    
-    
-    
     if ((self = %orig())) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(onAcapellaCreated:)

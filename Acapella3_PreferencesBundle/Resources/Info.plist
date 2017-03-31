@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>AcapellaPrefs3</string>
+	<string>Acapella3_PreferencesBundle</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.patsluth.acapellaprefs3</string>
 	<key>CFBundleInfoDictionaryVersion</key>

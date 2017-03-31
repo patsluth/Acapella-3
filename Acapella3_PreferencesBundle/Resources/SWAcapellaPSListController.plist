@@ -99,7 +99,7 @@
 			<key>secondaryText</key>
 			<string>Developer</string>
 			<key>imagePath</key>
-			<string>/Library/PreferenceBundles/AcapellaPrefs2.bundle/Developer_Twitter_Profile.jpeg</string>
+			<string>/Library/PreferenceBundles/Acapella3_PreferencesBundle.bundle/Developer_Twitter_Profile.jpg</string>
 			<key>action</key>
 			<string>viewTwitterProfile:</string>
 			<key>height</key>
@@ -113,7 +113,7 @@
 			<key>secondaryText</key>
 			<string>Designer</string>
 			<key>imagePath</key>
-			<string>/Library/PreferenceBundles/AcapellaPrefs2.bundle/Designer_Twitter_Profile.png</string>
+			<string>/Library/PreferenceBundles/Acapella3_PreferencesBundle.bundle/Designer_Twitter_Profile.png</string>
 			<key>action</key>
 			<string>viewTwitterProfile:</string>
 			<key>height</key>
