@@ -8,7 +8,7 @@
 
 #import <Preferences/Preferences.h>
 
-#import "libsw/SWPSListController.h"
+#import "libsw2/SWPSListController.h"
 
 
 

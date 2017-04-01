@@ -8,8 +8,7 @@
 
 #import "SWAcapella.h"
 
-//#import "libsw/libSluthware/libSluthware.h"
-//#import "Sluthware/Sluthware.h"
+#import "Sluthware/Sluthware.h"
 
 
 

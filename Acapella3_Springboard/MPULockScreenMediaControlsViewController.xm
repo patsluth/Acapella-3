@@ -1,30 +1,24 @@
 //
-//  MPUControlCenterMediaControlsViewController.xm
+//  MPULockScreenMediaControlsViewController.xm
 //  Acapella3
 //
 //  Created by Pat Sluth on 2017-02-09.
 //
 //
 
-#import "MPUControlCenterMediaControlsViewController.h"
-#import "MPUControlCenterMediaControlsView.h"
-
-#import "MediaPlayer+SW.h"
+#import "MPULockScreenMediaControlsViewController.h"
+#import "MPULockScreenMediaControlsView.h"
 
 #import "SWAcapella.h"
 #import "SWAcapellaPrefs.h"
 
-//#import "libsw/libSluthware/libSluthware.h"
-//#import "Sluthware/Sluthware.h"
-#import "libsw/SWAppLauncher.h"
+#import "Sluthware/Sluthware.h"
+#import "Sluthware/SWPrefs.h"
+#import "libsw2/SWAppLauncher.h"
 
 //#import "MPUTransportControlMediaRemoteController.h"
 
 #import "SBMediaController.h"
-
-
-#import "Sluthware/SWPrefs.h"
-#import "Sluthware/NSTimer+SW.h"
 
 
 
@@ -32,25 +26,38 @@
 
 #pragma mark - MPUSystemMediaControlsViewController
 
-%hook MPUControlCenterMediaControlsViewController
+//%hook MPUControlCenterMediaControlsViewController
+%hook MPULockScreenMediaControlsViewController
 
 %new
-- (MPUControlCenterMediaControlsView *)mediaControlsView
+- (MPULockScreenMediaControlsView *)mediaControlsView
 {
-    return (MPUControlCenterMediaControlsView *)self.view;
+    return (MPULockScreenMediaControlsView *)self.view;
 }
 
 #pragma mark - Init
 
+//- (void)testNOtif:(NSNotification)notification
+//{
+//    NSLog(@"PAT NOTE %@", notification);
+//}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     %orig(animated);
+    
+    
+//    self.mediaControlsView.transportControls.hidden = YES;
+//    self.mediaControlsView.transportControls.layer.opacity = 0.0;
+    
+	
 	
 	// Initialize prefs for this instance
     if (self.acapellaKeyPrefix) {
 		self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
     
+	
 	
     //Reload our transport buttons
     //See [self transportControlsView:arg1 buttonForControlType:arg2];
@@ -73,25 +80,21 @@
     
     
     
+    
+    
+    
     // special case where the pref key prefix is not ready in viewWillAppear, but it will always be ready here
 //    if (!self.acapellaPrefs) {
 //        [self viewWillAppear:NO];
 //    }
     
-    
     if (!self.acapella && self.acapellaPrefs.enabled) {
         
         [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
                                                     referenceView:self.mediaControlsView
-                                                     viewsToClone:@[self.mediaControlsView.artworkView,
-                                                                    self.mediaControlsView.titleLabel,
-                                                                    self.mediaControlsView.artistLabel,
-                                                                    self.mediaControlsView.albumLabel,
-                                                                    self.mediaControlsView.artistAlbumConcatenatedLabel]]
+                                                     viewsToClone:@[self.mediaControlsView.titlesView]]
                       forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
     }
-    
-    //[self.acapellaPrefs log];
     
     BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
     
@@ -118,6 +121,174 @@
     
     %orig();
 }
+
+#pragma mark - SWAcapellaDelegate
+
+%new
+- (SWAcapella *)acapella
+{
+    return [SWAcapella acapellaForObject:self];
+}
+
+%new
+- (NSString *)acapellaKeyPrefix
+{
+    return @"ls";
+}
+
+%new
+- (SWAcapellaPrefs *)acapellaPrefs
+{
+    return objc_getAssociatedObject(self, @selector(_acapellaPrefs));
+}
+
+%new
+- (void)setAcapellaPrefs:(SWAcapellaPrefs *)acapellaPrefs
+{
+    objc_setAssociatedObject(self, @selector(_acapellaPrefs),
+                             acapellaPrefs,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    // Keep a weak reference so our titles view can access our prefs
+    //    objc_setAssociatedObject(((MPUControlCenterMediaControlsView *)self.view).titleLabel,
+    //                             @selector(_acapellaPrefs),
+    //                             acapellaPrefs,
+    //                             OBJC_ASSOCIATION_ASSIGN);
+}
+
+%new
+- (void)acapella_didRecognizeVerticalPanUp:(id)arg1
+{
+}
+
+- (void)acapella_didRecognizeVerticalPanDown:(id)arg1
+{
+}
+
+%new
+- (void)action_nil:(id)arg1
+{
+}
+
+%new
+- (void)action_heart:(id)arg1
+{
+    [[%c(SBMediaController) sharedInstance] likeTrack];
+}
+
+%new
+- (void)action_upnext:(id)arg1
+{
+}
+
+%new
+- (void)action_previoustrack:(id)arg1
+{
+    //    [[%c(SBMediaController) sharedInstance] changeTrack:-1];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:1];
+    [self.acapella finishWrapAround];
+}
+
+%new
+- (void)action_nexttrack:(id)arg1
+{
+    //    [[%c(SBMediaController) sharedInstance] changeTrack:1];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:4];
+    [self.acapella finishWrapAround];
+}
+
+%new
+- (void)action_intervalrewind:(id)arg1
+{
+    //    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:2];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:2];
+}
+
+%new
+- (void)action_intervalforward:(id)arg1
+{
+    //    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:5];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:5];
+}
+
+%new
+- (void)action_seekrewind:(id)arg1
+{
+}
+
+%new
+- (void)action_seekforward:(id)arg1
+{
+}
+
+%new
+- (void)action_playpause:(id)arg1
+{
+    //    [[%c(SBMediaController) sharedInstance] togglePlayPause];
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
+    
+    [self.acapella pulse];
+}
+
+%new
+- (void)action_share:(id)arg1
+{
+    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:8];
+}
+
+%new
+- (void)action_toggleshuffle:(id)arg1
+{
+    [[%c(SBMediaController) sharedInstance] toggleShuffle];
+}
+
+%new
+- (void)action_togglerepeat:(id)arg1
+{
+    [[%c(SBMediaController) sharedInstance] toggleRepeat];
+}
+
+%new
+- (void)action_contextual:(id)arg1
+{
+}
+
+%new
+- (void)action_openapp:(id)arg1
+{
+    //    id x = [self valueForKey:@"_nowPlayingController"]; //MPUNowPlayingController
+    //    id y = [x valueForKey:@"_currentNowPlayingAppDisplayID"]; //NSString
+    //    [%c(SWAppLauncher) launchAppWithBundleIDLockscreenFriendly:y];
+}
+
+%new
+- (void)action_showratings:(id)arg1
+{
+}
+
+%new
+- (void)action_decreasevolume:(id)arg1
+{
+    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:-0.1];
+}
+
+%new
+- (void)action_increasevolume:(id)arg1
+{
+    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:0.1];
+}
+
+%new
+- (void)action_equalizereverywhere:(id)arg1
+{
+}
+
+%end
+
+
+
+
+
+
 
 #pragma mark - MPUSystemMediaControlsViewController
 
@@ -176,172 +347,7 @@
 //    return %orig(arg1, arg2);
 //}
 
-#pragma mark - SWAcapellaDelegate
-
-%new
-- (SWAcapella *)acapella
-{
-    return [SWAcapella acapellaForObject:self];
-}
-
-%new
-- (NSString *)acapellaKeyPrefix
-{
-    return @"cc";
-}
-
-%new
-- (SWAcapellaPrefs *)acapellaPrefs
-{
-    return objc_getAssociatedObject(self, @selector(_acapellaPrefs));
-}
-
-%new
-- (void)setAcapellaPrefs:(SWAcapellaPrefs *)acapellaPrefs
-{
-    objc_setAssociatedObject(self, @selector(_acapellaPrefs),
-                             acapellaPrefs,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    // Keep a weak reference so our titles view can access our prefs
-    //    objc_setAssociatedObject(((MPUControlCenterMediaControlsView *)self.view).titleLabel,
-    //                             @selector(_acapellaPrefs),
-    //                             acapellaPrefs,
-    //                             OBJC_ASSOCIATION_ASSIGN);
-}
-
-%new
-- (void)acapella_didRecognizeVerticalPanUp:(id)arg1
-{
-}
-
-- (void)acapella_didRecognizeVerticalPanDown:(id)arg1
-{
-}
-
-%new
-- (void)action_nil:(id)arg1
-{
-}
-
-%new
-- (void)action_heart:(id)arg1
-{
-     [[%c(SBMediaController) sharedInstance] likeTrack];
-}
-
-%new
-- (void)action_upnext:(id)arg1
-{
-}
-
-%new
-- (void)action_previoustrack:(id)arg1
-{
-//    [[%c(SBMediaController) sharedInstance] changeTrack:-1];
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:1];
-    [self.acapella finishWrapAround];
-}
-
-%new
-- (void)action_nexttrack:(id)arg1
-{
-//    [[%c(SBMediaController) sharedInstance] changeTrack:1];
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:4];
-    [self.acapella finishWrapAround];
-}
-
-%new
-- (void)action_intervalrewind:(id)arg1
-{
-//    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:2];
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:2];
-}
-
-%new
-- (void)action_intervalforward:(id)arg1
-{
-//    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:5];
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:5];
-}
-
-%new
-- (void)action_seekrewind:(id)arg1
-{
-}
-
-%new
-- (void)action_seekforward:(id)arg1
-{
-}
-
-%new
-- (void)action_playpause:(id)arg1
-{
-//    [[%c(SBMediaController) sharedInstance] togglePlayPause];
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
-    
-    [self.acapella pulse];
-}
-
-%new
-- (void)action_share:(id)arg1
-{
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:8];
-}
-
-%new
-- (void)action_toggleshuffle:(id)arg1
-{
-    [[%c(SBMediaController) sharedInstance] toggleShuffle];
-}
-
-%new
-- (void)action_togglerepeat:(id)arg1
-{
-    [[%c(SBMediaController) sharedInstance] toggleRepeat];
-}
-
-%new
-- (void)action_contextual:(id)arg1
-{
-}
-
-%new
-- (void)action_openapp:(id)arg1
-{
-    id x = [self valueForKey:@"_nowPlayingController"]; //MPUNowPlayingController
-    id y = [x valueForKey:@"_currentNowPlayingAppDisplayID"]; //NSString
-    [%c(SWAppLauncher) launchAppWithBundleID:y];
-}
-
-%new
-- (void)action_showratings:(id)arg1
-{
-}
-
-%new
-- (void)action_decreasevolume:(id)arg1
-{
-    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:-0.1];
-}
-
-%new
-- (void)action_increasevolume:(id)arg1
-{
-    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:0.1];
-}
-
-%new
-- (void)action_equalizereverywhere:(id)arg1
-{
-}
-
-%end
-
-
-
-
-
+//%end
 
 %ctor
 {

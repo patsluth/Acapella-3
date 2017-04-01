@@ -7,43 +7,31 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		2E16F0501E4BD47A00F40B96 /* Acapella3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Acapella3.plist; sourceTree = "<group>"; };
-		2E491DAF1E65075800EBD841 /* SWAcapella.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapella.m; sourceTree = "<group>"; };
-		2E491DB01E65075800EBD841 /* SWAcapellaCloneContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapellaCloneContainer.m; sourceTree = "<group>"; };
-		2E57FCD11E4D12AA0074C616 /* MusicNowPlayingControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MusicNowPlayingControlsViewController.xm; sourceTree = "<group>"; };
-		2E57FCD31E4D26BA0074C616 /* _TtC5Music24MiniPlayerViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = _TtC5Music24MiniPlayerViewController.xm; sourceTree = "<group>"; };
-		2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = SWAcapellaDebug.xm; sourceTree = "<group>"; };
-		2E7B503E1E8EC56700CB119F /* Acapella3_Preferences.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Acapella3_Preferences.plist; sourceTree = "<group>"; };
-		2E7B503F1E8EC5AF00CB119F /* Acapella3.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = Acapella3.xm; sourceTree = "<group>"; };
-		2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsView.xm; sourceTree = "<group>"; };
-		2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MPUControlCenterMediaControlsViewController.xm; sourceTree = "<group>"; };
-		2EBB75811BE97C5A00A3A82D /* layout */ = {isa = PBXFileReference; lastKnownFileType = folder; path = layout; sourceTree = "<group>"; };
-		2EBB75821BE97C5A00A3A82D /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
-		2EBB758B1BE97C5A00A3A82D /* Makefile */ = {isa = PBXFileReference; explicitFileType = text; path = Makefile; sourceTree = "<group>"; };
-		2ECE0BF71E673D87003EE535 /* MPULockScreenMediaControlsViewController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = MPULockScreenMediaControlsViewController.xm; sourceTree = "<group>"; };
-		2ECE0BF81E674174003EE535 /* MPULockScreenMediaControlsView.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = MPULockScreenMediaControlsView.xm; sourceTree = "<group>"; };
-		2ECE0BF91E6744CB003EE535 /* SBDashBoardScrollGestureController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = SBDashBoardScrollGestureController.xm; sourceTree = "<group>"; };
-		2EF29A751C3C65BD001032FE /* SWAcapellaPrefs.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = SWAcapellaPrefs.xm; sourceTree = "<group>"; };
+		2E6CC1F11E903CAF009588ED /* Acapella3.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = Acapella3.xm; sourceTree = "<group>"; };
+		2E6CC1F21E903CAF009588ED /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		2E6CC1F31E903CAF009588ED /* SWAcapella.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapella.m; sourceTree = "<group>"; };
+		2E6CC1F41E903CAF009588ED /* SWAcapellaCloneContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapellaCloneContainer.m; sourceTree = "<group>"; };
+		2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaDebug.xm; sourceTree = "<group>"; };
+		2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaPrefs.xm; sourceTree = "<group>"; };
+		2E6CC1F71E903CF6009588ED /* Acapella3_Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Music; sourceTree = "<group>"; };
+		2E6CC1F81E903CF6009588ED /* Acapella3_Preferences */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Preferences; sourceTree = "<group>"; };
+		2E6CC1F91E903CF6009588ED /* Acapella3_PreferencesBundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_PreferencesBundle; sourceTree = "<group>"; };
+		2E6CC1FA1E903CF6009588ED /* Acapella3_Springboard */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Springboard; sourceTree = "<group>"; };
+		2E6CC1FB1E903CF6009588ED /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
+		2E6CC1FC1E903CF6009588ED /* layout */ = {isa = PBXFileReference; lastKnownFileType = folder; path = layout; sourceTree = "<group>"; };
+		2E6CC1FD1E903CF6009588ED /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		2E6CC1FE1E903CF6009588ED /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		2E5E51811CC3F052004DB6FF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		2EB874E21E4D5DE900DAD90C /* src */ = {
 			isa = PBXGroup;
 			children = (
-				2E7B503F1E8EC5AF00CB119F /* Acapella3.xm */,
-				2EEC8AAD1E6D0AD700A84C40 /* Music */,
-				2EEC8AAE1E6D0ADB00A84C40 /* Springboard */,
-				2E491DAF1E65075800EBD841 /* SWAcapella.m */,
-				2E491DB01E65075800EBD841 /* SWAcapellaCloneContainer.m */,
-				2E5E51971CC3F974004DB6FF /* SWAcapellaDebug.xm */,
-				2EF29A751C3C65BD001032FE /* SWAcapellaPrefs.xm */,
+				2E6CC1F11E903CAF009588ED /* Acapella3.xm */,
+				2E6CC1F31E903CAF009588ED /* SWAcapella.m */,
+				2E6CC1F41E903CAF009588ED /* SWAcapellaCloneContainer.m */,
+				2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */,
+				2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -51,35 +39,17 @@
 		2EBB756F1BE97BB900A3A82D = {
 			isa = PBXGroup;
 			children = (
-				2EBB75811BE97C5A00A3A82D /* layout */,
-				2EBB75821BE97C5A00A3A82D /* public */,
-				2E16F0501E4BD47A00F40B96 /* Acapella3.plist */,
-				2E7B503E1E8EC56700CB119F /* Acapella3_Preferences.plist */,
-				2EBB758B1BE97C5A00A3A82D /* Makefile */,
+				2E6CC1FC1E903CF6009588ED /* layout */,
+				2E6CC1FD1E903CF6009588ED /* public */,
+				2E6CC1F71E903CF6009588ED /* Acapella3_Music */,
+				2E6CC1F81E903CF6009588ED /* Acapella3_Preferences */,
+				2E6CC1F91E903CF6009588ED /* Acapella3_PreferencesBundle */,
+				2E6CC1FA1E903CF6009588ED /* Acapella3_Springboard */,
+				2E6CC1FB1E903CF6009588ED /* Assets */,
+				2E6CC1FE1E903CF6009588ED /* Resources */,
+				2E6CC1F21E903CAF009588ED /* Makefile */,
 				2EB874E21E4D5DE900DAD90C /* src */,
-				2E5E51811CC3F052004DB6FF /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		2EEC8AAD1E6D0AD700A84C40 /* Music */ = {
-			isa = PBXGroup;
-			children = (
-				2E57FCD31E4D26BA0074C616 /* _TtC5Music24MiniPlayerViewController.xm */,
-				2E57FCD11E4D12AA0074C616 /* MusicNowPlayingControlsViewController.xm */,
-			);
-			name = Music;
-			sourceTree = "<group>";
-		};
-		2EEC8AAE1E6D0ADB00A84C40 /* Springboard */ = {
-			isa = PBXGroup;
-			children = (
-				2E8BA1811E4E1ECE00D08A05 /* MPUControlCenterMediaControlsView.xm */,
-				2EB874E01E4D5DC500DAD90C /* MPUControlCenterMediaControlsViewController.xm */,
-				2ECE0BF81E674174003EE535 /* MPULockScreenMediaControlsView.xm */,
-				2ECE0BF71E673D87003EE535 /* MPULockScreenMediaControlsViewController.xm */,
-				2ECE0BF91E6744CB003EE535 /* SBDashBoardScrollGestureController.xm */,
-			);
-			name = Springboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -99,7 +69,7 @@
 				Base,
 			);
 			mainGroup = 2EBB756F1BE97BB900A3A82D;
-			productRefGroup = 2E5E51811CC3F052004DB6FF /* Products */;
+			productRefGroup = 2EBB756F1BE97BB900A3A82D;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

@@ -10,9 +10,6 @@
 #import "SWAcapellaPrefs.h"
 
 #import "Sluthware/Sluthware.h"
-//TODO: REMOVE
-//#import "libsw/libSluthware/UISnapBehaviorHorizontal.h"
-#import "Sluthware/NSTimer+SW.h"
 #import "Sluthware/SWPrefs.h"
 
 #import <CoreGraphics/CoreGraphics.h>

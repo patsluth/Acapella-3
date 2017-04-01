@@ -10,17 +10,22 @@ Acapella3_PreferencesBundle_INSTALL_PATH = /Library/PreferenceBundles
 Acapella3_PreferencesBundle_CFLAGS = -fobjc-arc
 Acapella3_PreferencesBundle_LDFLAGS += -F$(THEOS)/lib/
 Acapella3_PreferencesBundle_FILES =  \
-					SWAcapellaBasePSListController.mm \
+                                SWAcapellaBasePSListController.mm \
                         		SWAcapellaPSListController.mm \
                         		SWAPSListController_Gestures.mm \
                         		SWAPSListController_Instance.mm \
                         		SWAPSListController_Transport.mm \
                         		SWAPSListItemsController_Actions.mm \
 
+ifeq ($(DEBUG), 1)
+	Acapella3_PreferencesBundle_CFLAGS += -Wno-unused-variable
+	Acapella3_PreferencesBundle_FILES += ../SWAcapellaDebug.xm
+endif
+
 Acapella3_PreferencesBundle_FRAMEWORKS = UIKit
 Acapella3_PreferencesBundle_PRIVATE_FRAMEWORKS = Preferences
 Acapella3_PreferencesBundle_WEAK_FRAMEWORKS = Sluthware
-Acapella3_PreferencesBundle_LIBRARIES = sw
+Acapella3_PreferencesBundle_LIBRARIES = sw2
 
 ADDITIONAL_CFLAGS += -Ipublic
 
