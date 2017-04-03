@@ -20,6 +20,20 @@
 #import "MusicTabBarController.h"
 
 
+#import "SWAcapella.h"
+#import "_TtC5Music19ApplicationDelegate+SW.h"
+#import "MediaPlayer+SW.h"
+#import "SWAcapellaPrefs.h"
+
+#import "Sluthware/Sluthware.h"
+
+#import "MPUTransportControlMediaRemoteController.h"
+
+#import <objc/runtime.h>
+
+#import "MediaRemote.h"
+
+
 
 
 
@@ -264,33 +278,31 @@
 %new
 - (void)action_intervalrewind:(id)arg1
 {
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.skipBackwardCommand newCommandEventWithInterval:20.0];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    CATCH_LOG
-    TRY_END
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^(CFDictionaryRef result) {
+		
+		NSDictionary *resultDict = (__bridge NSDictionary *)result;
+		
+		if (resultDict) {
+			double mediaCurrentElapsedDuration = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			MRMediaRemoteSetElapsedTime(mediaCurrentElapsedDuration - 20.0);
+		}
+		resultDict = nil;
+	});
 }
 
 %new
 - (void)action_intervalforward:(id)arg1
 {
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.skipForwardCommand newCommandEventWithInterval:20.0];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    CATCH_LOG
-    TRY_END
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^(CFDictionaryRef result) {
+		
+		NSDictionary *resultDict = (__bridge NSDictionary *)result;
+		
+		if (resultDict) {
+			double mediaCurrentElapsedDuration = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			MRMediaRemoteSetElapsedTime(mediaCurrentElapsedDuration + 20.0);
+		}
+		resultDict = nil;
+	});
 }
 
 %new
@@ -382,35 +394,35 @@
 %new
 - (void)action_decreasevolume:(id)arg1
 {
-    @autoreleasepool {
-        
-        TRY
-        
-        MPVolumeController *volumeController = [%c(MPVolumeController) new];
-        [volumeController setVolumeValue:volumeController.volumeValue - 0.1];
-        volumeController = nil;
-        
-        CATCH_LOG
-        TRY_END
-        
-    }
+    AUTO_RELEASE_POOL
+    
+    TRY
+    
+    MPVolumeController *volumeController = [%c(MPVolumeController) new];
+    [volumeController setVolumeValue:volumeController.volumeValue - 0.0625];
+    volumeController = nil;
+    
+    CATCH_LOG
+    TRY_END
+    
+    AUTO_RELEASE_POOL_END
 }
 
 %new
 - (void)action_increasevolume:(id)arg1
 {
-    @autoreleasepool {
-        
-        TRY
-        
-        MPVolumeController *volumeController = [%c(MPVolumeController) new];
-        [volumeController setVolumeValue:volumeController.volumeValue + 0.1];
-        volumeController = nil;
-        
-        CATCH_LOG
-        TRY_END
-        
-    }
+    AUTO_RELEASE_POOL
+    
+    TRY
+    
+    MPVolumeController *volumeController = [%c(MPVolumeController) new];
+    [volumeController setVolumeValue:volumeController.volumeValue + 0.0625];
+    volumeController = nil;
+    
+    CATCH_LOG
+    TRY_END
+    
+    AUTO_RELEASE_POOL_END
 }
 
 %new

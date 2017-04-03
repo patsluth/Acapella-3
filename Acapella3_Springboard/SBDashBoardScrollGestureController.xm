@@ -41,6 +41,57 @@
     return self;
 }
 
+- (void)_horizontalScrollFailureGestureRecognizerChanged:(id)arg1
+{
+	SWLogMethod_Start
+	NSLog(@"arg1: %@", [arg1 class]);
+	SWLogMethod_End
+	
+	%orig(arg1);
+}
+
+- (_Bool)gestureRecognizerShouldBegin:(id)arg1
+{
+	//id x = [SWAcapella acapellaForObject:self];
+	
+	SWLogMethod_Start
+	NSLog(@"arg1: %@", [arg1 class]);
+	//NSLog(@"arg2: %@", x);
+	SWLogMethod_End
+	
+	return NO;
+}
+
+- (_Bool)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2
+{
+	SWLogMethod_Start
+	NSLog(@"arg1: %@", [arg1 class]);
+	NSLog(@"arg1: %@", [arg2 class]);
+	SWLogMethod_End
+	
+	return %orig(arg1, arg2);
+}
+
+- (_Bool)gestureRecognizer:(id)arg1 shouldRequireFailureOfGestureRecognizer:(id)arg2
+{
+	SWLogMethod_Start
+	NSLog(@"arg1: %@", [arg1 class]);
+	NSLog(@"arg1: %@", [arg2 class]);
+	SWLogMethod_End
+	
+	return %orig(arg1, arg2);
+}
+
+- (_Bool)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2
+{
+	SWLogMethod_Start
+	NSLog(@"arg1: %@", [arg1 class]);
+	NSLog(@"arg1: %@", [arg2 class]);
+	SWLogMethod_End
+	
+	return %orig(arg1, arg2);
+}
+
 %new
 - (void)onAcapellaCreated:(NSNotification *)notification
 {
@@ -50,20 +101,34 @@
     AUTO_RELEASE_POOL
 
     if ([notification.object isKindOfClass:[SWAcapella class]]) {
+		
         SWAcapella *acapella = notification.object;
         UIGestureRecognizer *gestureRecognizer;
+		
+		
+		[SWAcapella setAcapella:acapella forObject:self withPolicy:OBJC_ASSOCIATION_ASSIGN];
+		
+		
         
         gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_screenEdgeGestureRecognizer");
-        [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
-        
-        gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_swallowGestureRecognizer");
-        [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
-        
-        gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_scrollViewGestureRecognizer");
-        [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
-        
-        gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_horizontalFailureGestureRecognizer");
-        [gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.tap];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.press];
+		
+		gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_swallowGestureRecognizer");
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.tap];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.press];
+		
+		gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_scrollViewGestureRecognizer");
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.tap];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.press];
+		
+		gestureRecognizer = MSHookIvar<UIGestureRecognizer *>(self, "_horizontalFailureGestureRecognizer");
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.tap];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.pan];
+		[gestureRecognizer requireGestureRecognizerToFail:acapella.press];
     }
     
     AUTO_RELEASE_POOL_END

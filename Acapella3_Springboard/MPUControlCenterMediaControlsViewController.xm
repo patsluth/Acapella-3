@@ -19,6 +19,7 @@
 //#import "MPUTransportControlMediaRemoteController.h"
 
 #import "SBMediaController.h"
+#import "MediaRemote.h"
 
 
 
@@ -245,16 +246,33 @@
 %new
 - (void)action_intervalrewind:(id)arg1
 {
-//    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:2];
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:2];
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^(CFDictionaryRef result) {
+		
+		NSDictionary *resultDict = (__bridge NSDictionary *)result;
+		
+		if (resultDict) {
+			double mediaCurrentElapsedDuration = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			MRMediaRemoteSetElapsedTime(mediaCurrentElapsedDuration - 20.0);
+		}
+		resultDict = nil;
+	});
 }
 
 %new
 - (void)action_intervalforward:(id)arg1
 {
-//    [[%c(SBMediaController) sharedInstance] _sendMediaCommand:5];
-    [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:5];
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^(CFDictionaryRef result) {
+		
+		NSDictionary *resultDict = (__bridge NSDictionary *)result;
+		
+		if (resultDict) {
+			double mediaCurrentElapsedDuration = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			MRMediaRemoteSetElapsedTime(mediaCurrentElapsedDuration + 20.0);
+		}
+		resultDict = nil;
+	});
 }
+
 
 %new
 - (void)action_seekrewind:(id)arg1
@@ -314,13 +332,13 @@
 %new
 - (void)action_decreasevolume:(id)arg1
 {
-    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:-0.1];
+    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:-0.0625];
 }
 
 %new
 - (void)action_increasevolume:(id)arg1
 {
-    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:0.1];
+    [[%c(SBMediaController) sharedInstance] _changeVolumeBy:0.0625];
 }
 
 %new
