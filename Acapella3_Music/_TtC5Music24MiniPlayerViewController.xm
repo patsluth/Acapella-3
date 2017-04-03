@@ -240,8 +240,6 @@
     MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
     MPRemoteCommandEvent *commandEvent = [commandCenter.previousTrackCommand newCommandEvent];
     [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
     }];
     
     CATCH_LOG
@@ -257,8 +255,6 @@
     MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
     MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
     [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
     }];
     
     CATCH_LOG
@@ -488,6 +484,8 @@
 
 %ctor
 {
+    //%init(ClassToHook = objc_getClass("Music.MiniPlayerViewController"));
+    //%init(ClassToHook = "_TtC5Music24MiniPlayerViewController");
 }
 
 

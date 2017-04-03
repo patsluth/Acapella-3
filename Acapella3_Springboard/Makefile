@@ -19,8 +19,8 @@ Acapella3_Springboard_FILES = \
                     	MPULockScreenMediaControlsViewController.xm \
 
 ifeq ($(DEBUG), 1)
-	Acapella3_CFLAGS += -Wno-unused-variable
-	Acapella3_FILES += ../SWAcapellaDebug.xm
+	Acapella3_Springboard_CFLAGS += -Wno-unused-variable
+	Acapella3_Springboard_FILES += ../SWAcapellaDebug.xm
 endif
 
 Acapella3_Springboard_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore
@@ -28,7 +28,8 @@ Acapella3_Springboard_PRIVATE_FRAMEWORKS = MediaRemote
 Acapella3_Springboard_WEAK_FRAMEWORKS = Sluthware
 Acapella3_Springboard_LIBRARIES = substrate sw2 MobileGestalt
 
-ADDITIONAL_CFLAGS = -I../public
+ADDITIONAL_CFLAGS += -I../public
+ADDITIONAL_CFLAGS += -Ipublic
 
 
 

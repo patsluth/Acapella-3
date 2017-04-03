@@ -198,8 +198,6 @@ static void exportKeys(NSString *directory, NSString *detail, NSString *prevKey)
 
 int main(int argc, const char * argv[])
 {
-    @autoreleasepool
-    {
         //get data from standard input. In the form 'DIRECTORY;ROOTDETAIL'
 //        NSFileHandle *standardInput = [NSFileHandle fileHandleWithStandardInput];
 //        NSString *input = [[NSString alloc] initWithData:[standardInput readDataToEndOfFile] encoding:NSUTF8StringEncoding];
@@ -219,7 +217,6 @@ int main(int argc, const char * argv[])
             exportKeys(directory, rootDetail, nil);
             
         }
-    }
     
     return 0;
 }

@@ -19,7 +19,7 @@ Acapella3_PreferencesBundle_FILES =  \
 
 ifeq ($(DEBUG), 1)
 	Acapella3_PreferencesBundle_CFLAGS += -Wno-unused-variable
-	Acapella3_PreferencesBundle_FILES += ../SWAcapellaDebug.xm
+    #Acapella3_PreferencesBundle_FILES += ../SWAcapellaDebug.xm
 endif
 
 Acapella3_PreferencesBundle_FRAMEWORKS = UIKit
@@ -27,6 +27,7 @@ Acapella3_PreferencesBundle_PRIVATE_FRAMEWORKS = Preferences
 Acapella3_PreferencesBundle_WEAK_FRAMEWORKS = Sluthware
 Acapella3_PreferencesBundle_LIBRARIES = sw2
 
+ADDITIONAL_CFLAGS += -I../public
 ADDITIONAL_CFLAGS += -Ipublic
 
 

@@ -12,7 +12,7 @@ Acapella3_Preferences_FILES = \
 
 ifeq ($(DEBUG), 1)
 	Acapella3_Preferences_CFLAGS += -Wno-unused-variable
-	Acapella3_Preferences_FILES += ../SWAcapellaDebug.xm
+    #Acapella3_Preferences_FILES += ../SWAcapellaDebug.xm
 endif
 
 Acapella3_Preferences_FRAMEWORKS =
@@ -20,7 +20,8 @@ Acapella3_Preferences_PRIVATE_FRAMEWORKS =
 Acapella3_Preferences_WEAK_FRAMEWORKS =
 Acapella3_Preferences_LIBRARIES = 
 
-ADDITIONAL_CFLAGS = -Ipublic
+ADDITIONAL_CFLAGS += -I../public
+ADDITIONAL_CFLAGS += -Ipublic
 
 
 

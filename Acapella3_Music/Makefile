@@ -26,7 +26,8 @@ Acapella3_Music_PRIVATE_FRAMEWORKS = MediaRemote
 Acapella3_Music_WEAK_FRAMEWORKS = Sluthware
 Acapella3_Music_LIBRARIES = substrate sw2 MobileGestalt
 
-ADDITIONAL_CFLAGS = -I../public
+ADDITIONAL_CFLAGS += -I../public
+ADDITIONAL_CFLAGS += -Ipublic
 
 
 

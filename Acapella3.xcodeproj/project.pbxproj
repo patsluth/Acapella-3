@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		2E6CC1F11E903CAF009588ED /* Acapella3.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = Acapella3.xm; sourceTree = "<group>"; };
-		2E6CC1F21E903CAF009588ED /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		2E6CC1F11E903CAF009588ED /* Acapella3.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = Acapella3.xm; sourceTree = "<group>"; usesTabs = 1; };
+		2E6CC1F21E903CAF009588ED /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; usesTabs = 1; };
 		2E6CC1F31E903CAF009588ED /* SWAcapella.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapella.m; sourceTree = "<group>"; };
 		2E6CC1F41E903CAF009588ED /* SWAcapellaCloneContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWAcapellaCloneContainer.m; sourceTree = "<group>"; };
-		2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaDebug.xm; sourceTree = "<group>"; };
-		2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaPrefs.xm; sourceTree = "<group>"; };
+		2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaDebug.xm; sourceTree = "<group>"; usesTabs = 1; };
+		2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaPrefs.xm; sourceTree = "<group>"; usesTabs = 1; };
 		2E6CC1F71E903CF6009588ED /* Acapella3_Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Music; sourceTree = "<group>"; };
 		2E6CC1F81E903CF6009588ED /* Acapella3_Preferences */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Preferences; sourceTree = "<group>"; };
 		2E6CC1F91E903CF6009588ED /* Acapella3_PreferencesBundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_PreferencesBundle; sourceTree = "<group>"; };

@@ -36,6 +36,11 @@
 
 
 
+
+
+
+
+
 %hook MusicNowPlayingControlsViewController
 
 #pragma mark - Init
@@ -302,8 +307,6 @@
     MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
     MPRemoteCommandEvent *commandEvent = [commandCenter.previousTrackCommand newCommandEvent];
     [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
     }];
     
     CATCH_LOG
@@ -319,8 +322,6 @@
     MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
     MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
     [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
     }];
     
     CATCH_LOG
@@ -672,6 +673,20 @@
 }
 
 %end
+
+
+
+
+
+%ctor
+{
+    //if (SYSTEM_VERSION_EQUAL_TO(@"10.1.1")) {
+      //  %init(ClassToHook = objc_getClass("Music.NowPlayingControlsViewController"));
+    //} else
+        //if (SYSTEM_VERSION_EQUAL_TO(@"10.2")) {
+        //%init(MusicNowPlayingControlsViewController = objc_getClass("MusicNowPlayingControlsViewController"));
+    //}
+}
 
 
 

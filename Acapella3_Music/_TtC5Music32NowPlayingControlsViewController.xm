@@ -302,8 +302,6 @@
     MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
     MPRemoteCommandEvent *commandEvent = [commandCenter.previousTrackCommand newCommandEvent];
     [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
     }];
     
     CATCH_LOG
@@ -319,8 +317,6 @@
     MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
     MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
     [delegate.player performCommandEvent:commandEvent completion:^{
-        [self.acapella.cloneContainer refreshClones];
-        [self.acapella finishWrapAround];
     }];
     
     CATCH_LOG

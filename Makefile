@@ -3,22 +3,20 @@
 
 
 
-FINALPACKAGE = 1
-DEBUG = 0
-PACKAGE_VERSION = 1.0-3
+export FINALPACKAGE = 1
+export DEBUG = 0
+PACKAGE_VERSION = 1.0-4
 
 
 
 
 
 ifeq ($(DEBUG), 1)
-	ARCHS = arm64
+	export ARCHS = arm64
 else
-    ARCHS = armv7 armv7s arm64
+    export ARCHS = armv7 armv7s arm64
 endif
-TARGET = iphone:clang:latest:8.0
-
-
+export TARGET = iphone:clang:latest:8.0
 
 
 

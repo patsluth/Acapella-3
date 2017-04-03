@@ -233,7 +233,6 @@
 {
 //    [[%c(SBMediaController) sharedInstance] changeTrack:-1];
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:1];
-    [self.acapella finishWrapAround];
 }
 
 %new
@@ -241,7 +240,6 @@
 {
 //    [[%c(SBMediaController) sharedInstance] changeTrack:1];
     [self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:4];
-    [self.acapella finishWrapAround];
 }
 
 %new

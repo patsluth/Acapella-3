@@ -10,7 +10,6 @@
 #import "SWAcapellaPrefs.h"
 
 #import "Sluthware/Sluthware.h"
-#import "Sluthware/SWPrefs.h"
 
 #import <CoreGraphics/CoreGraphics.h>
 //#import <MobileGestalt/MobileGestalt.h>
@@ -83,6 +82,8 @@
 
 #pragma mark - SWAcapella
 
+static void *kvoContext_Text = &kvoContext_Text;
+
 - (void)_acapella
 {
 }
@@ -105,8 +106,17 @@
         
         acapella.cloneContainer.tag = SWAcapellaCloneContainerStateNone;    // Reset views and constraints
         for (UIView *viewToClone in acapella.cloneContainer.viewsToClone) {
+            
             viewToClone.userInteractionEnabled = YES;
+            
+            [viewToClone recurseSubviewsWithBlock:^(UIView *view) {
+                TRY
+                [view removeObserver:acapella forKeyPath:@"text" context:kvoContext_Text];
+                CATCH
+                TRY_END
+            }];
         }
+        [NSObject cancelPreviousPerformRequestsWithTarget:acapella selector:@selector(finishWrapAround) object:nil];
         [acapella.cloneContainer removeFromSuperview];
         acapella.cloneContainer = nil;
 		
@@ -170,10 +180,17 @@
         [self.referenceView addGestureRecognizer:self.press];
         
         
-        
         self.cloneContainer = [[SWAcapellaCloneContainer alloc] initWithViewsToClone:viewsToClone];
         for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
+            
             viewToClone.userInteractionEnabled = NO;
+            
+            [viewToClone recurseSubviewsWithBlock:^(UIView *view) {
+                TRY
+                [view addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:kvoContext_Text];
+                CATCH
+                TRY_END
+            }];
         }
         [self.referenceView addSubview:self.cloneContainer];
         [self.referenceView sendSubviewToBack:self.cloneContainer];
@@ -223,22 +240,46 @@
     return self;
 }
 
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == kvoContext_Text) {
+        
+        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
+        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+        
+        if (![newValue respondsToSelector:@selector(compare:)] || ![oldValue respondsToSelector:@selector(compare:)]) {
+            return;
+        }
+            
+        if (!oldValue || (oldValue && [newValue compare:oldValue] != NSOrderedSame)) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finishWrapAround) object:nil];
+            [self performSelector:@selector(finishWrapAround) withObject:nil afterDelay:0.1];
+        }
+    }
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    @autoreleasepool {
-        
-        if (gestureRecognizer == self.tap || gestureRecognizer == self.pan) {
-            if ([touch.view isKindOfClass:[UIControl class]]) {
-                UIControl *control = (UIControl *)touch.view;
-                return (!control.isEnabled || touch.view.layer.opacity <= 0.0);
+    if (gestureRecognizer == self.tap || gestureRecognizer == self.pan) {
+        if ([touch.view isKindOfClass:[UIControl class]]) {
+            UIControl *control = (UIControl *)touch.view;
+            return (!control.isEnabled || touch.view.layer.opacity <= 0.0);
+        } else {
+            if ([touch.view isKindOfClass:objc_getClass("UITableViewCellContentView")] ||
+                [touch.view isKindOfClass:[UITableViewCell class]] ||
+                [touch.view isKindOfClass:[UITableView class]] ||
+                [touch.view isKindOfClass:[UICollectionViewCell class]] ||
+                [touch.view isKindOfClass:[UICollectionView class]]) {
+                return NO;
             }
         }
-        
-        return YES;
-        
     }
+    
+    return YES;
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -441,118 +482,155 @@
 																	block:^{
 																		[self finishWrapAround];
 																	} repeats:NO];
-		
 	}
 }
 
 - (void)finishWrapAround
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        @autoreleasepool {
+    DISPATCH_ASYNC_MAIN_QUEUE
+    AUTO_RELEASE_POOL
+    
+    self.wrapAroundFallback = nil;
+    
+    // Give text time to update
+    [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode beforeDate:[NSDate date]];
+    [self.cloneContainer refreshClones];
+    
+    if (self.cloneContainer.tag == SWAcapellaCloneContainerStateWaitingToFinishWrapAround) {
+        
+        self.cloneContainer.tag = SWAcapellaCloneContainerStateWrappingAround;
+        [self.animator removeAllBehaviors];
+        
+        //add original velocity
+        UIDynamicItemBehavior *bDynamicItem = [[UIDynamicItemBehavior alloc] initWithItems:@[self.cloneContainer]];
+        [self.animator addBehavior:bDynamicItem];
+        
+        
+        CGFloat horizontalVelocity = self.cloneContainer.velocity.x;
+        //clamp horizontal velocity to its own width*(variable) per second
+        horizontalVelocity = MIN(ABS(horizontalVelocity), CGRectGetWidth(self.cloneContainer.bounds) * 3.5);
+        horizontalVelocity = copysignf(horizontalVelocity, self.cloneContainer.velocity.x);
+        
+        [bDynamicItem addLinearVelocity:CGPointMake(horizontalVelocity, 0.0) forItem:self.cloneContainer];
+        
+        
+        __unsafe_unretained SWAcapella *weakSelf = self;
+        __unsafe_unretained UIDynamicItemBehavior *weakbDynamicItem = bDynamicItem;
+        
+        bDynamicItem.action = ^{
             
-            self.wrapAroundFallback = nil;
+            CGFloat velocity = [weakbDynamicItem linearVelocityForItem:weakSelf.cloneContainer].x;
+            BOOL toSlow = ABS(velocity) < CGRectGetMidX(weakSelf.referenceView.bounds);
             
-            // Give text time to update
-            [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode beforeDate:[NSDate date]];
-            [self.cloneContainer refreshClones];
+            weakSelf.cloneContainer.centerXConstraint.constant = weakSelf.cloneContainer.center.x - CGRectGetMidX(weakSelf.referenceView.bounds);
+            [weakSelf.referenceView setNeedsLayout];
             
-            if (self.cloneContainer.tag == SWAcapellaCloneContainerStateWaitingToFinishWrapAround) {
+            if (toSlow) {
                 
-                self.cloneContainer.tag = SWAcapellaCloneContainerStateWrappingAround;
-                [self.animator removeAllBehaviors];
+                [weakSelf snapToCenter];
                 
-                //add original velocity
-                UIDynamicItemBehavior *bDynamicItem = [[UIDynamicItemBehavior alloc] initWithItems:@[self.cloneContainer]];
-                [self.animator addBehavior:bDynamicItem];
+            } else {
                 
+                CGFloat distanceFromCenter = weakSelf.cloneContainer.center.x - CGRectGetMidX(self.cloneContainer.superview.bounds);
                 
-                CGFloat horizontalVelocity = self.cloneContainer.velocity.x;
-                //clamp horizontal velocity to its own width*(variable) per second
-                horizontalVelocity = MIN(ABS(horizontalVelocity), CGRectGetWidth(self.cloneContainer.bounds) * 3.5);
-                horizontalVelocity = copysignf(horizontalVelocity, self.cloneContainer.velocity.x);
+                //if we have a -ve velocity, after we wrap around we will have a positive value for distanceFromCenter
+                //once we travel past the center, this value will be -ve as well. This also happens in the other direction
+                //except with positive values. So we know we have travelled past the center if our velocity and our distance from
+                //the center have the same sign (-ve && -ve || +ve && +ve)
+                if (((distanceFromCenter < 0) == (velocity < 0))) {
+                    //this will cause the toSlow condition to be met much quicker, snapping it to the centre
+                    weakbDynamicItem.resistance = 60;
+                }
                 
-                [bDynamicItem addLinearVelocity:CGPointMake(horizontalVelocity, 0.0) forItem:self.cloneContainer];
-                
-                
-                __unsafe_unretained SWAcapella *weakSelf = self;
-                __unsafe_unretained UIDynamicItemBehavior *weakbDynamicItem = bDynamicItem;
-                
-                bDynamicItem.action = ^{
-                    
-                    CGFloat velocity = [weakbDynamicItem linearVelocityForItem:weakSelf.cloneContainer].x;
-                    BOOL toSlow = ABS(velocity) < CGRectGetMidX(weakSelf.referenceView.bounds);
-                    
-                    weakSelf.cloneContainer.centerXConstraint.constant = weakSelf.cloneContainer.center.x - CGRectGetMidX(weakSelf.referenceView.bounds);
-                    [weakSelf.referenceView setNeedsLayout];
-                    
-                    if (toSlow) {
-                        
-                        [weakSelf snapToCenter];
-                        
-                    } else {
-                        
-                        CGFloat distanceFromCenter = weakSelf.cloneContainer.center.x - CGRectGetMidX(self.cloneContainer.superview.bounds);
-                        
-                        //if we have a -ve velocity, after we wrap around we will have a positive value for distanceFromCenter
-                        //once we travel past the center, this value will be -ve as well. This also happens in the other direction
-                        //except with positive values. So we know we have travelled past the center if our velocity and our distance from
-                        //the center have the same sign (-ve && -ve || +ve && +ve)
-                        if (((distanceFromCenter < 0) == (velocity < 0))) {
-                            //this will cause the toSlow condition to be met much quicker, snapping it to the centre
-                            weakbDynamicItem.resistance = 60;
-                        }
-                        
-                    }
-                    
-                };
-                
-                self.cloneContainer.velocity = CGPointZero;
             }
-        }
-    });
+            
+        };
+        
+        self.cloneContainer.velocity = CGPointZero;
+    }
+    
+    AUTO_RELEASE_POOL_END
+    DISPATCH_ASYNC_MAIN_QUEUE_END
 }
 
 - (void)pulse
 {
-    // TODOL
+//    self.titlesClone.tag = SWAcapellaTitlesStateNone;
+//    self.wrapAroundFallback = nil;
+//    [self.animator removeAllBehaviors];
+//    self.titlesClone.velocity = CGPointZero;
+//    [self.titlesClone.layer removeAllAnimations];
+//    self.titlesClone.frame = self.titles.frame;
+//    self.titlesCloneCenterXConstraint.constant = 0.0;
+//    [self.referenceView setNeedsLayout];
+//    [self.titlesClone setNeedsDisplay];
+//    
+//    [UIView animateWithDuration:0.11
+//                          delay:0.01
+//                        options:UIViewAnimationOptionBeginFromCurrentState
+//                     animations:^{
+//                         
+//                         self.referenceView.transform = CGAffineTransformMakeScale(1.15, 1.15);
+//                         
+//                     } completion:^(BOOL finished) {
+//                         if (finished) {
+//                         
+//                             [UIView animateWithDuration:0.11
+//                                                   delay:0.0
+//                                                 options:UIViewAnimationOptionBeginFromCurrentState
+//                                              animations:^{
+//                                                  
+//                                                  self.referenceView.transform = CGAffineTransformIdentity;
+//                                                  
+//                                              } completion:^(BOOL finished) {
+//                                                  
+//                                                  self.referenceView.transform = CGAffineTransformIdentity;
+//                                                  
+//                                              }];
+//                         } else {
+//                             
+//                             self.referenceView.transform = CGAffineTransformIdentity;
+//                             
+//                         }
+//                     }];
 }
 
 - (void)snapToCenter
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        @autoreleasepool {
+    DISPATCH_ASYNC_MAIN_QUEUE
+    AUTO_RELEASE_POOL
             
-            if (self.cloneContainer.tag == SWAcapellaCloneContainerStatePanning ||
-                self.cloneContainer.tag == SWAcapellaCloneContainerStateWrappingAround) {
-                
-                [self.animator removeAllBehaviors];
-                self.cloneContainer.tag = SWAcapellaCloneContainerStateSnappingToCenter;
-                
-                UIDynamicItemBehavior *bDynamicItem = [[UIDynamicItemBehavior alloc] initWithItems:@[self.cloneContainer]];
-                
-                __unsafe_unretained SWAcapella *weakSelf = self;
-                bDynamicItem.action = ^{
-                    weakSelf.cloneContainer.centerXConstraint.constant = weakSelf.cloneContainer.center.x - CGRectGetMidX(weakSelf.referenceView.bounds);
-                    [weakSelf.referenceView setNeedsLayout];
-                };
-                
-                
-                bDynamicItem.density = 70.0;
-                bDynamicItem.resistance = 5.0;
-                bDynamicItem.allowsRotation = NO;
-                bDynamicItem.angularResistance = CGFLOAT_MAX;
-                bDynamicItem.friction = 1.0;
-                [self.animator addBehavior:bDynamicItem];
-                
-                CGPoint snapPoint = CGPointMake(CGRectGetMidX(self.referenceView.bounds), self.cloneContainer.center.y);
-                UISnapBehavior *bSnap = [[UISnapBehavior alloc] initWithItem:self.cloneContainer snapToPoint:snapPoint];
-                bSnap.damping = 0.3;
-                [self.animator addBehavior:bSnap];
-                
-            }
-            
-        }
-    });
+    if (self.cloneContainer.tag == SWAcapellaCloneContainerStatePanning ||
+        self.cloneContainer.tag == SWAcapellaCloneContainerStateWrappingAround) {
+        
+        [self.animator removeAllBehaviors];
+        self.cloneContainer.tag = SWAcapellaCloneContainerStateSnappingToCenter;
+        
+        UIDynamicItemBehavior *bDynamicItem = [[UIDynamicItemBehavior alloc] initWithItems:@[self.cloneContainer]];
+        
+        __unsafe_unretained SWAcapella *weakSelf = self;
+        bDynamicItem.action = ^{
+            weakSelf.cloneContainer.centerXConstraint.constant = weakSelf.cloneContainer.center.x - CGRectGetMidX(weakSelf.referenceView.bounds);
+            [weakSelf.referenceView setNeedsLayout];
+        };
+        
+        
+        bDynamicItem.density = 70.0;
+        bDynamicItem.resistance = 5.0;
+        bDynamicItem.allowsRotation = NO;
+        bDynamicItem.angularResistance = CGFLOAT_MAX;
+        bDynamicItem.friction = 1.0;
+        [self.animator addBehavior:bDynamicItem];
+        
+        CGPoint snapPoint = CGPointMake(CGRectGetMidX(self.referenceView.bounds), self.cloneContainer.center.y);
+        UISnapBehavior *bSnap = [[UISnapBehavior alloc] initWithItem:self.cloneContainer snapToPoint:snapPoint];
+        bSnap.damping = 0.3;
+        [self.animator addBehavior:bSnap];
+        
+    }
+    
+    AUTO_RELEASE_POOL_END
+    DISPATCH_ASYNC_MAIN_QUEUE_END
 }
 
 - (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator

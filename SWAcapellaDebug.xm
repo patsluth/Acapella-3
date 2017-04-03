@@ -10,6 +10,227 @@
 
 #import "Sluthware/Sluthware.h"
 
+#import <objc/runtime.h>
+
+
+
+
+//@interface NSObject (Private)
+//    -(id)_ivarDescription;
+//    -(id)_shortMethodDescription;
+//    -(id)_methodDescription;
+//@end
+//
+//
+//
+//
+//
+//
+//@interface _TtC5Music8SongCell : NSObject
+//
+//- (id)_viewControllerForAncestor;
+//
+//@end
+//
+//@interface _TtGC5Music30BrowseCollectionViewControllerCSo16UICollectionView_ : UIViewController
+//
+//@end
+//
+//@interface _TtC5Music19SongsViewController : UIViewController
+//
+//@end
+//
+//
+//
+//%hook _TtC5Music8SongCell
+//
+//- (void)setTitle:(id)arg1
+//{
+//    
+//    
+//    
+//    
+//}
+//
+//- (void)touchesBegan:(id)touches withEvent:(id)event
+//{
+////    id vc = [self _viewControllerForAncestor];
+////    NSLog(@"PAT %@", vc);
+////    NSLog(@"PAT %s", object_getClassName(vc));
+////    
+////    NSBundle *b = [NSBundle bundleForClass:[vc class]];
+////    
+////    NSLog(@"PAT %@", b);
+////    //NSLog(@"PAT %@", b.sharedFrameworksURL);
+////    //NSLog(@"PAT %@", b.privateFrameworksURL);
+////    //NSLog(@"PAT %@", [NSBundle allFrameworks]);
+////    
+////    
+////    
+////    
+////    NSLog(@"PAT %@", %c(_TtGC5Music30BrowseCollectionViewControllerCSo16UICollectionView_));
+////    NSLog(@"PAT %@", %c(_TtC5Music19SongsViewController));
+////    
+////    
+////    
+////    TRY
+////    
+////    NSLog(@"PAT 2 %@", [(NSObject *)vc _ivarDescription]);
+////    NSLog(@"PAT 3 %@", [(NSObject *)vc _methodDescription]);
+////    
+////   
+////    
+////    CATCH_LOG
+////    TRY_END
+////    
+////    
+////     NSLog(@"PAT 4 %s", @encode(typeof(vc)));
+//    
+//    
+//    
+//    
+//    
+//    %orig(touches, event);
+//}
+//
+//%end
+
+
+
+
+
+
+
+/*
+%hook _TtC5Music19SongsViewController
+
+- (void)viewWillAppear:(BOOL)arg1
+{
+    NSLog(@"PAT viewWillAppear %@", [self class]);
+    
+    %orig(arg1);
+}
+
+- (void)configure:(id)arg1 forItem:(id)arg2 at:(id)arg3
+{
+    SWLogMethod_Start
+    NSLog(@"arg1:[%@]", arg1);
+    NSLog(@"arg2:[%@]", arg2);
+    NSLog(@"arg3:[%@]", arg3);
+    SWLogMethod_End
+    
+    %orig(arg1, arg2, arg3);
+}
+
++ (id)songProperties
+{
+    id returnVal = %orig();
+    
+    SWLogMethod_Start
+    NSLog(@"returnVal:[%@]", returnVal);
+    SWLogMethod_End
+    
+    return returnVal;
+}
+
+%end
+*/
+
+
+
+//@interface UIViewController ()
+//- (id)modelResponse;
+//
+//@end
+//
+//%hook UIViewController
+//
+//- (void)viewWillAppear:(BOOL)arg1
+//{
+//    NSLog(@"PAT viewWillAppear %@", [self class]);
+//    
+//    TRY
+//        NSLog(@"%@", [self modelResponse]);
+//    CATCH_LOG
+//    TRY_END
+//    
+//    %orig(arg1);
+//}
+//
+//- (void)collectionView:(id)arg1 willDisplayCell:(id)arg2 forItemAtIndexPath:(id)arg3
+//{
+//    if ([self class] == objc_getClass("Music.SongsViewController")) {
+//        SWLogMethod_Start
+//        NSLog(@"arg1:[%@]", arg1);
+//        NSLog(@"arg2:[%@]", arg2);
+//        NSLog(@"arg3:[%@]", arg3);
+//        SWLogMethod_End
+//    }
+//    
+//    
+//    
+//    %orig(arg1, arg2, arg3);
+//}
+//
+//%end
+
+
+
+
+
+
+// WORKING!!!!
+/*
+
+%hook AnyRandomNameHere
+
+- (void)viewWillAppear:(BOOL)arg1
+{
+    NSLog(@"PAT viewWillAppear %@", [self class]);
+    
+    %orig(arg1);
+}
+
+%end
+
+%ctor {
+    %init(AnyRandomNameHere = objc_getClass("Music.MiniPlayerViewController"));
+}
+
+*/
+
+
+
+
+
+
+
+
+
+//%hook AnyRandomNameHere
+//
+//- (void)configure:(id)arg1 forItem:(id)arg2 at:(id)arg3
+//{
+//    SWLogMethod_Start
+//    NSLog(@"arg1:[%@]", arg1);
+//    NSLog(@"arg2:[%@]", arg2);
+//    NSLog(@"arg3:[%@]", arg3);
+//    SWLogMethod_End
+//    
+//    %orig(arg1, arg2, arg3);
+//}
+//
+//%end
+//
+//%ctor {
+//    %init(AnyRandomNameHere = objc_getClass("Music.JSMenuViewController"));
+//    
+//    
+//    NSLog(@"PAT PAT %@", objc_getClass("Music.SongsViewController"));
+//}
+
+
+
 
 
 
