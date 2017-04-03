@@ -11,7 +11,8 @@ Acapella3_Music_FILES = \
                         ../Acapella3.xm \
                     	../SWAcapella.m \
                     	../SWAcapellaCloneContainer.m \
-                    	../SWAcapellaPrefs.xm \
+						../SWAcapellaPrefs.xm \
+						../AVSystemController.xm \
                     	_TtC5Music24MiniPlayerViewController.xm \
                         _TtC5Music32NowPlayingControlsViewController.xm \
                         MusicNowPlayingControlsViewController.xm \

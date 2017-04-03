@@ -135,6 +135,10 @@ static void *kvoContext_Text = &kvoContext_Text;
         [acapella.press.view removeGestureRecognizer:acapella.press];
         [acapella.press removeTarget:nil action:nil];
         acapella.press = nil;
+		
+		for (UIGestureRecognizer *gestureRecognizer in acapella.referenceView.gestureRecognizers) {
+			gestureRecognizer.enabled = NO;
+		}
         
         [acapella.referenceView layoutSubviews];
 		[acapella.referenceView setNeedsDisplay];
@@ -165,6 +169,10 @@ static void *kvoContext_Text = &kvoContext_Text;
         
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.referenceView];
         self.animator.delegate = self;
+		
+		for (UIGestureRecognizer *gestureRecognizer in referenceView.gestureRecognizers) {
+			gestureRecognizer.enabled = NO;
+		}
         
         self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         self.tap.delegate = self;
@@ -660,6 +668,10 @@ static void *kvoContext_Text = &kvoContext_Text;
 	
     self.cloneContainer.centerXConstraint.constant = CGRectGetMidX(self.referenceView.bounds) - self.cloneContainer.center.x;
     [self.cloneContainer setNeedsDisplay];
+	
+	if (self.owner.acapellaPrefs) {
+		[self.owner.acapellaPrefs refreshPrefs];
+	}
 }
 
 #pragma mark - Internal

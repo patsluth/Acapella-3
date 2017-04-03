@@ -59,7 +59,7 @@
 	//NSLog(@"arg2: %@", x);
 	SWLogMethod_End
 	
-	return NO;
+	return %orig(arg1);
 }
 
 - (_Bool)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2
@@ -106,7 +106,7 @@
         UIGestureRecognizer *gestureRecognizer;
 		
 		
-		[SWAcapella setAcapella:acapella forObject:self withPolicy:OBJC_ASSOCIATION_ASSIGN];
+//		[SWAcapella setAcapella:acapella forObject:self withPolicy:OBJC_ASSOCIATION_ASSIGN];
 		
 		
         

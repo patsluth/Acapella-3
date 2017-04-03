@@ -32,6 +32,7 @@
 #import <objc/runtime.h>
 
 #import "MediaRemote.h"
+#import "AVSystemController+SW.h"
 
 
 
@@ -220,71 +221,42 @@
 %new
 - (void)action_upnext:(id)arg1
 {
-    TRY
-    
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//        
-//        [self transportControlsView:self.secondaryTransportControlsView tapOnControlType:7];
-//        
-//    } else {
-//        
-//        UIViewController<SWAcapellaDelegate> *nowPlayingViewController;
-//        nowPlayingViewController = [(MusicTabBarController *)self.parentViewController nowPlayingViewController];
-//        
-//        [self.parentViewController presentViewController:nowPlayingViewController
-//                                                animated:YES
-//                                              completion:^() {
-//                                                  
-//                                                  [nowPlayingViewController action_upnext:nil];
-//                                                  
-//                                              }];
-//        
-//    }
-    
-    CATCH_LOG
-    TRY_END
 }
 
 %new
 - (void)action_previoustrack:(id)arg1
 {
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.previousTrackCommand newCommandEvent];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-    }];
-    
-    CATCH_LOG
-    TRY_END
+//	_TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+//	MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+//	MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
+//	[delegate.player performCommandEvent:commandEvent completion:^{
+//	}];
+	
+	MRMediaRemoteSendCommand(kMRPreviousTrack, nil);
 }
 
 %new
 - (void)action_nexttrack:(id)arg1
 {
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-    }];
-    
-    CATCH_LOG
-    TRY_END
+//	_TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+//	MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+//	MPRemoteCommandEvent *commandEvent = [commandCenter.nextTrackCommand newCommandEvent];
+//	[delegate.player performCommandEvent:commandEvent completion:^{
+//	}];
+	
+	MRMediaRemoteSendCommand(kMRNextTrack, nil);
 }
 
 %new
 - (void)action_intervalrewind:(id)arg1
 {
-	MRMediaRemoteGetNowPlayingInfo(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^(CFDictionaryRef result) {
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef result) {
 		
 		NSDictionary *resultDict = (__bridge NSDictionary *)result;
 		
 		if (resultDict) {
-			double mediaCurrentElapsedDuration = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
-			MRMediaRemoteSetElapsedTime(mediaCurrentElapsedDuration - 20.0);
+			double elapsedTime = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			MRMediaRemoteSetElapsedTime(elapsedTime - 20.0);
 		}
 		resultDict = nil;
 	});
@@ -293,13 +265,13 @@
 %new
 - (void)action_intervalforward:(id)arg1
 {
-	MRMediaRemoteGetNowPlayingInfo(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^(CFDictionaryRef result) {
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef result) {
 		
 		NSDictionary *resultDict = (__bridge NSDictionary *)result;
 		
 		if (resultDict) {
-			double mediaCurrentElapsedDuration = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
-			MRMediaRemoteSetElapsedTime(mediaCurrentElapsedDuration + 20.0);
+			double elapsedTime = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			MRMediaRemoteSetElapsedTime(elapsedTime + 20.0);
 		}
 		resultDict = nil;
 	});
@@ -308,29 +280,69 @@
 %new
 - (void)action_seekrewind:(id)arg1
 {
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef result) {
+		
+		NSDictionary *resultDict = (__bridge NSDictionary *)result;
+		
+		if (resultDict) {
+			int playbackRate = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoPlaybackRate] integerValue];
+			MRMediaRemoteSendCommand((playbackRate == 1) ? kMRStartBackwardSeek : kMREndBackwardSeek, nil);
+		}
+		resultDict = nil;
+	});
 }
 
 %new
 - (void)action_seekforward:(id)arg1
 {
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef result) {
+		
+		NSDictionary *resultDict = (__bridge NSDictionary *)result;
+		
+		if (resultDict) {
+			int playbackRate = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoPlaybackRate] integerValue];
+			MRMediaRemoteSendCommand((playbackRate == 1) ? kMRStartForwardSeek : kMREndForwardSeek, nil);
+		}
+		resultDict = nil;
+	});
 }
 
 %new
 - (void)action_playpause:(id)arg1
 {
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.togglePlayPauseCommand newCommandEvent];
-    [commandCenter dispatchCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    [self.acapella pulse];
-    
-    CATCH_LOG
-    TRY_END
+	//    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+	//    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+	//    MPRemoteCommandEvent *commandEvent = [commandCenter.togglePlayPauseCommand newCommandEvent];
+	//    [commandCenter dispatchCommandEvent:commandEvent completion:^{
+	//
+	//    }];
+	
+	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef result) {
+		
+		NSDictionary *resultDict = (__bridge NSDictionary *)result;
+		BOOL wasSeeking = NO;
+		
+		if (resultDict) {
+			int playbackRate = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoPlaybackRate] integerValue];
+			wasSeeking = (playbackRate != 1 && playbackRate != 0);
+		}
+		resultDict = nil;
+		
+		if (wasSeeking) {
+			
+			MRMediaRemoteSendCommand(kMREndForwardSeek, nil);
+			MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
+		} else {
+			
+			MRMediaRemoteGetNowPlayingApplicationIsPlaying(dispatch_get_main_queue(), ^(Boolean isPlaying) {
+				
+				MRMediaRemoteSendCommand(isPlaying ? kMRPause : kMRPlay, nil);
+			});
+		}
+		
+	});
+	
+	[self.acapella pulse];
 }
 
 %new
@@ -341,33 +353,37 @@
 %new
 - (void)action_toggleshuffle:(id)arg1
 {
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.advanceShuffleModeCommand newCommandEventWithPreservesShuffleMode:NO];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    CATCH_LOG
-    TRY_END
+	//    TRY
+	//
+	//    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+	//    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+	//    MPRemoteCommandEvent *commandEvent = [commandCenter.advanceShuffleModeCommand newCommandEventWithPreservesShuffleMode:NO];
+	//    [delegate.player performCommandEvent:commandEvent completion:^{
+	//
+	//    }];
+	//
+	//    CATCH_LOG
+	//    TRY_END
+	
+	MRMediaRemoteSendCommand(kMRToggleShuffle, nil);
 }
 
 %new
 - (void)action_togglerepeat:(id)arg1
 {
-    TRY
-    
-    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
-    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
-    MPRemoteCommandEvent *commandEvent = [commandCenter.advanceRepeatModeCommand newCommandEventWithPreservesRepeatMode:NO];
-    [delegate.player performCommandEvent:commandEvent completion:^{
-        
-    }];
-    
-    CATCH_LOG
-    TRY_END
+	//    TRY
+	//
+	//    _TtC5Music19ApplicationDelegate *delegate = (_TtC5Music19ApplicationDelegate *)[UIApplication sharedApplication].delegate;
+	//    MPRemoteCommandCenter *commandCenter = delegate.player.commandCenter;
+	//    MPRemoteCommandEvent *commandEvent = [commandCenter.advanceRepeatModeCommand newCommandEventWithPreservesRepeatMode:NO];
+	//    [delegate.player performCommandEvent:commandEvent completion:^{
+	//
+	//    }];
+	//
+	//    CATCH_LOG
+	//    TRY_END
+	
+	MRMediaRemoteSendCommand(kMRToggleRepeat, nil);
 }
 
 %new
@@ -394,35 +410,19 @@
 %new
 - (void)action_decreasevolume:(id)arg1
 {
-    AUTO_RELEASE_POOL
-    
-    TRY
-    
-    MPVolumeController *volumeController = [%c(MPVolumeController) new];
-    [volumeController setVolumeValue:volumeController.volumeValue - 0.0625];
-    volumeController = nil;
-    
-    CATCH_LOG
-    TRY_END
-    
-    AUTO_RELEASE_POOL_END
+	TRY
+	[%c(AVSystemController) acapellaChangeVolume:-1];
+	CATCH_LOG
+	TRY_END
 }
 
 %new
 - (void)action_increasevolume:(id)arg1
 {
-    AUTO_RELEASE_POOL
-    
-    TRY
-    
-    MPVolumeController *volumeController = [%c(MPVolumeController) new];
-    [volumeController setVolumeValue:volumeController.volumeValue + 0.0625];
-    volumeController = nil;
-    
-    CATCH_LOG
-    TRY_END
-    
-    AUTO_RELEASE_POOL_END
+	TRY
+	[%c(AVSystemController) acapellaChangeVolume:1];
+	CATCH_LOG
+	TRY_END
 }
 
 %new

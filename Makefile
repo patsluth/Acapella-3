@@ -3,8 +3,8 @@
 
 
 
-export FINALPACKAGE = 0
-export DEBUG = 1
+export FINALPACKAGE = 1
+export DEBUG = 0
 PACKAGE_VERSION = 1.0-4
 
 

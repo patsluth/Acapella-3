@@ -21,17 +21,15 @@
 		2E6CC1FC1E903CF6009588ED /* layout */ = {isa = PBXFileReference; lastKnownFileType = folder; path = layout; sourceTree = "<group>"; };
 		2E6CC1FD1E903CF6009588ED /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		2E6CC1FE1E903CF6009588ED /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
+		2EDF460D1E929F1600398886 /* AVSystemController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = AVSystemController.xm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		2EB874E21E4D5DE900DAD90C /* src */ = {
 			isa = PBXGroup;
 			children = (
-				2E6CC1F11E903CAF009588ED /* Acapella3.xm */,
-				2E6CC1F31E903CAF009588ED /* SWAcapella.m */,
-				2E6CC1F41E903CAF009588ED /* SWAcapellaCloneContainer.m */,
-				2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */,
-				2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */,
+				2EDF460E1E929F1D00398886 /* Acapella */,
+				2EDF460D1E929F1600398886 /* AVSystemController.xm */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -50,6 +48,18 @@
 				2E6CC1F21E903CAF009588ED /* Makefile */,
 				2EB874E21E4D5DE900DAD90C /* src */,
 			);
+			sourceTree = "<group>";
+		};
+		2EDF460E1E929F1D00398886 /* Acapella */ = {
+			isa = PBXGroup;
+			children = (
+				2E6CC1F11E903CAF009588ED /* Acapella3.xm */,
+				2E6CC1F31E903CAF009588ED /* SWAcapella.m */,
+				2E6CC1F41E903CAF009588ED /* SWAcapellaCloneContainer.m */,
+				2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */,
+				2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */,
+			);
+			name = Acapella;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

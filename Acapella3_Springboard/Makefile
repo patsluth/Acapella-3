@@ -11,7 +11,8 @@ Acapella3_Springboard_FILES = \
                         ../Acapella3.xm \
                     	../SWAcapella.m \
                     	../SWAcapellaCloneContainer.m \
-                    	../SWAcapellaPrefs.xm \
+						../SWAcapellaPrefs.xm \
+						../AVSystemController.xm \
                     	SBDashBoardScrollGestureController.xm \
                     	MPUControlCenterMediaControlsView.xm \
                     	MPUControlCenterMediaControlsViewController.xm \

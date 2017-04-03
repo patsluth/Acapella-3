@@ -51,6 +51,8 @@
 
 - (id)initWithKeyPrefix:(NSString *)keyPrefix;
 
+- (void)refreshPrefs;
+
 @end
 
 
