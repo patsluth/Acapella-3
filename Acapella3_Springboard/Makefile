@@ -8,7 +8,7 @@ TWEAK_NAME = Acapella3_Springboard
 Acapella3_Springboard_CFLAGS = -fobjc-arc -Wno-arc-performSelector-leaks
 Acapella3_Springboard_LDFLAGS += -F$(THEOS)/lib/
 Acapella3_Springboard_FILES = \
-                        ../Acapella3.xm \
+						../Acapella3.xm \
                     	../SWAcapella.m \
                     	../SWAcapellaCloneContainer.m \
 						../SWAcapellaPrefs.xm \
@@ -19,9 +19,8 @@ Acapella3_Springboard_FILES = \
                     	MPULockScreenMediaControlsView.xm \
                     	MPULockScreenMediaControlsViewController.xm \
 
-ifeq ($(DEBUG), 1)
+ifeq ($(FINALPACKAGE), 0)
 	Acapella3_Springboard_CFLAGS += -Wno-unused-variable
-	Acapella3_Springboard_FILES += ../SWAcapellaDebug.xm
 endif
 
 Acapella3_Springboard_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore

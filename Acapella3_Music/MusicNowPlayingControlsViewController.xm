@@ -7,17 +7,17 @@
 //
 
 #import "SWAcapella.h"
-#import "_TtC5Music19ApplicationDelegate+SW.h"
-#import "MediaPlayer+SW.h"
 #import "SWAcapellaPrefs.h"
 
 #import "Sluthware/Sluthware.h"
 
-#import "MPUTransportControlMediaRemoteController.h"
+#import "_TtC5Music19ApplicationDelegate+SW.h"
+#import "MediaPlayer+SW.h"
+#import "MusicTabBarController.h"
 
 #import <objc/runtime.h>
 
-#import "MediaRemote.h"
+#import "MediaRemote/MediaRemote.h"
 #import "AVSystemController+SW.h"
 
 

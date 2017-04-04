@@ -19,7 +19,7 @@
 //#import "MPUTransportControlMediaRemoteController.h"
 
 #import "SBMediaController.h"
-#import "MediaRemote.h"
+#import "MediaRemote/MediaRemote.h"
 #import "AVSystemController+SW.h"
 
 

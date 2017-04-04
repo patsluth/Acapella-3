@@ -83,7 +83,13 @@
         self.artistLabel.center = CGPointMake(self.artistLabel.center.x, self.artistLabel.center.y + deltaY);
         self.albumLabel.center = CGPointMake(self.albumLabel.center.x, self.albumLabel.center.y + deltaY);
         self.artistAlbumConcatenatedLabel.center = CGPointMake(self.artistAlbumConcatenatedLabel.center.x, self.artistAlbumConcatenatedLabel.center.y + deltaY);
-    }
+	} else {
+		
+//		self.emptyNowPlayingView.frame = CGRectMake(CGRectGetMinX(self.emptyNowPlayingView.frame),
+//													CGRectGetMinY(self.emptyNowPlayingView.frame),
+//													CGRectGetMaxX(self.bounds) - CGRectGetMinX(self.emptyNowPlayingView.frame),
+//													CGRectGetMaxY(self.emptyNowPlayingView.bounds));
+	}
 }
 
 %end

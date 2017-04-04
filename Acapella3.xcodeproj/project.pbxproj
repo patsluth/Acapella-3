@@ -14,52 +14,36 @@
 		2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaDebug.xm; sourceTree = "<group>"; usesTabs = 1; };
 		2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = SWAcapellaPrefs.xm; sourceTree = "<group>"; usesTabs = 1; };
 		2E6CC1F71E903CF6009588ED /* Acapella3_Music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Music; sourceTree = "<group>"; };
-		2E6CC1F81E903CF6009588ED /* Acapella3_Preferences */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Preferences; sourceTree = "<group>"; };
 		2E6CC1F91E903CF6009588ED /* Acapella3_PreferencesBundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_PreferencesBundle; sourceTree = "<group>"; };
 		2E6CC1FA1E903CF6009588ED /* Acapella3_Springboard */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Springboard; sourceTree = "<group>"; };
 		2E6CC1FB1E903CF6009588ED /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		2E6CC1FC1E903CF6009588ED /* layout */ = {isa = PBXFileReference; lastKnownFileType = folder; path = layout; sourceTree = "<group>"; };
 		2E6CC1FD1E903CF6009588ED /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		2E6CC1FE1E903CF6009588ED /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
+		2ED9C4A71E9435D5002C9304 /* Acapella3_Preferences */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Acapella3_Preferences; sourceTree = "<group>"; };
 		2EDF460D1E929F1600398886 /* AVSystemController.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = AVSystemController.xm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		2EB874E21E4D5DE900DAD90C /* src */ = {
-			isa = PBXGroup;
-			children = (
-				2EDF460E1E929F1D00398886 /* Acapella */,
-				2EDF460D1E929F1600398886 /* AVSystemController.xm */,
-			);
-			name = src;
-			sourceTree = "<group>";
-		};
 		2EBB756F1BE97BB900A3A82D = {
 			isa = PBXGroup;
 			children = (
 				2E6CC1FC1E903CF6009588ED /* layout */,
 				2E6CC1FD1E903CF6009588ED /* public */,
-				2E6CC1F71E903CF6009588ED /* Acapella3_Music */,
-				2E6CC1F81E903CF6009588ED /* Acapella3_Preferences */,
-				2E6CC1F91E903CF6009588ED /* Acapella3_PreferencesBundle */,
 				2E6CC1FA1E903CF6009588ED /* Acapella3_Springboard */,
+				2E6CC1F71E903CF6009588ED /* Acapella3_Music */,
+				2ED9C4A71E9435D5002C9304 /* Acapella3_Preferences */,
+				2E6CC1F91E903CF6009588ED /* Acapella3_PreferencesBundle */,
 				2E6CC1FB1E903CF6009588ED /* Assets */,
 				2E6CC1FE1E903CF6009588ED /* Resources */,
 				2E6CC1F21E903CAF009588ED /* Makefile */,
-				2EB874E21E4D5DE900DAD90C /* src */,
-			);
-			sourceTree = "<group>";
-		};
-		2EDF460E1E929F1D00398886 /* Acapella */ = {
-			isa = PBXGroup;
-			children = (
 				2E6CC1F11E903CAF009588ED /* Acapella3.xm */,
 				2E6CC1F31E903CAF009588ED /* SWAcapella.m */,
 				2E6CC1F41E903CAF009588ED /* SWAcapellaCloneContainer.m */,
 				2E6CC1F51E903CAF009588ED /* SWAcapellaDebug.xm */,
 				2E6CC1F61E903CAF009588ED /* SWAcapellaPrefs.xm */,
+				2EDF460D1E929F1600398886 /* AVSystemController.xm */,
 			);
-			name = Acapella;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

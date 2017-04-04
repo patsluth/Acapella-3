@@ -72,6 +72,11 @@
 
 @property (strong, nonatomic) NSTimer *wrapAroundFallback;
 
+@property (strong, nonatomic) NSMutableArray *kvoObservers;
+
+- (void)setupKVO;
+- (void)teardownKVO;
+
 @end
 
 
@@ -81,8 +86,6 @@
 @implementation SWAcapella
 
 #pragma mark - SWAcapella
-
-static void *kvoContext_Text = &kvoContext_Text;
 
 - (void)_acapella
 {
@@ -105,17 +108,11 @@ static void *kvoContext_Text = &kvoContext_Text;
 		[[NSNotificationCenter defaultCenter] removeObserver:acapella];
         
         acapella.cloneContainer.tag = SWAcapellaCloneContainerStateNone;    // Reset views and constraints
-        for (UIView *viewToClone in acapella.cloneContainer.viewsToClone) {
-            
-            viewToClone.userInteractionEnabled = YES;
-            
-            [viewToClone recurseSubviewsWithBlock:^(UIView *view) {
-                TRY
-                [view removeObserver:acapella forKeyPath:@"text" context:kvoContext_Text];
-                CATCH
-                TRY_END
-            }];
-        }
+		for (UIView *viewToClone in acapella.cloneContainer.viewsToClone) {
+			viewToClone.userInteractionEnabled = NO;
+		}
+		[acapella teardownKVO];
+		
         [NSObject cancelPreviousPerformRequestsWithTarget:acapella selector:@selector(finishWrapAround) object:nil];
         [acapella.cloneContainer removeFromSuperview];
         acapella.cloneContainer = nil;
@@ -139,6 +136,8 @@ static void *kvoContext_Text = &kvoContext_Text;
 		for (UIGestureRecognizer *gestureRecognizer in acapella.referenceView.gestureRecognizers) {
 			gestureRecognizer.enabled = NO;
 		}
+		
+		acapella.kvoObservers = nil;
         
         [acapella.referenceView layoutSubviews];
 		[acapella.referenceView setNeedsDisplay];
@@ -186,20 +185,14 @@ static void *kvoContext_Text = &kvoContext_Text;
         self.press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onPress:)];
         self.press.delegate = self;
         [self.referenceView addGestureRecognizer:self.press];
+		
+		self.kvoObservers = [NSMutableArray new];
         
         
         self.cloneContainer = [[SWAcapellaCloneContainer alloc] initWithViewsToClone:viewsToClone];
-        for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
-            
-            viewToClone.userInteractionEnabled = NO;
-            
-            [viewToClone recurseSubviewsWithBlock:^(UIView *view) {
-                TRY
-                [view addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:kvoContext_Text];
-                CATCH
-                TRY_END
-            }];
-        }
+		for (UIView *viewToClone in self.cloneContainer.viewsToClone) {
+			viewToClone.userInteractionEnabled = NO;
+		}
         [self.referenceView addSubview:self.cloneContainer];
         [self.referenceView sendSubviewToBack:self.cloneContainer];
         
@@ -250,22 +243,77 @@ static void *kvoContext_Text = &kvoContext_Text;
 
 #pragma mark - KVO
 
+static void *kvoContext_AttributedText = &kvoContext_AttributedText;
+static void *kvoContext_Text = &kvoContext_Text;
+
+- (void)setupKVO
+{
+	for (UIView *subview in self.cloneContainer.subviews) {
+		[subview recurseSubviewsWithBlock:^(UIView *view) {
+			if (view && ![self.kvoObservers containsObject:view]) {
+				[self.kvoObservers addObject:view];
+				[view addObserver:self forKeyPath:@"attributedText"
+						  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+						  context:kvoContext_AttributedText];
+				[view addObserver:self forKeyPath:@"text"
+						  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+						  context:kvoContext_Text];
+			}
+		}];
+	}
+}
+
+- (void)teardownKVO
+{
+	for (UIView *kvoView in self.kvoObservers) {
+		if (kvoView) {
+			[kvoView removeObserver:self
+						 forKeyPath:@"attributedText"
+							context:kvoContext_AttributedText];
+			[kvoView removeObserver:self
+						 forKeyPath:@"text"
+							context:kvoContext_Text];
+		}
+	}
+	
+	[self.kvoObservers removeAllObjects];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context == kvoContext_Text) {
+//	SWLogMethod_Start
+//	NSLog(@"arg1:[%@]", keyPath);
+//	NSLog(@"arg2:[%@]", [object class]);
+	
+    if (self.cloneContainer.tag == SWAcapellaCloneContainerStateWaitingToFinishWrapAround) {
         
-        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
-        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
-        
-        if (![newValue respondsToSelector:@selector(compare:)] || ![oldValue respondsToSelector:@selector(compare:)]) {
-            return;
-        }
-            
-        if (!oldValue || (oldValue && [newValue compare:oldValue] != NSOrderedSame)) {
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finishWrapAround) object:nil];
-            [self performSelector:@selector(finishWrapAround) withObject:nil afterDelay:0.1];
-        }
-    }
+		if (context == kvoContext_AttributedText || context == kvoContext_Text) {
+			
+			id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
+			id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+			
+			if (oldValue && [oldValue isKindOfClass:[NSAttributedString class]]) {
+				oldValue = ((NSAttributedString *)oldValue).string;
+			}
+			if (newValue && [newValue isKindOfClass:[NSAttributedString class]]) {
+				newValue = ((NSAttributedString *)newValue).string;
+			}
+			
+//			NSLog(@"oldValue: %@", oldValue);
+//			NSLog(@"newValue: %@", newValue);
+			
+			if (![newValue respondsToSelector:@selector(compare:)] || ![oldValue respondsToSelector:@selector(compare:)]) {
+				return;
+			}
+			
+			if (!oldValue || (oldValue && [newValue compare:oldValue] != NSOrderedSame)) {
+				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finishWrapAround) object:nil];
+				[self performSelector:@selector(finishWrapAround) withObject:nil afterDelay:0.1];
+			}
+		}
+	}
+	
+//	SWLogMethod_End
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -353,6 +401,7 @@ static void *kvoContext_Text = &kvoContext_Text;
     if (pan.state == UIGestureRecognizerStateBegan) {
         
         self.referenceView.clipsToBounds = YES;
+		[self teardownKVO];
         self.wrapAroundFallback = nil;
         [self.animator removeAllBehaviors];
         self.cloneContainer.tag = SWAcapellaCloneContainerStatePanning;
@@ -469,8 +518,13 @@ static void *kvoContext_Text = &kvoContext_Text;
 {
 	if (self.cloneContainer.tag == SWAcapellaCloneContainerStatePanning) {
 		
-		self.cloneContainer.tag = SWAcapellaCloneContainerStateWaitingToFinishWrapAround;
+		[self setupKVO];
+		self.wrapAroundFallback = [NSTimer scheduledTimerWithTimeInterval:100.0
+																	block:^{
+																		[self finishWrapAround];
+																	} repeats:NO];
 		
+		self.cloneContainer.tag = SWAcapellaCloneContainerStateWaitingToFinishWrapAround;
 		SEL sel = nil;
 		
 		if (direction < 0) { // left
@@ -484,12 +538,6 @@ static void *kvoContext_Text = &kvoContext_Text;
                 [self.owner performSelectorOnMainThread:sel withObject:self.pan waitUntilDone:NO];
             }
 		}
-		
-		
-		self.wrapAroundFallback = [NSTimer scheduledTimerWithTimeInterval:1.0
-																	block:^{
-																		[self finishWrapAround];
-																	} repeats:NO];
 	}
 }
 
@@ -497,14 +545,15 @@ static void *kvoContext_Text = &kvoContext_Text;
 {
     DISPATCH_ASYNC_MAIN_QUEUE
     AUTO_RELEASE_POOL
-    
-    self.wrapAroundFallback = nil;
-    
+	
     // Give text time to update
-    [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode beforeDate:[NSDate date]];
-    [self.cloneContainer refreshClones];
+	//[[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode beforeDate:[NSDate date]];
+	//[self.cloneContainer refreshClones];
     
     if (self.cloneContainer.tag == SWAcapellaCloneContainerStateWaitingToFinishWrapAround) {
+		
+		[self teardownKVO];
+		self.wrapAroundFallback = nil;
         
         self.cloneContainer.tag = SWAcapellaCloneContainerStateWrappingAround;
         [self.animator removeAllBehaviors];

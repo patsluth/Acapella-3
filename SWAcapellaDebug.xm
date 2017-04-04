@@ -15,6 +15,23 @@
 
 
 
+
+//%hook CCUIControlCenterLabel
+//
+//- (void)setText:(id)arg1
+//{
+//	%orig(arg1);
+//	
+//	SWLogMethod_Start
+//	NSLog(@"arg1:[%@]", arg1);
+//	SWLogMethod_End
+//}
+//
+//%end
+
+
+
+
 //@interface NSObject (Private)
 //    -(id)_ivarDescription;
 //    -(id)_shortMethodDescription;

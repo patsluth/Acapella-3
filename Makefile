@@ -4,14 +4,13 @@
 
 
 export FINALPACKAGE = 1
-export DEBUG = 0
-PACKAGE_VERSION = 1.0-4
+PACKAGE_VERSION = 1.0-5
 
 
 
 
 
-ifeq ($(DEBUG), 1)
+ifeq ($(FINALPACKAGE), 0)
 	export ARCHS = arm64
 else
     export ARCHS = armv7 armv7s arm64
@@ -39,6 +38,7 @@ SUBPROJECTS += Acapella3_PreferencesBundle
 
 
 include $(THEOS)/makefiles/common.mk
+include $(THEOS)/makefiles/tweak.mk
 include $(THEOS)/makefiles/bundle.mk
 include $(THEOS)/makefiles/aggregate.mk
 include $(THEOS)/makefiles/swcommon.mk

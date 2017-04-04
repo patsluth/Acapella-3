@@ -83,7 +83,7 @@
                 [NSLayoutConstraint activateConstraints:constraintsToActivate.copy];
                 [NSLayoutConstraint deactivateConstraints:constraintsToDeactivate.copy];
                 
-                objc_setAssociatedObject(viewToClone, @selector(layoutSubviews), NULL, OBJC_ASSOCIATION_RETAIN);
+                objc_setAssociatedObject(viewToClone, @selector(_constraintsToDeactivate), NULL, OBJC_ASSOCIATION_RETAIN);
             }
         }
         

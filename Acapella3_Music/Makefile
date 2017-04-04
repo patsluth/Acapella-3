@@ -8,7 +8,7 @@ TWEAK_NAME = Acapella3_Music
 Acapella3_Music_CFLAGS = -fobjc-arc -Wno-arc-performSelector-leaks
 Acapella3_Music_LDFLAGS += -F$(THEOS)/lib/
 Acapella3_Music_FILES = \
-                        ../Acapella3.xm \
+						../Acapella3.xm \
                     	../SWAcapella.m \
                     	../SWAcapellaCloneContainer.m \
 						../SWAcapellaPrefs.xm \
@@ -17,9 +17,8 @@ Acapella3_Music_FILES = \
                         _TtC5Music32NowPlayingControlsViewController.xm \
                         MusicNowPlayingControlsViewController.xm \
 
-ifeq ($(DEBUG), 1)
+ifeq ($(FINALPACKAGE), 0)
 	Acapella3_Music_CFLAGS += -Wno-unused-variable
-	Acapella3_Music_FILES += ../SWAcapellaDebug.xm
 endif
 
 Acapella3_Music_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore

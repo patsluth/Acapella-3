@@ -6,32 +6,18 @@
 //  Copyright © 2016 Pat Sluth. All rights reserved.
 //
 
-#import "_TtC5Music19ApplicationDelegate+SW.h"
-#import "MediaPlayer+SW.h"
-
 #import "SWAcapella.h"
 #import "SWAcapellaPrefs.h"
-//#import "SWAcapellaMediaItemPreviewViewController.h"
 
-//#import "libsw/libSluthware/libSluthware.h"
 #import "Sluthware/Sluthware.h"
 
-#import "MPUTransportControlMediaRemoteController.h"
+#import "_TtC5Music19ApplicationDelegate+SW.h"
+#import "MediaPlayer+SW.h"
 #import "MusicTabBarController.h"
-
-
-#import "SWAcapella.h"
-#import "_TtC5Music19ApplicationDelegate+SW.h"
-#import "MediaPlayer+SW.h"
-#import "SWAcapellaPrefs.h"
-
-#import "Sluthware/Sluthware.h"
-
-#import "MPUTransportControlMediaRemoteController.h"
 
 #import <objc/runtime.h>
 
-#import "MediaRemote.h"
+#import "MediaRemote/MediaRemote.h"
 #import "AVSystemController+SW.h"
 
 
