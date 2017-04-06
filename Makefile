@@ -3,8 +3,8 @@
 
 
 
-export FINALPACKAGE = 0
-PACKAGE_VERSION = 1.0-5
+export FINALPACKAGE = 1
+PACKAGE_VERSION = 1.0-6
 
 
 

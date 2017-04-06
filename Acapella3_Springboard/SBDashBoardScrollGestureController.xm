@@ -41,56 +41,84 @@
     return self;
 }
 
-- (void)_horizontalScrollFailureGestureRecognizerChanged:(id)arg1
-{
-//	SWLogMethod_Start
-//	NSLog(@"arg1: %@", [arg1 class]);
-//	SWLogMethod_End
-	
-	%orig(arg1);
-}
-
-- (_Bool)gestureRecognizerShouldBegin:(id)arg1
-{
-	//id x = [SWAcapella acapellaForObject:self];
-	
-//	SWLogMethod_Start
-//	NSLog(@"arg1: %@", [arg1 class]);
-//	//NSLog(@"arg2: %@", x);
-//	SWLogMethod_End
-	
-	return %orig(arg1);
-}
-
-- (_Bool)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2
-{
-//	SWLogMethod_Start
-//	NSLog(@"arg1: %@", [arg1 class]);
-//	NSLog(@"arg1: %@", [arg2 class]);
-//	SWLogMethod_End
-	
-	return %orig(arg1, arg2);
-}
-
-- (_Bool)gestureRecognizer:(id)arg1 shouldRequireFailureOfGestureRecognizer:(id)arg2
-{
-//	SWLogMethod_Start
-//	NSLog(@"arg1: %@", [arg1 class]);
-//	NSLog(@"arg1: %@", [arg2 class]);
-//	SWLogMethod_End
-	
-	return %orig(arg1, arg2);
-}
-
-- (_Bool)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2
-{
-//	SWLogMethod_Start
-//	NSLog(@"arg1: %@", [arg1 class]);
-//	NSLog(@"arg1: %@", [arg2 class]);
-//	SWLogMethod_End
-	
-	return %orig(arg1, arg2);
-}
+//- (void)_horizontalScrollFailureGestureRecognizerChanged:(id)arg1
+//{
+////	SWLogMethod_Start
+////	NSLog(@"arg1: %@", [arg1 class]);
+////	SWLogMethod_End
+//	
+//	%orig(arg1);
+//}
+//
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)arg1
+//{
+////	SWLogMethod_Start
+////	NSLog(@"arg1: %@", [arg1 class]);
+////	
+//////	[self convertPoint:<#(CGPoint)#> toView:<#(nullable UIView *)#>];
+//////	NSLog(@"locationInView: %@", NSStringFromCGPoint([arg1 locationInView:arg1.view]));
+////	
+////	
+//////	NSLog(@"PAT %@", [arg1.view hitTest:[arg1 locationInView:arg1.view] withEvent:nil]);
+////	
+////	SWLogMethod_End
+//	
+//	
+//	
+////	if ([arg1 class] == %c(SBSwallowingGestureRecognizer)) {
+////		return NO;
+////	}
+//	
+//	
+//	
+//	
+//	
+//	//id x = [SWAcapella acapellaForObject:self];
+//	
+////	SWLogMethod_Start
+////	NSLog(@"arg1: %@", [arg1 class]);
+////	SWLogMethod_End
+//	
+//	return %orig(arg1);
+//}
+//
+//- (BOOL)gestureRecognizer:(id)arg1 shouldBeRequiredToFailByGestureRecognizer:(id)arg2
+//{
+////	SWLogMethod_Start
+////	NSLog(@"arg1: %@", [arg1 class]);
+////	NSLog(@"arg1: %@", [arg2 class]);
+////	SWLogMethod_End
+//	
+//	
+//	
+////	- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event;   // recursively calls -pointInside:withEvent:. point is in the receiver's coordinate system
+////	- (BOOL)pointInside:(CGPoint)point withEvent:(nullable UIEvent *)event;   // default returns YES if point is in bounds
+//	
+//	
+//	
+//	
+//	return %orig(arg1, arg2);
+//}
+//
+//- (BOOL)gestureRecognizer:(id)arg1 shouldRequireFailureOfGestureRecognizer:(id)arg2
+//{
+////	SWLogMethod_Start
+////	NSLog(@"arg1: %@", [arg1 class]);
+////	NSLog(@"arg1: %@", [arg2 class]);
+////	SWLogMethod_End
+//	
+//	return %orig(arg1, arg2);
+//}
+//
+//- (BOOL)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2
+//{
+////	SWLogMethod_Start
+////	NSLog(@"arg1: %@", [arg1 class]);
+////	NSLog(@"arg1: %@", [arg2 class]);
+////	SWLogMethod_End
+//	
+//	return %orig(arg1, arg2);
+//}
 
 %new
 - (void)onAcapellaCreated:(NSNotification *)notification

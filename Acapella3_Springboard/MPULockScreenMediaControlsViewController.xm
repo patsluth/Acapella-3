@@ -14,7 +14,7 @@
 
 #import "Sluthware/Sluthware.h"
 #import "Sluthware/SWPrefs.h"
-#import "libsw2/SWAppLauncher.h"
+#import "libsw2/SWApplicationLauncher.h"
 
 //#import "MPUTransportControlMediaRemoteController.h"
 
@@ -324,9 +324,15 @@
 %new
 - (void)action_openapp:(id)arg1
 {
-    //    id x = [self valueForKey:@"_nowPlayingController"]; //MPUNowPlayingController
-    //    id y = [x valueForKey:@"_currentNowPlayingAppDisplayID"]; //NSString
-    //    [%c(SWAppLauncher) launchAppWithBundleIDLockscreenFriendly:y];
+	TRY
+	
+	id nowPlayingController = [self valueForKey:@"_nowPlayingController"]; //MPUNowPlayingController
+	NSString *bundleID = [nowPlayingController valueForKey:@"_currentNowPlayingAppDisplayID"]; //NSString
+	
+	[%c(SWApplicationLauncher) launchApplicationWithBundleID:bundleID];
+	
+	CATCH
+	TRY_END
 }
 
 %new

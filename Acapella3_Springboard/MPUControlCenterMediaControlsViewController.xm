@@ -14,87 +14,13 @@
 
 #import "Sluthware/Sluthware.h"
 #import "Sluthware/SWPrefs.h"
-#import "libsw2/SWAppLauncher.h"
-#import "libsw2/SWControlCenterHelper.h"
+#import "libsw2/SWApplicationLauncher.h"
 
 //#import "MPUTransportControlMediaRemoteController.h"
 
 #import "SBMediaController.h"
 #import "MediaRemote/MediaRemote.h"
 #import "AVSystemController+SW.h"
-
-
-
-
-
-
-@interface SBLockScreenUnlockRequest : NSObject <NSCopying>
-
-//@property(retain, nonatomic) FBSProcessHandle *process;
-@property (nonatomic) int intent;
-@property (nonatomic) int source;
-@property (copy, nonatomic) NSString *name;
-
-@end
-
-
-//@class SBLockScreenViewController;
-
-@interface SBLockScreenManager : NSObject
-
-+ (instancetype)sharedInstance;
-
-//@property (nonatomic, retain) SBLockScreenViewController *lockScreenViewController;
-@property BOOL isUILocked;
-
-- (void)lockUIFromSource:(NSUInteger)source withOptions:(id)options;
-- (BOOL)unlockWithRequest:(id)arg1 completion:(/*^block*/id)arg2;
-
-@end
-
-
-
-@interface SBMainWorkspace : NSObject //SBWorkspace
-
-+ (id)debugDescription;
-+ (id)_sharedInstanceWithNilCheckPolicy:(long long)arg1;
-+ (id)_instanceIfExists;
-+ (id)sharedInstance;
-
-
-
-- (void)_attemptUnlockToApplication:(id)arg1 showPasscode:(_Bool)arg2 origin:(id)arg3 completion:(/*block*/id)arg4;
-
-- (_Bool)_canImplicitlyUnlockAtLockScreenWhileAuthenticatedFromOrigin:(id)arg1 givenOrigin:(id)arg2 trustedRequest:(_Bool)arg3 outReason:(id *)arg4;
-
-- (void)_handleOpenApplicationRequest:(id)arg1 options:(id)arg2 origin:(id)arg3 withResult:(/*block*/id)arg4;
-- (id)_validateRequestToOpenApplication:(id)arg1 options:(id)arg2 origin:(id)arg3 error:(out id *)arg4;
-- (id)_commonActivationSettingsForRequestWithOptions:(id)arg1 isTrustedRequest:(_Bool)arg2 clientProcess:(id)arg3;
-
-
-@property(readonly, nonatomic) double autoLockTime;
-@property(readonly, nonatomic) double autoDimTime;
-
-
-- (id)createRequestForApplicationActivation:(id)arg1 options:(unsigned long long)arg2;
-- (id)createRequestWithOptions:(unsigned long long)arg1;
-
-@end
-
-
-#import "SpringBoard/SBApplicationController.h"
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -446,21 +372,15 @@
 %new
 - (void)action_openapp:(id)arg1
 {
-	SBMainWorkspace *mainWorkspace = [%c(SBMainWorkspace) sharedInstance];
+	TRY
+	
 	id nowPlayingController = [self valueForKey:@"_nowPlayingController"]; //MPUNowPlayingController
-	id bundleID = [nowPlayingController valueForKey:@"_currentNowPlayingAppDisplayID"]; //NSString
-	id application = [[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier:bundleID];
+	NSString *bundleID = [nowPlayingController valueForKey:@"_currentNowPlayingAppDisplayID"]; //NSString
 	
-	[%c(SWControlCenterHelper) dismissAnimated:YES];
+	[%c(SWApplicationLauncher) launchApplicationWithBundleID:bundleID];
 	
-	[mainWorkspace _attemptUnlockToApplication:application
-								  showPasscode:YES
-										origin:nil
-									completion:^(BOOL finished) {
-		if (finished) {
-			[%c(SWAppLauncher) launchApp:application];
-		}
-	}];
+	CATCH
+	TRY_END
 }
 
 %new

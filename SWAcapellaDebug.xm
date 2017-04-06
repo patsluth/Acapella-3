@@ -16,6 +16,155 @@
 
 
 
+
+
+//%hook SBDashBoardViewController
+//
+////- (BOOL)allowSystemGestureAtLocation:(CGPoint)arg1
+////{
+////	SWLogMethod_Start
+////	NSLog(@"arg1:[%@]", NSStringFromCGPoint(arg1));
+////	SWLogMethod_End
+////
+////	return %orig(arg1);
+////}
+//
+//- (NSString *)description
+//{
+//	return @"pat";
+//}
+//
+//%end
+//
+//
+//
+//%hook SBDashBoardScrollModifier
+//
+//(void)scrollViewWillEndDragging:(id)arg1
+//withVelocity:(CGPoint)arg2
+//targetContentOffset:(inout CGPoint *)arg3
+//{
+//	SWLogMethod_Start
+//	SWLogMethod_End
+//	
+//	%orig;
+//}
+//
+//- (CGPoint)scrollView:(id)arg1
+//adjustedOffsetForOffset:(CGPoint)arg2
+//translation:(CGPoint)arg3
+//startPoint:(CGPoint)arg4
+//locationInView:(CGPoint)arg5
+//horizontalVelocity:(inout double *)arg6
+//verticalVelocity:(inout double *)arg7
+//{
+//	SWLogMethod_Start
+//	SWLogMethod_End
+//	
+//	%orig;
+//}
+//
+//- (void)scrollViewWillBeginDragging:(id)arg1
+//{
+//	SWLogMethod_Start
+//	SWLogMethod_End
+//	
+//	%orig(arg1);
+//}
+//
+//- (BOOL)recognized
+//{
+//	SWLogMethod_Start
+//	SWLogMethod_End
+//	
+//	return NO;//%orig();
+//}
+//
+//%end
+
+
+
+
+
+
+
+%hook SBLockScreenView
+
+//- (void)presentingController:(id)arg1 willHandleGesture:(id)arg2
+//{
+//	
+//}
+
+- (_Bool)presentingController:(id)arg1 gestureRecognizerShouldBegin:(id)arg2
+{
+	SWLogMethod_Start
+	NSLog(@"arg1:[%@]", arg1);
+	NSLog(@"arg2:[%@]", arg2);
+	SWLogMethod_End
+	
+	return %orig(arg1, arg2);
+}
+
+- (_Bool)presentingController:(id)arg1 gestureRecognizer:(id)arg2 shouldReceiveTouch:(id)arg3
+{
+	SWLogMethod_Start
+	NSLog(@"arg1:[%@]", arg1);
+	NSLog(@"arg2:[%@]", arg2);
+	NSLog(@"arg3:[%@]", arg3);
+	SWLogMethod_End
+	
+	return %orig(arg1, arg2, arg3);
+}
+
+//- (void)reenableGestureRecognizer:(id)arg1;
+//- (void)cancelGestureRecognizer:(id)arg1;
+
+%end
+
+
+
+
+%hook SBLockScreenViewController
+
+- (BOOL)gestureRecognizerShouldBegin:(id)arg1
+{
+	SWLogMethod_Start
+	NSLog(@"arg1:[%@]", arg1);
+	SWLogMethod_End
+	
+	return %orig(arg1);
+}
+
+- (BOOL)gestureRecognizer:(id)arg1 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)arg2
+{
+	SWLogMethod_Start
+	NSLog(@"arg1:[%@]", arg1);
+	NSLog(@"arg2:[%@]", arg2);
+	SWLogMethod_End
+	
+	return %orig(arg1, arg2);
+}
+
+- (BOOL)gestureRecognizer:(id)arg1 shouldReceiveTouch:(id)arg2
+{
+	SWLogMethod_Start
+	NSLog(@"arg1:[%@]", arg1);
+	NSLog(@"arg2:[%@]", arg2);
+	SWLogMethod_End
+	
+	return %orig(arg1, arg2);
+}
+
+%end
+
+
+
+
+
+
+
+
+
 //
 //%hook SBUIController
 //
@@ -25,12 +174,12 @@
 //	NSLog(@"arg1:[%@]", arg1);
 //	NSLog(@"arg2:[%@]", arg2);
 //	SWLogMethod_End
-//	
-//	
-//	
-//	
-//	
-//	
+//
+//
+//
+//
+//
+//
 //
 //	return %orig(arg1, arg2);
 //}
