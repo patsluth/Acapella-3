@@ -3,7 +3,7 @@
 
 
 
-export FINALPACKAGE = 1
+export FINALPACKAGE = 0
 PACKAGE_VERSION = 1.0-5
 
 

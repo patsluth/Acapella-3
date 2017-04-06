@@ -92,7 +92,7 @@
     
     
     for (UIView *viewToClone in self.viewsToClone) {
-        if (viewToClone.superview != self) {
+        if (viewToClone.superview != self && CGRectGetWidth(viewToClone.frame) > 0 && CGRectGetHeight(viewToClone.frame) > 0) {
             
             // Add view to self
             CGRect viewToCloneFrame = viewToClone.frame;

@@ -21,6 +21,7 @@ Acapella3_Springboard_FILES = \
 
 ifeq ($(FINALPACKAGE), 0)
 	Acapella3_Springboard_CFLAGS += -Wno-unused-variable
+	Acapella3_Springboard_FILES += ../SWAcapellaDebug.xm
 endif
 
 Acapella3_Springboard_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore

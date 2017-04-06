@@ -16,6 +16,74 @@
 
 
 
+//
+//%hook SBUIController
+//
+//- (BOOL)promptUnlockForAppActivation:(id)arg1 withCompletion:(id)arg2
+//{
+//	SWLogMethod_Start
+//	NSLog(@"arg1:[%@]", arg1);
+//	NSLog(@"arg2:[%@]", arg2);
+//	SWLogMethod_End
+//	
+//	
+//	
+//	
+//	
+//	
+//
+//	return %orig(arg1, arg2);
+//}
+//
+//%end
+//
+//%hook SBLockScreenManager
+//
+//- (BOOL)unlockWithRequest:(id)arg1 completion:(/*^block*/id)arg2
+//{
+//	SWLogMethod_Start
+//	NSLog(@"arg1:[%@]", arg1);
+//	NSLog(@"arg2:[%@]", arg2);
+//	SWLogMethod_End
+//	
+//	for (int i = 0; i < 10; i += 1) {
+//		SBLockScreenUnlockRequest *a = [%c(SBLockScreenUnlockRequest) new];
+//		a.source = i;
+//		a.intent = i;
+//		NSLog(@"aaaa:[%@]", arg1);
+//	}
+//	
+//	return %orig(arg1, arg2);
+//}
+//
+//%end
+
+
+//
+//
+//
+//%hook SBMainWorkspace
+//
+//- (BOOL)_attemptUnlockToApplication:(id)arg1 showPasscode:(BOOL)arg2 origin:(id)arg3 completion:(/*^block*/id)arg4
+//{
+//	SWLogMethod_Start
+//	NSLog(@"arg1:[%@]", arg1);
+//	NSLog(@"arg2:[%@]", @(arg2));
+//	NSLog(@"arg3:[%@]", arg3);
+//	NSLog(@"arg4:[%@]", arg4);
+//	SWLogMethod_End
+//	
+//	
+//
+//	
+//	return %orig(arg1, arg2, arg3, arg4);
+//}
+//
+//%end
+
+
+
+
 //%hook CCUIControlCenterLabel
 //
 //- (void)setText:(id)arg1
