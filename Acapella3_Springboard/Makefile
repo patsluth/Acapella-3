@@ -20,7 +20,7 @@ Acapella3_Springboard_FILES = \
                     	MPULockScreenMediaControlsViewController.xm \
 
 ifeq ($(FINALPACKAGE), 0)
-	Acapella3_Springboard_CFLAGS += -Wno-unused-variable
+	Acapella3_Springboard_CFLAGS += -Wno-unused-variable -Wno-unused-function
 	Acapella3_Springboard_FILES += ../SWAcapellaDebug.xm
 endif
 

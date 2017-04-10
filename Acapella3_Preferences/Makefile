@@ -11,7 +11,7 @@ Acapella3_Preferences_FILES =  \
 								../Acapella3.xm \
 
 ifeq ($(FINALPACKAGE), 0)
-	Acapella3_Preferences_CFLAGS += -Wno-unused-variable
+	Acapella3_Preferences_CFLAGS += -Wno-unused-variable -Wno-unused-function
 endif
 
 Acapella3_Preferences_FRAMEWORKS =

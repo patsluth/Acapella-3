@@ -18,7 +18,8 @@ Acapella3_Music_FILES = \
                         MusicNowPlayingControlsViewController.xm \
 
 ifeq ($(FINALPACKAGE), 0)
-	Acapella3_Music_CFLAGS += -Wno-unused-variable
+	Acapella3_Music_CFLAGS += -Wno-unused-variable -Wno-unused-function
+	Acapella3_Music_FILES += ../SWAcapellaDebug.xm
 endif
 
 Acapella3_Music_FRAMEWORKS = CoreFoundation Foundation UIKit CoreGraphics QuartzCore

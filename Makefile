@@ -3,7 +3,7 @@
 
 
 
-export FINALPACKAGE = 1
+export FINALPACKAGE = 0
 PACKAGE_VERSION = 1.0-6
 
 
@@ -48,7 +48,7 @@ include $(THEOS)/makefiles/swcommon.mk
 
 
 after-install after-uninstall::
-	$(ECHO_NOTHING)install.exec "killall -9 backboardd > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
+#$(ECHO_NOTHING)install.exec "killall -9 backboardd > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 	$(ECHO_NOTHING)install.exec "killall -9 Music > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 	$(ECHO_NOTHING)install.exec "killall -9 Preferences > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 

@@ -18,7 +18,7 @@ Acapella3_PreferencesBundle_FILES =  \
                         		SWAPSListItemsController_Actions.mm \
 
 ifeq ($(FINALPACKAGE), 0)
-	Acapella3_PreferencesBundle_CFLAGS += -Wno-unused-variable
+	Acapella3_PreferencesBundle_CFLAGS += -Wno-unused-variable -Wno-unused-function
 endif
 
 Acapella3_PreferencesBundle_FRAMEWORKS = UIKit
