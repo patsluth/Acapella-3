@@ -39,37 +39,14 @@
 
 #pragma mark - Init
 
-//- (void)testNOtif:(NSNotification)notification
-//{
-//    NSLog(@"PAT NOTE %@", notification);
-//}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     %orig(animated);
-    
-    
-//    self.mediaControlsView.transportControls.hidden = YES;
-//    self.mediaControlsView.transportControls.layer.opacity = 0.0;
-    
-	
 	
 	// Initialize prefs for this instance
     if (self.acapellaKeyPrefix) {
 		self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
-    
-	
-	
-    //Reload our transport buttons
-    //See [self transportControlsView:arg1 buttonForControlType:arg2];
-//    [[self mediaControlsView].transportControlsView reloadTransportButtonWithControlType:6];
-//    [[self mediaControlsView].transportControlsView reloadTransportButtonWithControlType:1];
-//    [[self mediaControlsView].transportControlsView reloadTransportButtonWithControlType:2];
-//    [[self mediaControlsView].transportControlsView reloadTransportButtonWithControlType:3];
-//    [[self mediaControlsView].transportControlsView reloadTransportButtonWithControlType:4];
-//    [[self mediaControlsView].transportControlsView reloadTransportButtonWithControlType:5];
-//    [[self mediaControlsView].transportControlsView reloadTransportButtonWithControlType:8];
     
     [self.view layoutSubviews];
 }
@@ -77,19 +54,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     %orig(animated);
-    
-    
-    
-    
-    
-    
-    
-    
-    // special case where the pref key prefix is not ready in viewWillAppear, but it will always be ready here
-//    if (!self.acapellaPrefs) {
-//        [self viewWillAppear:NO];
-//    }
-    
+	
     if (!self.acapella && self.acapellaPrefs.enabled) {
         
         [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
@@ -263,33 +228,9 @@
 %new
 - (void)action_playpause:(id)arg1
 {
-	//	[[%c(SBMediaController) sharedInstance] togglePlayPause];
-	//	[self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
-	
-	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef result) {
-		
-		NSDictionary *resultDict = (__bridge NSDictionary *)result;
-		BOOL wasSeeking = NO;
-		
-		if (resultDict) {
-			int playbackRate = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoPlaybackRate] integerValue];
-			wasSeeking = (playbackRate != 1 && playbackRate != 0);
-		}
-		resultDict = nil;
-		
-		if (wasSeeking) {
-			
-			MRMediaRemoteSendCommand(kMREndForwardSeek, nil);
-			MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
-		} else {
-			
-			MRMediaRemoteGetNowPlayingApplicationIsPlaying(dispatch_get_main_queue(), ^(Boolean isPlaying) {
-				
-				MRMediaRemoteSendCommand(isPlaying ? kMRPause : kMRPlay, nil);
-			});
-		}
-		
-	});
+	MRMediaRemoteSendCommand(kMREndForwardSeek, nil);
+	MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
+	[self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
 	
 	[self.acapella pulse];
 }
@@ -326,8 +267,8 @@
 {
 	TRY
 	
-	id nowPlayingController = [self valueForKey:@"_nowPlayingController"]; //MPUNowPlayingController
-	NSString *bundleID = [nowPlayingController valueForKey:@"_currentNowPlayingAppDisplayID"]; //NSString
+	id nowPlayingController = MSHookIvar<id>(self, "_nowPlayingController");	// MPUNowPlayingController
+	NSString *bundleID = MSHookIvar<NSString *>(nowPlayingController, "_currentNowPlayingAppDisplayID");
 	
 	[%c(SWApplicationLauncher) launchApplicationWithBundleID:bundleID];
 	

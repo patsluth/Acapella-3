@@ -15,7 +15,7 @@ Acapella3_Music_FILES = \
 						../AVSystemController.xm \
                     	_TtC5Music24MiniPlayerViewController.xm \
                         _TtC5Music32NowPlayingControlsViewController.xm \
-                        MusicNowPlayingControlsViewController.xm \
+						MusicNowPlayingControlsViewController.xm \
 
 ifeq ($(FINALPACKAGE), 0)
 	Acapella3_Music_CFLAGS += -Wno-unused-variable -Wno-unused-function
