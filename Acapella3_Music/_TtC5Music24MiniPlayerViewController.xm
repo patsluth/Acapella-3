@@ -50,27 +50,18 @@
 - (void)viewDidLoad
 {
     %orig();
-    
-    
-    
-    
+	
     if (self.acapellaKeyPrefix) {
         self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
+	
     BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
     if (!hasAcapella) {
         return;
     }
-    
-    
-    
-    
-    
-    
+	
     self.transportControlsStack.hidden = YES;
-    
-    
-    
+	
     NSMutableArray<NSLayoutConstraint *> *constraintsToDeactivate = [NSMutableArray new];
     for (NSLayoutConstraint *constraint in self.view.constraints) {
         if (constraint.firstItem == self.nowPlayingItemTitleLabel && constraint.secondItem == self.transportControlsStack) {
@@ -80,9 +71,7 @@
         }
     }
     [NSLayoutConstraint deactivateConstraints:constraintsToDeactivate.copy];
-    
-    
-    
+	
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.nowPlayingItemTitleLabel
                                                           attribute:NSLayoutAttributeRight
                                                           relatedBy:NSLayoutRelationEqual
@@ -106,17 +95,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     %orig(animated);
-    
-    
-    // special case where the pref key prefix is not ready in viewWillAppear, but it will always be ready here
-    if (!self.acapellaPrefs) {
-        [self viewWillAppear:NO];
-    }
-    
-    
-    
-    
-    
+	
     if (!self.acapella && self.acapellaPrefs.enabled) {
         
         [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
@@ -303,32 +282,12 @@
 	//
 	//    }];
 	
-	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef result) {
-		
-		NSDictionary *resultDict = (__bridge NSDictionary *)result;
-		BOOL wasSeeking = NO;
-		
-		if (resultDict) {
-			int playbackRate = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoPlaybackRate] integerValue];
-			wasSeeking = (playbackRate != 1 && playbackRate != 0);
-		}
-		resultDict = nil;
-		
-		if (wasSeeking) {
-			
-			MRMediaRemoteSendCommand(kMREndForwardSeek, nil);
-			MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
-		} else {
-			
-			MRMediaRemoteGetNowPlayingApplicationIsPlaying(dispatch_get_main_queue(), ^(Boolean isPlaying) {
-				
-				MRMediaRemoteSendCommand(isPlaying ? kMRPause : kMRPlay, nil);
-			});
-		}
-		
-	});
+	MRMediaRemoteSendCommand(kMREndForwardSeek, nil);
+	MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
+	MRMediaRemoteSendCommand(kMRTogglePlayPause, nil);
 	
-	[self.acapella pulse];
+	[self.artworkView pulse];
+	[UIView pulseViews:self.acapella.cloneContainer.viewsToClone];
 }
 
 %new

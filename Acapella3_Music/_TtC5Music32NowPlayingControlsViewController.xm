@@ -287,7 +287,7 @@
 	MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
 	MRMediaRemoteSendCommand(kMRTogglePlayPause, nil);
 	
-	[self.acapella pulse];
+	[UIView pulseViews:self.acapella.cloneContainer.viewsToClone];
 }
 
 %new

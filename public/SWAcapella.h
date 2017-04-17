@@ -38,7 +38,6 @@
 @property (strong, nonatomic, readonly) UILongPressGestureRecognizer *press;
 
 - (void)finishWrapAround;
-- (void)pulse;
 
 @end
 

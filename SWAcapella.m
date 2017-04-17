@@ -12,6 +12,7 @@
 #import "Sluthware/Sluthware.h"
 
 #import <CoreGraphics/CoreGraphics.h>
+#import <MediaRemote/MediaRemote.h>
 //#import <MobileGestalt/MobileGestalt.h>
 
 
@@ -608,48 +609,6 @@ static void *kvoContext_Text = &kvoContext_Text;
     
     AUTO_RELEASE_POOL_END
     DISPATCH_ASYNC_MAIN_QUEUE_END
-}
-
-- (void)pulse
-{
-//    self.titlesClone.tag = SWAcapellaTitlesStateNone;
-//    self.wrapAroundFallback = nil;
-//    [self.animator removeAllBehaviors];
-//    self.titlesClone.velocity = CGPointZero;
-//    [self.titlesClone.layer removeAllAnimations];
-//    self.titlesClone.frame = self.titles.frame;
-//    self.titlesCloneCenterXConstraint.constant = 0.0;
-//    [self.referenceView setNeedsLayout];
-//    [self.titlesClone setNeedsDisplay];
-//    
-//    [UIView animateWithDuration:0.11
-//                          delay:0.01
-//                        options:UIViewAnimationOptionBeginFromCurrentState
-//                     animations:^{
-//                         
-//                         self.referenceView.transform = CGAffineTransformMakeScale(1.15, 1.15);
-//                         
-//                     } completion:^(BOOL finished) {
-//                         if (finished) {
-//                         
-//                             [UIView animateWithDuration:0.11
-//                                                   delay:0.0
-//                                                 options:UIViewAnimationOptionBeginFromCurrentState
-//                                              animations:^{
-//                                                  
-//                                                  self.referenceView.transform = CGAffineTransformIdentity;
-//                                                  
-//                                              } completion:^(BOOL finished) {
-//                                                  
-//                                                  self.referenceView.transform = CGAffineTransformIdentity;
-//                                                  
-//                                              }];
-//                         } else {
-//                             
-//                             self.referenceView.transform = CGAffineTransformIdentity;
-//                             
-//                         }
-//                     }];
 }
 
 - (void)snapToCenter

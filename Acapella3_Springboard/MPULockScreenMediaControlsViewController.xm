@@ -232,7 +232,7 @@
 	MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
 	[self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
 	
-	[self.acapella pulse];
+	[UIView pulseViews:self.acapella.cloneContainer.viewsToClone];
 }
 
 %new
@@ -309,67 +309,6 @@
 
 
 
-
-
-
-#pragma mark - MPUSystemMediaControlsViewController
-
-//- (id)transportControlsView:(id)arg1 buttonForControlType:(NSInteger)arg2
-//{
-//    //THESE CODES ARE DIFFERENT FROM THE MEDIA COMMANDS
-//    //6 like/ban
-//    //1 rewind
-//    //2 interval rewind
-//    //3 play/pause
-//    //4 forward
-//    //5 interval forward
-//    //8 share
-//    
-//    return nil;
-//	
-//	// Sometimes this won't be ready until the view has appeared, so return nil so the buttons don't flash
-//	// once if acapella is enabled
-//	if (!self.acapellaPrefs) {
-//		return nil;
-//	}
-//    
-//    if (self.acapellaPrefs.enabled) {
-//    
-//        if (arg2 == 6 && !self.acapellaPrefs.transport_heart) {
-//            return nil;
-//        }
-//        
-//        if (arg2 == 1 && !self.acapellaPrefs.transport_previoustrack) {
-//            return nil;
-//        }
-//        
-//        if (arg2 == 2 && !self.acapellaPrefs.transport_intervalrewind) {
-//            return nil;
-//        }
-//        
-//        if (arg2 == 3 && !self.acapellaPrefs.transport_playpause) {
-//            return nil;
-//        }
-//        
-//        if (arg2 == 4 && !self.acapellaPrefs.transport_nexttrack) {
-//            return nil;
-//        }
-//        
-//        if (arg2 == 5 && !self.acapellaPrefs.transport_intervalforward) {
-//            return nil;
-//        }
-//        
-//        if (arg2 == 8 && !self.acapellaPrefs.transport_share) {
-//            return nil;
-//        }
-//        
-//    }
-//    
-//    
-//    return %orig(arg1, arg2);
-//}
-
-//%end
 
 %ctor
 {
