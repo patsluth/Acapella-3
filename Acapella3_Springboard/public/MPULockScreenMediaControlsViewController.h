@@ -15,6 +15,8 @@
 
 @interface MPULockScreenMediaControlsViewController : MPUMediaRemoteViewController
 
+@property UIView *artworkView;
+
 @end
 
 

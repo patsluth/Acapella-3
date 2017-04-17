@@ -232,10 +232,11 @@
 - (void)action_playpause:(id)arg1
 {
 //	[[%c(SBMediaController) sharedInstance] togglePlayPause];
+//	[self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
 	
 	MRMediaRemoteSendCommand(kMREndForwardSeek, nil);
 	MRMediaRemoteSendCommand(kMREndBackwardSeek, nil);
-	[self transportControlsView:self.mediaControlsView.transportControls tapOnControlType:3];
+	MRMediaRemoteSendCommand(kMRTogglePlayPause, nil);
 	
 	[UIView pulseViews:self.acapella.cloneContainer.viewsToClone];
 }
