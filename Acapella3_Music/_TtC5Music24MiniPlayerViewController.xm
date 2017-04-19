@@ -74,7 +74,7 @@
 	
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.nowPlayingItemTitleLabel
                                                           attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
+                                                          relatedBy:NSLayoutRelationLessThanOrEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeRight
                                                          multiplier:1.0
