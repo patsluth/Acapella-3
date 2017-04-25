@@ -86,10 +86,10 @@
 		
 	} else {
 		
-		//		self.emptyNowPlayingView.frame = CGRectMake(CGRectGetMinX(self.emptyNowPlayingView.frame),
-		//													CGRectGetMinY(self.emptyNowPlayingView.frame),
-		//													CGRectGetMaxX(self.bounds) - CGRectGetMinX(self.emptyNowPlayingView.frame),
-		//													CGRectGetMaxY(self.emptyNowPlayingView.bounds));
+		self.emptyNowPlayingView.frame = CGRectMake(CGRectGetMinX(self.emptyNowPlayingView.frame),
+													CGRectGetMinY(self.emptyNowPlayingView.frame),
+													CGRectGetMaxX(self.bounds) - CGRectGetMinX(self.emptyNowPlayingView.frame),
+													CGRectGetHeight(self.emptyNowPlayingView.bounds));
 		
 	}
 }

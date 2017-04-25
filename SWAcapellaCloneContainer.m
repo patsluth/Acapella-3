@@ -8,6 +8,8 @@
 
 #import "SWAcapellaCloneContainer.h"
 
+#import "Sluthware/Sluthware.h"
+
 #import <objc/runtime.h>
 
 
@@ -56,11 +58,7 @@
 
 - (void)refreshClones
 {
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(refreshClones) withObject:nil waitUntilDone:NO];
-        return;
-    }
-    
+    DISPATCH_ASYNC_MAIN_QUEUE
     
     if (self.tag == SWAcapellaCloneContainerStateNone) {
         
@@ -113,17 +111,17 @@
             
             // Translate deactivated constraints to use self
             [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
-                                                             attribute:NSLayoutAttributeLeft
+                                                             attribute:NSLayoutAttributeLeading
                                                              relatedBy:NSLayoutRelationEqual
                                                                 toItem:self
-                                                             attribute:NSLayoutAttributeLeft
+                                                             attribute:NSLayoutAttributeLeading
                                                             multiplier:1.0
                                                               constant:CGRectGetMinX(viewToCloneFrame)]];
             [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
-                                                             attribute:NSLayoutAttributeRight
+                                                             attribute:NSLayoutAttributeTrailing
                                                              relatedBy:NSLayoutRelationEqual
                                                                 toItem:self
-                                                             attribute:NSLayoutAttributeLeft
+                                                             attribute:NSLayoutAttributeTrailing
                                                             multiplier:1.0
                                                               constant:CGRectGetMaxX(viewToCloneFrame)]];
             [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
@@ -143,6 +141,8 @@
             
         }
     }
+	
+	DISPATCH_ASYNC_MAIN_QUEUE_END
 }
 
 - (void)_constraintsToDeactivate

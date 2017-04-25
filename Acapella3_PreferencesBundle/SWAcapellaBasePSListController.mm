@@ -33,14 +33,7 @@
 {
     [super load];
     
-    NSBundle *bundle = [NSBundle bundleWithPath:@"/Library/Frameworks/Sluthware.framework"];
-    if (!bundle.isLoaded) {
-        NSError *error = nil;
-        [bundle loadAndReturnError:&error];
-        if (error) {
-            NSLog(@"Error loading Sluthware.framework!");
-        }
-    }
+    loadSluthware();
 }
 
 /**

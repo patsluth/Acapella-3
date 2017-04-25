@@ -30,6 +30,8 @@ Acapella3_Music_LIBRARIES = substrate sw2 MobileGestalt
 ADDITIONAL_CFLAGS += -I../public
 ADDITIONAL_CFLAGS += -Ipublic
 
+INSTALL_TARGET_PROCESSES = Music
+
 
 
 

@@ -22,6 +22,8 @@ Acapella3_Preferences_LIBRARIES =
 ADDITIONAL_CFLAGS += -I../public
 ADDITIONAL_CFLAGS += -Ipublic
 
+INSTALL_TARGET_PROCESSES = Preferences
+
 
 
 

@@ -4,7 +4,7 @@
 
 
 export FINALPACKAGE = 1
-PACKAGE_VERSION = 1.0-11
+PACKAGE_VERSION = 1.0-13
 
 
 
@@ -42,15 +42,6 @@ include $(THEOS)/makefiles/tweak.mk
 include $(THEOS)/makefiles/bundle.mk
 include $(THEOS)/makefiles/aggregate.mk
 include $(THEOS)/makefiles/swcommon.mk
-
-
-
-
-
-after-install after-uninstall::
-	$(ECHO_NOTHING)install.exec "killall -9 backboardd > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
-	$(ECHO_NOTHING)install.exec "killall -9 Music > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
-	$(ECHO_NOTHING)install.exec "killall -9 Preferences > /dev/null 2> /dev/null"; echo -n '';$(ECHO_END)
 
 
 

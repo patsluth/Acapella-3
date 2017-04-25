@@ -177,6 +177,7 @@
 		
 		if (resultDict) {
 			double elapsedTime = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			NSLog(@"elapsedTime %@", @(elapsedTime));
 			MRMediaRemoteSetElapsedTime(elapsedTime - 20.0);
 		}
 		resultDict = nil;
@@ -192,6 +193,7 @@
 		
 		if (resultDict) {
 			double elapsedTime = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
+			NSLog(@"elapsedTime %@", @(elapsedTime));
 			MRMediaRemoteSetElapsedTime(elapsedTime + 20.0);
 		}
 		resultDict = nil;

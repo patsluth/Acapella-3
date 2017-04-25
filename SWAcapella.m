@@ -520,6 +520,7 @@ static void *kvoContext_Text = &kvoContext_Text;
 	if (self.cloneContainer.tag == SWAcapellaCloneContainerStatePanning) {
 		
 		[self setupKVO];
+		
 		self.wrapAroundFallback = [NSTimer scheduledTimerWithTimeInterval:0.75
 																	block:^{
 																		[self finishWrapAround];
