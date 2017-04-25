@@ -76,7 +76,7 @@
 
 - (id)initWithKeyPrefix:(NSString *)keyPrefix
 {
-	NSBundle *bundle = [NSBundle bundleWithPath:@"/Library/PreferenceBundles/AcapellaPrefs3.bundle"];
+	NSBundle *bundle = [NSBundle bundleWithPath:@"/Library/PreferenceBundles/Acapella3_PreferencesBundle.bundle"];
 	NSString *preferencePath = @"/var/mobile/Library/Preferences/com.patsluth.acapella3.plist";
 	NSString *defaultsPath = [bundle pathForResource:@"prefsDefaults" ofType:@".plist"];
 	

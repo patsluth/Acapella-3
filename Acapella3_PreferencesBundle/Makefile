@@ -29,6 +29,8 @@ Acapella3_PreferencesBundle_LIBRARIES = sw2
 ADDITIONAL_CFLAGS += -I../public
 ADDITIONAL_CFLAGS += -Ipublic
 
+INSTALL_TARGET_PROCESSES = Preferences
+
 
 
 
@@ -50,7 +52,7 @@ before-stage::
 
 internal-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)
-	$(ECHO_NOTHING)cp entry.plist $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/Acapella3_PreferencesBundle.plist$(ECHO_END)
+	$(ECHO_NOTHING)cp entry.plist $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/$(BUNDLE_NAME).plist$(ECHO_END)
 
 
 
