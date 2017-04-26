@@ -110,35 +110,35 @@
             
             
             // Translate deactivated constraints to use self
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self
-                                                             attribute:NSLayoutAttributeLeading
-                                                            multiplier:1.0
-                                                              constant:CGRectGetMinX(viewToCloneFrame)]];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
-                                                             attribute:NSLayoutAttributeTrailing
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self
-                                                             attribute:NSLayoutAttributeTrailing
-                                                            multiplier:1.0
-                                                              constant:CGRectGetMaxX(viewToCloneFrame)]];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
-                                                             attribute:NSLayoutAttributeTop
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self
-                                                             attribute:NSLayoutAttributeTop
-                                                            multiplier:1.0
-                                                              constant:CGRectGetMinY(viewToCloneFrame)]];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
-                                                             attribute:NSLayoutAttributeBottom
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self
-                                                             attribute:NSLayoutAttributeTop
-                                                            multiplier:1.0
-                                                              constant:CGRectGetMaxY(viewToCloneFrame)]];
-            
+			[self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+															 attribute:NSLayoutAttributeLeft
+															 relatedBy:NSLayoutRelationEqual
+																toItem:self
+															 attribute:NSLayoutAttributeLeft
+															multiplier:1.0
+															  constant:CGRectGetMinX(viewToCloneFrame)]];
+			[self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+															 attribute:NSLayoutAttributeRight
+															 relatedBy:NSLayoutRelationEqual
+																toItem:self
+															 attribute:NSLayoutAttributeLeft
+															multiplier:1.0
+															  constant:CGRectGetMaxX(viewToCloneFrame)]];
+			[self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+															 attribute:NSLayoutAttributeTop
+															 relatedBy:NSLayoutRelationEqual
+																toItem:self
+															 attribute:NSLayoutAttributeTop
+															multiplier:1.0
+															  constant:CGRectGetMinY(viewToCloneFrame)]];
+			[self addConstraint:[NSLayoutConstraint constraintWithItem:viewToClone
+															 attribute:NSLayoutAttributeBottom
+															 relatedBy:NSLayoutRelationEqual
+																toItem:self
+															 attribute:NSLayoutAttributeTop
+															multiplier:1.0
+															  constant:CGRectGetMaxY(viewToCloneFrame)]];
+			
         }
     }
 	
