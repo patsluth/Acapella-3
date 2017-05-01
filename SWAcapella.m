@@ -545,7 +545,11 @@ static void *kvoContext_Text = &kvoContext_Text;
 
 - (void)finishWrapAround
 {
-    DISPATCH_ASYNC_MAIN_QUEUE
+	if (![NSThread isMainThread]) {
+		[self performSelectorOnMainThread:_cmd withObject:nil waitUntilDone:NO];
+		return;
+	}
+	
     AUTO_RELEASE_POOL
 	
     // Give text time to update
@@ -609,12 +613,15 @@ static void *kvoContext_Text = &kvoContext_Text;
     }
     
     AUTO_RELEASE_POOL_END
-    DISPATCH_ASYNC_MAIN_QUEUE_END
 }
 
 - (void)snapToCenter
 {
-    DISPATCH_ASYNC_MAIN_QUEUE
+	if (![NSThread isMainThread]) {
+		[self performSelectorOnMainThread:_cmd withObject:nil waitUntilDone:NO];
+		return;
+	}
+	
     AUTO_RELEASE_POOL
             
     if (self.cloneContainer.tag == SWAcapellaCloneContainerStatePanning ||
@@ -647,7 +654,6 @@ static void *kvoContext_Text = &kvoContext_Text;
     }
     
     AUTO_RELEASE_POOL_END
-    DISPATCH_ASYNC_MAIN_QUEUE_END
 }
 
 - (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator

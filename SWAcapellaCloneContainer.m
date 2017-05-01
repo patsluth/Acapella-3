@@ -58,8 +58,11 @@
 
 - (void)refreshClones
 {
-    DISPATCH_ASYNC_MAIN_QUEUE
-    
+	if (![NSThread isMainThread]) {
+		[self performSelectorOnMainThread:_cmd withObject:nil waitUntilDone:NO];
+		return;
+	}
+	
     if (self.tag == SWAcapellaCloneContainerStateNone) {
         
         for (UIView *viewToClone in self.viewsToClone) {
@@ -141,8 +144,6 @@
 			
         }
     }
-	
-	DISPATCH_ASYNC_MAIN_QUEUE_END
 }
 
 - (void)_constraintsToDeactivate
