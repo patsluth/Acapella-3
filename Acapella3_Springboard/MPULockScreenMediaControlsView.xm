@@ -14,6 +14,16 @@
 
 
 
+@interface MPULockScreenMediaControlsView (APACE)
+
+- (void)apace;
+
+@end
+
+
+
+
+
 #pragma mark - MPULockScreenMediaControlsView
 
 %hook MPULockScreenMediaControlsView
@@ -27,6 +37,10 @@
 - (void)layoutSubviews
 {
     %orig();
+	
+	if ([self respondsToSelector:@selector(apace)]) {
+		return;
+	}
     
     SWAcapella *acapella = [SWAcapella acapellaForObject:self];
     

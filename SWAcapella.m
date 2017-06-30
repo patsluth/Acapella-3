@@ -259,7 +259,9 @@ static void *kvoContext_Text = &kvoContext_Text;
 				[view addObserver:self forKeyPath:@"text"
 						  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
 						  context:kvoContext_Text];
+				return YES;
 			}
+			return NO;
 		}];
 	}
 }

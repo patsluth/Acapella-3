@@ -118,6 +118,11 @@
 														   constant:0.0]];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	%orig(animated);
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
 	%orig(animated);
@@ -129,6 +134,8 @@
 													 viewsToClone:@[self.titlesStackView]]
 					  forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
 	}
+	
+	[self.view layoutSubviews];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

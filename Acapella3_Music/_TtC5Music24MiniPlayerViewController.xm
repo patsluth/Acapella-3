@@ -90,31 +90,33 @@
     if (self.acapellaKeyPrefix) {
         self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
+	
+	if (!self.acapella && self.acapellaPrefs.enabled) {
+		
+		[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
+													referenceView:self.view
+													 viewsToClone:@[self.nowPlayingItemTitleLabel]]
+					  forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
+	}
+	
+	self.miniPlayerButton.enabled = (!self.acapella);
+	
+	if (self.acapella) {
+		
+		[self.panGestureRecognizer requireGestureRecognizerToFail:self.acapella.pan];
+		[self.playbackCancellationGesture requireGestureRecognizerToFail:self.acapella.pan];
+		[self.playbackCancellationGesture requireGestureRecognizerToFail:self.acapella.press];
+		
+	}
+	
+	[self.view layoutSubviews];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    %orig(animated);
+	%orig(animated);
 	
-    if (!self.acapella && self.acapellaPrefs.enabled) {
-        
-        [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                    referenceView:self.view
-                                                     viewsToClone:@[self.nowPlayingItemTitleLabel]]
-                      forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
-    }
-    
-    self.miniPlayerButton.enabled = (!self.acapella);
-    
-    if (self.acapella) {
-        
-        [self.panGestureRecognizer requireGestureRecognizerToFail:self.acapella.pan];
-        [self.playbackCancellationGesture requireGestureRecognizerToFail:self.acapella.pan];
-        [self.playbackCancellationGesture requireGestureRecognizerToFail:self.acapella.press];
-        
-    }
-    
-    [self viewDidLayoutSubviews];
+	[self.view layoutSubviews];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

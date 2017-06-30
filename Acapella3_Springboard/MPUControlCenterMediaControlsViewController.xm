@@ -26,7 +26,17 @@
 
 
 
-#pragma mark - MPUSystemMediaControlsViewController
+@interface MPUControlCenterMediaControlsViewController (APACE)
+
+- (void)apace;
+
+@end
+
+
+
+
+
+#pragma mark - MPUControlCenterMediaControlsViewController
 
 %hook MPUControlCenterMediaControlsViewController
 
@@ -46,7 +56,19 @@
     if (self.acapellaKeyPrefix) {
 		self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
     }
-    
+	
+	if (!self.acapella && self.acapellaPrefs.enabled) {
+		
+		[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
+													referenceView:self.mediaControlsView
+													 viewsToClone:@[self.mediaControlsView.artworkView,
+																	self.mediaControlsView.titleLabel,
+																	self.mediaControlsView.artistLabel,
+																	self.mediaControlsView.albumLabel,
+																	self.mediaControlsView.artistAlbumConcatenatedLabel]]
+					  forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
+	}
+	
     [self.view layoutSubviews];
 }
 
@@ -54,23 +76,6 @@
 {
     %orig(animated);
 	
-    if (!self.acapella && self.acapellaPrefs.enabled) {
-        
-        [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                    referenceView:self.mediaControlsView
-                                                     viewsToClone:@[self.mediaControlsView.artworkView,
-                                                                    self.mediaControlsView.titleLabel,
-                                                                    self.mediaControlsView.artistLabel,
-                                                                    self.mediaControlsView.albumLabel,
-                                                                    self.mediaControlsView.artistAlbumConcatenatedLabel]]
-                      forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
-    }
-    
-    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
-    
-    self.mediaControlsView.transportControls.hidden = hasAcapella;
-    self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
-    
     [self.view layoutSubviews];
 }
 
@@ -78,18 +83,21 @@
 {
 	[SWAcapella removeAcapella:[SWAcapella acapellaForObject:self]];
     self.acapellaPrefs = nil;
-    
+	
     %orig(animated);
 }
 
 - (void)viewDidLayoutSubviews
 {
-    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
+	%orig();
+	
+	BOOL hasAcapella = ((self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled)) &&
+						![self.mediaControlsView respondsToSelector:@selector(apace)]);
     
-    self.mediaControlsView.transportControls.hidden = hasAcapella;
-    self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
-    
-    %orig();
+	if (hasAcapella) {
+		self.mediaControlsView.transportControls.hidden = hasAcapella;
+		self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
+	}
 }
 
 #pragma mark - SWAcapellaDelegate
@@ -177,7 +185,7 @@
 		
 		if (resultDict) {
 			double elapsedTime = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
-			NSLog(@"elapsedTime %@", @(elapsedTime));
+//			NSLog(@"elapsedTime %@", @(elapsedTime));
 			MRMediaRemoteSetElapsedTime(elapsedTime - 20.0);
 		}
 		resultDict = nil;
@@ -193,7 +201,7 @@
 		
 		if (resultDict) {
 			double elapsedTime = [[resultDict valueForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoElapsedTime] doubleValue];
-			NSLog(@"elapsedTime %@", @(elapsedTime));
+//			NSLog(@"elapsedTime %@", @(elapsedTime));
 			MRMediaRemoteSetElapsedTime(elapsedTime + 20.0);
 		}
 		resultDict = nil;

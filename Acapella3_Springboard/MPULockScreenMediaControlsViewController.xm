@@ -26,9 +26,18 @@
 
 
 
-#pragma mark - MPUSystemMediaControlsViewController
+@interface MPULockScreenMediaControlsViewController (APACE)
 
-//%hook MPUControlCenterMediaControlsViewController
+- (void)apace;
+
+@end
+
+
+
+
+
+#pragma mark - MPULockScreenMediaControlsViewController
+
 %hook MPULockScreenMediaControlsViewController
 
 %new
@@ -44,10 +53,18 @@
     %orig(animated);
 	
 	// Initialize prefs for this instance
-    if (self.acapellaKeyPrefix) {
+	if (self.acapellaKeyPrefix) {
 		self.acapellaPrefs = [[SWAcapellaPrefs alloc] initWithKeyPrefix:self.acapellaKeyPrefix];
-    }
-    
+	}
+	
+	if (!self.acapella && self.acapellaPrefs.enabled) {
+		
+		[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
+													referenceView:self.mediaControlsView
+													 viewsToClone:@[self.mediaControlsView.titlesView]]
+					  forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
+	}
+	
     [self.view layoutSubviews];
 }
 
@@ -55,20 +72,7 @@
 {
     %orig(animated);
 	
-    if (!self.acapella && self.acapellaPrefs.enabled) {
-        
-        [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                    referenceView:self.mediaControlsView
-                                                     viewsToClone:@[self.mediaControlsView.titlesView]]
-                      forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
-    }
-    
-    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
-    
-    self.mediaControlsView.transportControls.hidden = hasAcapella;
-    self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
-    
-    [self.view layoutSubviews];
+	[self.view layoutSubviews];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -81,12 +85,15 @@
 
 - (void)viewDidLayoutSubviews
 {
-    BOOL hasAcapella = (self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled));
-    
-    self.mediaControlsView.transportControls.hidden = hasAcapella;
-    self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
-    
-    %orig();
+	%orig();
+	
+	BOOL hasAcapella = ((self.acapella || (self.acapellaPrefs && self.acapellaPrefs.enabled)) &&
+						![self.mediaControlsView respondsToSelector:@selector(apace)]);
+	
+	if (hasAcapella) {
+		self.mediaControlsView.transportControls.hidden = hasAcapella;
+		self.mediaControlsView.transportControls.layer.opacity = (hasAcapella) ? 0.0 : 1.0;
+	}
 }
 
 #pragma mark - SWAcapellaDelegate

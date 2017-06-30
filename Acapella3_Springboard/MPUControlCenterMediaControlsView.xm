@@ -14,6 +14,16 @@
 
 
 
+@interface MPUControlCenterMediaControlsView (APACE)
+
+- (void)apace;
+
+@end
+
+
+
+
+
 #pragma mark - MPUControlCenterMediaControlsView
 
 %hook MPUControlCenterMediaControlsView
@@ -52,6 +62,10 @@
 {
 	%orig();
 	
+	if ([self respondsToSelector:@selector(apace)]) {
+		return;
+	}
+	
 	SWAcapella *acapella = [SWAcapella acapellaForObject:self];
 	
 	if (!acapella) {
@@ -86,10 +100,10 @@
 		
 	} else {
 		
-		self.emptyNowPlayingView.frame = CGRectMake(CGRectGetMinX(self.emptyNowPlayingView.frame),
-													CGRectGetMinY(self.emptyNowPlayingView.frame),
-													CGRectGetMaxX(self.bounds) - CGRectGetMinX(self.emptyNowPlayingView.frame),
-													CGRectGetHeight(self.emptyNowPlayingView.bounds));
+//		self.emptyNowPlayingView.frame = CGRectMake(CGRectGetMinX(self.emptyNowPlayingView.frame),
+//													CGRectGetMinY(self.emptyNowPlayingView.frame),
+//													CGRectGetMaxX(self.bounds) - CGRectGetMinX(self.emptyNowPlayingView.frame),
+//													CGRectGetHeight(self.emptyNowPlayingView.bounds));
 		
 	}
 }

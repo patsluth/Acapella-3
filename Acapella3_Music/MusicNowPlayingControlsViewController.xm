@@ -118,17 +118,24 @@
                                                            constant:0.0]];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	%orig(animated);
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
-    %orig(animated);
+	%orig(animated);
 	
 	if (!self.acapella && self.acapellaPrefs.enabled) {
-        
-        [SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
-                                                    referenceView:self.titlesStackView.superview
-                                                     viewsToClone:@[self.titlesStackView]]
-                      forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
-    }
+		
+		[SWAcapella setAcapella:[[SWAcapella alloc] initWithOwner:self
+													referenceView:self.titlesStackView.superview
+													 viewsToClone:@[self.titlesStackView]]
+					  forObject:self withPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC];
+	}
+	
+	[self.view layoutSubviews];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
